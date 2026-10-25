@@ -5,8 +5,8 @@ The function bodies are unchanged. Functions that used the notebook variables
 """
 import numpy as np
 
-import slider_logs as sl
-from models import apem_osf
+from slider import slider_logs as sl
+from slider.models import apem_osf
 
 
 # ---------------------------------------------------- Stage 0, HW 5 (corners)

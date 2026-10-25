@@ -5,8 +5,8 @@ Run from the Tabor/ folder:  pytest
 import numpy as np
 import pytest
 
-import slider_logs as sl
-from fraught import fraught_mask, fraught_percent_hold
+from slider import slider_logs as sl
+from slider.fraught import fraught_mask, fraught_percent_hold
 
 
 @pytest.fixture(scope="module")

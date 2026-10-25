@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from config import OSF_DATA as DATA, LAB_DIR, CLOUD_DIR
+from slider.config import OSF_DATA as DATA, LAB_DIR, CLOUD_DIR
 
 
 def extract_data():

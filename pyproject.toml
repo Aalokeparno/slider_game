@@ -10,8 +10,7 @@ requires-python = ">=3.9"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-py-modules = ["config", "slider_logs", "fraught", "stats", "splits"]
-packages = ["models"]
+packages = ["slider", "slider.models"]
 
 [tool.pyright]
 extraPaths = ["src"]
