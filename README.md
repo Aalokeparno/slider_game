@@ -23,8 +23,8 @@ data/
 src/slider/           the package: from slider import config
   config.py           all paths, SEED, train/test topologies
   slider_logs.py      log parser
-  fraught.py          fraught tests and % fraught measures
-  stats.py            bootstrap / Wilcoxon test, summary tables
+  fraught.py          fraught tests, % fraught measures, fraught spells (spells)
+  stats.py            bootstrap / Wilcoxon test, summary tables, Kaplan-Meier (kaplan_meier)
   splits.py           check_cc_groups, make_split_G (python -m slider.splits)
   models/             apem.py (APEM simulator), apem_osf.py (port of the authors' Matlab code)
 notebooks/

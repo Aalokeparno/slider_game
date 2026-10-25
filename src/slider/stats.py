@@ -90,3 +90,28 @@ def ranking(source, group, res, topologies):
     for a, b in zip(order, order[1:]):
         text += (" = " if values[a] == values[b] else " > ") + b      # "=" for a tie (e.g. both 0%)
     return text
+
+
+# ------------------------------------------------------------- spell survival
+
+def kaplan_meier(durations, event):
+    """Kaplan-Meier survival curve of spell durations. event = 1 for an escape, 0 for censored.
+
+    At tied times escapes count before censorings: a spell censored at time t is still at risk at t.
+    Returns (table, median). table has one row per distinct time: time, at_risk, escapes, censored,
+    survival (S just after that time). median = first time with S <= 0.5 (NaN if S never gets there).
+    """
+    durations = np.asarray(durations, dtype=float)
+    event = np.asarray(event, dtype=bool)
+    rows = []
+    surv = 1.0
+    for time in np.unique(durations):
+        at_risk = np.sum(durations >= time)
+        escapes = np.sum((durations == time) & event)
+        censored = np.sum((durations == time) & ~event)
+        surv = surv * (1 - escapes / at_risk)
+        rows.append({"time": time, "at_risk": at_risk, "escapes": escapes, "censored": censored, "survival": surv})
+    table = pd.DataFrame(rows, columns=["time", "at_risk", "escapes", "censored", "survival"])
+    below = table[table["survival"] <= 0.5 + 1e-9]          # small tolerance for rounding
+    median = below["time"].iloc[0] if len(below) > 0 else np.nan
+    return table, median

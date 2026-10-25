@@ -4,6 +4,7 @@ The function bodies are unchanged. Functions that used the notebook variables
 `runs`, `table` or `masks` now take them as arguments.
 """
 import numpy as np
+import pandas as pd
 
 from slider import slider_logs as sl
 from slider.models import apem_osf
@@ -137,3 +138,77 @@ def fraught_percent_interp_sim(run, n=1000):
 def fraught_percent_osf(run):
     S = apem_osf.warp(run)
     return 100 * np.mean(fraught_mask({"A": run["A"], "weights": np.ones(7), "X": S}))
+
+
+# ---------------------------------------------------------------- fraught spells
+
+def spells(t, mask, t_end, censored, tau=1.0, labels=None, is_consensus=None):
+    """Fraught spells of one round, one row per spell.
+
+    Forward hold: row k lasts [t_k, t_k+1), the last row lasts until t_end.
+    A spell is a maximal run of True rows of mask. Two spells separated by a non-mask stretch
+    shorter than tau are merged, unless that stretch has a consensus row (consensus ends a spell).
+
+    t_end      end of the round: last row time if it succeeded or has no end marker,
+               max(time limit, last row time) if it failed
+    censored   True if the round failed or has no end marker
+    labels     one label per row, e.g. the sign pattern of s ("+-++-+-")
+    is_consensus  True on consensus rows; default: the last row of a round that is not censored
+
+    Columns: start, end, duration, end_type, orthants (distinct labels on the spell's True rows,
+    in order of first appearance), n_hops (label changes between the spell's True rows).
+    end_type: "consensus" if the next row is consensus, "censored" if the spell is still open at
+    t_end of a censored round, "split" otherwise (the group left the fraught state some other way).
+    """
+    t = np.asarray(t, dtype=float)
+    mask = np.asarray(mask, dtype=bool)
+    n = len(t)
+    if n > 0 and t_end < t[-1]:
+        raise ValueError(f"t_end = {t_end} is before the last row (t = {t[-1]})")
+    if is_consensus is None:
+        is_consensus = np.zeros(n, dtype=bool)
+        if n > 0 and not censored:
+            is_consensus[-1] = True
+    is_consensus = np.asarray(is_consensus, dtype=bool)
+    row_end = np.append(t[1:], t_end)          # row k lasts [t[k], row_end[k])
+
+    # maximal runs of True rows, as [first row, last row]
+    blocks = []
+    k = 0
+    while k < n:
+        if mask[k]:
+            j = k
+            while j + 1 < n and mask[j + 1]:
+                j += 1
+            blocks.append([k, j])
+            k = j + 1
+        else:
+            k += 1
+
+    # merge a block into the previous one if the stretch between them is shorter than tau
+    # and has no consensus row
+    merged = []
+    for k, j in blocks:
+        if merged:
+            prev_last = merged[-1][1]
+            gap = t[k] - row_end[prev_last]
+            if gap < tau and not is_consensus[prev_last + 1:k].any():
+                merged[-1][1] = j
+                continue
+        merged.append([k, j])
+
+    rows = []
+    for k, j in merged:
+        if j + 1 < n:
+            end_type = "consensus" if is_consensus[j + 1] else "split"
+        else:
+            end_type = "censored" if censored else "consensus"      # still open at t_end
+        if labels is None:
+            orthants, n_hops = None, None
+        else:
+            seq = [labels[r] for r in range(k, j + 1) if mask[r]]
+            orthants = tuple(dict.fromkeys(seq))
+            n_hops = sum(a != b for a, b in zip(seq, seq[1:]))
+        rows.append({"start": t[k], "end": row_end[j], "duration": row_end[j] - t[k],
+                     "end_type": end_type, "orthants": orthants, "n_hops": n_hops})
+    return pd.DataFrame(rows, columns=["start", "end", "duration", "end_type", "orthants", "n_hops"])
