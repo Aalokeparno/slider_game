@@ -12,12 +12,13 @@ ROUND_A = dict(t=[0, 2, 3, 7, 8, 12], mask=[F, T, T, F, T, F], t_end=12, censore
 
 
 def as_tuples(sp):
-    return [(r.start, r.end, r.duration, r.end_type) for r in sp.itertuples()]
+    return [(r.start, r.end, r.duration, r.after) for r in sp.itertuples()]
 
 
 def test_round_A_tau_0():
     sp = spells(tau=0, **ROUND_A)
-    assert as_tuples(sp) == [(2, 7, 5, "split"), (8, 12, 4, "consensus")]
+    assert as_tuples(sp) == [(2, 7, 5, "relapse"), (8, 12, 4, "consensus")]
+    assert np.isnan(sp["t_to_consensus"][0]) and sp["t_to_consensus"][1] == 0
     assert list(sp["orthants"]) == [("b", "c"), ("c",)]
     assert list(sp["n_hops"]) == [1, 0]
 
@@ -32,6 +33,20 @@ def test_round_A_tau_1_5():
 def test_round_B_failed():
     sp = spells([0, 5, 250, 290], [F, F, T, T], t_end=300, censored=True)
     assert as_tuples(sp) == [(250, 300, 50, "censored")]
+    assert np.isnan(sp["t_to_consensus"][0])
+
+
+def test_realistic_split_rows_then_consensus():
+    # fraught rows, then 3 non-fraught split rows over 2 s, then the consensus row
+    sp = spells([0, 10, 11, 12, 13, 13.5, 14], [F, T, T, F, F, F, F], t_end=14, censored=False)
+    assert as_tuples(sp) == [(10, 12, 2, "consensus")]
+    assert sp["t_to_consensus"][0] == 2
+
+
+def test_unresolved_when_round_ends_without_consensus_or_relapse():
+    sp = spells([0, 5, 10, 20], [F, T, F, F], t_end=300, censored=True)
+    assert as_tuples(sp) == [(5, 10, 5, "unresolved")]
+    assert np.isnan(sp["t_to_consensus"][0])
 
 
 def test_t_end_before_last_row_raises():

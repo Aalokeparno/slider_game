@@ -155,10 +155,14 @@ def spells(t, mask, t_end, censored, tau=1.0, labels=None, is_consensus=None):
     labels     one label per row, e.g. the sign pattern of s ("+-++-+-")
     is_consensus  True on consensus rows; default: the last row of a round that is not censored
 
-    Columns: start, end, duration, end_type, orthants (distinct labels on the spell's True rows,
-    in order of first appearance), n_hops (label changes between the spell's True rows).
-    end_type: "consensus" if the next row is consensus, "censored" if the spell is still open at
-    t_end of a censored round, "split" otherwise (the group left the fraught state some other way).
+    Columns: start, end, duration, after, t_to_consensus, orthants (distinct labels on the spell's
+    True rows, in order of first appearance), n_hops (label changes between the spell's True rows).
+    after = what comes next once the spell has ended (the next event, not the next row):
+        "consensus"   a consensus row comes before any new spell
+        "relapse"     a new spell starts before consensus
+        "unresolved"  neither happens before the round ends
+        "censored"    the spell is still open at t_end of a censored round
+    t_to_consensus = consensus time - spell end if after == "consensus", else NaN.
     """
     t = np.asarray(t, dtype=float)
     mask = np.asarray(mask, dtype=bool)
@@ -199,16 +203,28 @@ def spells(t, mask, t_end, censored, tau=1.0, labels=None, is_consensus=None):
 
     rows = []
     for k, j in merged:
-        if j + 1 < n:
-            end_type = "consensus" if is_consensus[j + 1] else "split"
+        end = row_end[j]
+        t_to_consensus = np.nan
+        if j == n - 1:                                     # still open at t_end
+            after = "censored" if censored else "consensus"
+            if after == "consensus":
+                t_to_consensus = 0.0
         else:
-            end_type = "censored" if censored else "consensus"      # still open at t_end
+            after = "unresolved"
+            for r in range(j + 1, n):                      # first event after the spell
+                if is_consensus[r]:
+                    after = "consensus"
+                    t_to_consensus = t[r] - end
+                    break
+                if mask[r]:
+                    after = "relapse"
+                    break
         if labels is None:
             orthants, n_hops = None, None
         else:
             seq = [labels[r] for r in range(k, j + 1) if mask[r]]
             orthants = tuple(dict.fromkeys(seq))
             n_hops = sum(a != b for a, b in zip(seq, seq[1:]))
-        rows.append({"start": t[k], "end": row_end[j], "duration": row_end[j] - t[k],
-                     "end_type": end_type, "orthants": orthants, "n_hops": n_hops})
-    return pd.DataFrame(rows, columns=["start", "end", "duration", "end_type", "orthants", "n_hops"])
+        rows.append({"start": t[k], "end": end, "duration": end - t[k], "after": after,
+                     "t_to_consensus": t_to_consensus, "orthants": orthants, "n_hops": n_hops})
+    return pd.DataFrame(rows, columns=["start", "end", "duration", "after", "t_to_consensus", "orthants", "n_hops"])
