@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tabor"
+version = "0.1.0"
+description = "ELEC573: Slider Game / fraught states (Tabor, Smith & Dankowicz), OSF archive gvcpz"
+requires-python = ">=3.9"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["config", "slider_logs", "fraught", "stats", "splits"]
+packages = ["models"]
+
+[tool.pyright]
+extraPaths = ["src"]
