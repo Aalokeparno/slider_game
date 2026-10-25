@@ -26,7 +26,7 @@ src/slider/           the package: from slider import config
   fraught.py          fraught tests, % fraught measures, fraught spells (spells)
   stats.py            bootstrap / Wilcoxon test, summary tables, Kaplan-Meier (kaplan_meier)
   splits.py           check_cc_groups, make_split_G (python -m slider.splits)
-  h5.py               HW 6 H5: committed-split spells, breakers, sensitivity grid
+  h5.py               HW 6 H5: committed-split spells, breakers, sensitivity grid; h5.run(roles) = frozen analysis
   models/             apem.py (APEM simulator), apem_osf.py (port of the authors' Matlab code)
 notebooks/
   stage0/             stage0_hw5_fraught_corners.ipynb
@@ -34,7 +34,7 @@ notebooks/
   hw6/                h5_obdurate.ipynb
   path1/ path2/
 results/
-  tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv (HW 6)
+  tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv, h5_train_checks.csv (HW 6)
   figures/
 tests/test_sanity.py
 environment.yml       conda env "elec573"

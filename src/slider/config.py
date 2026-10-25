@@ -28,6 +28,7 @@ RING_TRAPS = TABLES / "ring_traps.csv"
 APEM_SWEEP = TABLES / "apem_sweep.csv"
 APEM_TOPOLOGIES = TABLES / "apem_topologies.csv"
 H5_TRAIN = TABLES / "h5_train.csv"
+H5_TRAIN_CHECKS = TABLES / "h5_train_checks.csv"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
