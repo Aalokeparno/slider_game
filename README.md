@@ -31,10 +31,10 @@ src/slider/           the package: from slider import config
 notebooks/
   stage0/             stage0_hw5_fraught_corners.ipynb
   stage1/             stage1_hw1 … stage1_hw5
-  hw6/                h5_obdurate.ipynb
+  hw6/                h5_obdurate.ipynb (train), h5_val.ipynb (val, run once)
   path1/ path2/
 results/
-  tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv, h5_train_checks.csv (HW 6)
+  tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv, h5_train_checks.csv, h5_val.csv (HW 6)
   figures/
 tests/test_sanity.py
 environment.yml       conda env "elec573"
