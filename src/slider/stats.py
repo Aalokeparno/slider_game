@@ -133,3 +133,41 @@ def group_bootstrap_mean(values, groups, n_boot=10000, seed=config.SEED):
     boot = sums[idx].sum(axis=1) / counts[idx].sum(axis=1)
     low, high = np.percentile(boot, [2.5, 97.5])
     return low, high
+
+
+def km_quantiles(durations, event, probs=(0.5,)):
+    """Kaplan-Meier quantiles, vectorized for bootstraps. Same estimator and conventions as kaplan_meier:
+    escapes count before censorings at tied times; quantile p = first time with S <= 1 - p
+    (p = 0.5 gives the kaplan_meier median). Returns one time per p (NaN if S never gets there)."""
+    durations = np.asarray(durations, dtype=float)
+    event = np.asarray(event, dtype=bool)
+    times, which = np.unique(durations, return_inverse=True)
+    escapes = np.bincount(which, weights=event, minlength=len(times))
+    at_risk = np.bincount(which, minlength=len(times))[::-1].cumsum()[::-1]     # number with duration >= time
+    surv = np.cumprod(1 - escapes / at_risk)
+    out = []
+    for p in probs:
+        hit = np.flatnonzero(surv <= 1 - p + 1e-9)                              # same tolerance as kaplan_meier
+        out.append(times[hit[0]] if len(hit) > 0 else np.nan)
+    return np.array(out)
+
+
+def group_bootstrap(per_group, stat, n_boot=10000, seed=config.SEED):
+    """95% CI of any statistic when whole groups are resampled with replacement (same draws as
+    group_bootstrap_mean for the same groups and seed).
+    per_group: one tuple of arrays per group, in sorted group order; stat gets the concatenated arrays and
+    returns a number or a 1-d array. A NaN (e.g. a KM quantile that is never reached) counts as +inf.
+    Returns (low, high), arrays if stat returns an array."""
+    if len(per_group) == 0:
+        return np.nan, np.nan
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, len(per_group), size=(n_boot, len(per_group)))
+    n_arrays = len(per_group[0])
+    boot = np.array([stat(*[np.concatenate([per_group[g][j] for g in row]) for j in range(n_arrays)]) for row in idx],
+                    dtype=float)
+    boot = np.where(np.isnan(boot), np.inf, boot)
+    with np.errstate(invalid="ignore"):
+        low, high = np.percentile(boot, [2.5, 97.5], axis=0)
+    low = np.where(np.isnan(low), np.inf, low)       # inf - inf in the interpolation: the bound is inf
+    high = np.where(np.isnan(high), np.inf, high)
+    return (low, high) if np.ndim(low) > 0 else (float(low), float(high))

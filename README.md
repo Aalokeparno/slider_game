@@ -8,6 +8,12 @@ Analysis of the Slider Game logs from Tabor, Smith & Dankowicz, *Escaping fraugh
 New work uses the train topologies only (Hierarchy, Full, Star). This split (split T) is `TRAIN_TOPOLOGIES` / `TEST_TOPOLOGIES` in `src/slider/config.py`.
 Split G splits the groups (one group = one log file) into train / val, 1/3 val within each of EL, CL and CC: `data/splits/split_G.csv`.
 
+## Leakage register
+
+What has been seen on held-out data, and what was frozen at that point.
+
+- Oct 25: H5 summaries on val seen. Path 1 candidate rule features frozen: Agreement level, Agreement trend, |s| / at-end indicator, time since reaching the end, time since last reversal.
+
 ## Data source
 
 OSF project **gvcpz**: <https://osf.io/gvcpz>. Download the archive (`gvcpz-osfstorage-archive`) and move it, unchanged, to `data/raw/osf/`, so that the folder holds `Code/` and `Data/`.
@@ -27,14 +33,15 @@ src/slider/           the package: from slider import config
   stats.py            bootstrap / Wilcoxon test, summary tables, Kaplan-Meier (kaplan_meier)
   splits.py           check_cc_groups, make_split_G (python -m slider.splits)
   h5.py               HW 6 H5: committed-split spells, breakers, sensitivity grid; h5.run(roles) = frozen analysis
+  targets.py          HW 6 training targets per topology x dataset x role, group-bootstrap CIs
   models/             apem.py (APEM simulator), apem_osf.py (port of the authors' Matlab code)
 notebooks/
   stage0/             stage0_hw5_fraught_corners.ipynb
   stage1/             stage1_hw1 … stage1_hw5
-  hw6/                h5_obdurate.ipynb (train), h5_val.ipynb (val, run once)
+  hw6/                h5_obdurate.ipynb (train), h5_val.ipynb (val, run once), train_targets.ipynb (train + val)
   path1/ path2/
 results/
-  tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv, h5_train_checks.csv, h5_val.csv (HW 6)
+  tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv, h5_train_checks.csv, h5_val.csv, train_targets.csv (HW 6)
   figures/
 tests/test_sanity.py
 environment.yml       conda env "elec573"
