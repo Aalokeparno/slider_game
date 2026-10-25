@@ -21,6 +21,7 @@ def test_round_A_tau_0():
     assert np.isnan(sp["t_to_consensus"][0]) and sp["t_to_consensus"][1] == 0
     assert list(sp["orthants"]) == [("b", "c"), ("c",)]
     assert list(sp["n_hops"]) == [1, 0]
+    assert list(zip(sp["first_row"], sp["last_row"])) == [(1, 2), (4, 4)]
 
 
 def test_round_A_tau_1_5():

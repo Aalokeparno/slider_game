@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 from scipy.stats import wilcoxon
 
+from slider import config
+
 
 # ------------------------------------------------------- Stage 1, HW 3 (H1 test)
 
@@ -115,3 +117,19 @@ def kaplan_meier(durations, event):
     below = table[table["survival"] <= 0.5 + 1e-9]          # small tolerance for rounding
     median = below["time"].iloc[0] if len(below) > 0 else np.nan
     return table, median
+
+
+def group_bootstrap_mean(values, groups, n_boot=10000, seed=config.SEED):
+    """95% CI of the mean of values, resampling whole groups (e.g. log files) with replacement."""
+    values = np.asarray(values, dtype=float)
+    groups = np.asarray(groups)
+    names = np.unique(groups)
+    if len(names) == 0:
+        return np.nan, np.nan
+    sums = np.array([values[groups == g].sum() for g in names])
+    counts = np.array([np.sum(groups == g) for g in names])
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, len(names), size=(n_boot, len(names)))     # draw groups with replacement
+    boot = sums[idx].sum(axis=1) / counts[idx].sum(axis=1)
+    low, high = np.percentile(boot, [2.5, 97.5])
+    return low, high

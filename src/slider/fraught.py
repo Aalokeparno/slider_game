@@ -6,6 +6,7 @@ The function bodies are unchanged. Functions that used the notebook variables
 import numpy as np
 import pandas as pd
 
+from slider import config
 from slider import slider_logs as sl
 from slider.models import apem_osf
 
@@ -156,7 +157,8 @@ def spells(t, mask, t_end, censored, tau=1.0, labels=None, is_consensus=None):
     is_consensus  True on consensus rows; default: the last row of a round that is not censored
 
     Columns: start, end, duration, after, t_to_consensus, orthants (distinct labels on the spell's
-    True rows, in order of first appearance), n_hops (label changes between the spell's True rows).
+    True rows, in order of first appearance), n_hops (label changes between the spell's True rows),
+    first_row, last_row (row numbers of the spell's first and last True rows).
     after = what comes next once the spell has ended (the next event, not the next row):
         "consensus"   a consensus row comes before any new spell
         "relapse"     a new spell starts before consensus
@@ -226,5 +228,52 @@ def spells(t, mask, t_end, censored, tau=1.0, labels=None, is_consensus=None):
             orthants = tuple(dict.fromkeys(seq))
             n_hops = sum(a != b for a, b in zip(seq, seq[1:]))
         rows.append({"start": t[k], "end": end, "duration": end - t[k], "after": after,
-                     "t_to_consensus": t_to_consensus, "orthants": orthants, "n_hops": n_hops})
-    return pd.DataFrame(rows, columns=["start", "end", "duration", "after", "t_to_consensus", "orthants", "n_hops"])
+                     "t_to_consensus": t_to_consensus, "orthants": orthants, "n_hops": n_hops,
+                     "first_row": k, "last_row": j})
+    return pd.DataFrame(rows, columns=["start", "end", "duration", "after", "t_to_consensus", "orthants", "n_hops",
+                                       "first_row", "last_row"])
+
+
+# ------------------------------------------------- committed splits (HW 6, H5)
+
+def round_end(t, end, session):
+    """t_end for spells(): the last row if the round succeeded or has no end marker,
+    max(time limit, last row) if it failed."""
+    return max(config.TIME_LIMIT[session], t[-1]) if end == "failed" else t[-1]
+
+
+def sign_labels(s):
+    """Sign pattern of each row of s, e.g. "+-++-+-" ("0" for a slider at 0)."""
+    return ["".join("+" if v > 0 else "-" if v < 0 else "0" for v in row) for row in s]
+
+
+def committed_mask(s, cutoff=0.9):
+    """True for rows that are committed splits: mixed signs and every |s_i| >= cutoff."""
+    mixed = np.any(s > 0, axis=1) & np.any(s < 0, axis=1)
+    return mixed & np.all(np.abs(s) >= cutoff, axis=1)
+
+
+def spell_breaker(s, last_row, cutoff=0.9):
+    """Who breaks a committed spell: the player (0-based) whose |s| drops below cutoff in the
+    first row after the spell's last committed row.
+    Returns (player, status), status = "ok", "ambiguous" (several players drop in that row),
+    "no drop" (nobody drops below cutoff: a slider jumped across 0) or "open" (no row after the spell)."""
+    if last_row + 1 >= len(s):
+        return None, "open"
+    dropped = np.flatnonzero(np.abs(s[last_row + 1]) < cutoff)
+    if len(dropped) == 1:
+        return int(dropped[0]), "ok"
+    return None, ("ambiguous" if len(dropped) > 1 else "no drop")
+
+
+def last_to_reach(s, first_row, cutoff=0.9):
+    """The player (0-based) who was last to reach |s| >= cutoff before the spell that starts at first_row
+    (the start of each player's final stretch at or above cutoff, up to first_row).
+    Returns (player, status), status = "ok" or "ambiguous" (several players reached it in the same row)."""
+    above = np.abs(s[:first_row + 1]) >= cutoff
+    reach = []
+    for i in range(s.shape[1]):
+        below = np.flatnonzero(~above[:, i])
+        reach.append(below[-1] + 1 if len(below) > 0 else 0)
+    who = [i for i in range(s.shape[1]) if reach[i] == max(reach)]
+    return (who[0], "ok") if len(who) == 1 else (None, "ambiguous")

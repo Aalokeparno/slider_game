@@ -27,6 +27,10 @@ TEST_ACCESS_LOG = RESULTS / "test_access_log.csv"   # every load_runs call that 
 RING_TRAPS = TABLES / "ring_traps.csv"
 APEM_SWEEP = TABLES / "apem_sweep.csv"
 APEM_TOPOLOGIES = TABLES / "apem_topologies.csv"
+H5_TRAIN = TABLES / "h5_train.csv"
+
+# time limit of a round (seconds)
+TIME_LIMIT = {"lab": 300, "cloud": 180}
 
 # seed for new work (Stage 0 and Stage 1 notebooks keep their own seed 0)
 SEED = 573
