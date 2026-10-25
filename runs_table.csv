@@ -1,0 +1,719 @@
+file,session,dataset,wave,players,topology,success,end,duration,bot,T,agree_error
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,1,7,Ring,False,failed,300.0,False,2056,0.0033333333333587234
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,59.0,False,470,0.0033333333333587234
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,3,7,Full,True,success,90.0,False,734,0.004285714285728659
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,80.0,False,730,0.0033333333333445125
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,5,7,Full,True,success,21.0,False,156,0.004285714285728659
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,6,7,Ring,True,success,133.0,False,1207,0.0033333333333445125
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,7,7,Full,True,success,77.0,False,708,0.0042857142857215536
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,8,7,Ring,True,success,150.0,False,1396,0.0033333333333445125
+log_Fri Sep 16 161000 EDT 2016.txt,lab,CL,9,7,Hierarchy,False,failed,2.0,False,1,0.0
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,1,7,Ring,True,success,276.09,False,1974,0.0033333333333587234
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,55.02,False,505,0.0033333333333445125
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,3,7,Full,False,failed,300.01,False,2256,0.004285714285728659
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,38.41,False,318,0.0033333333333445125
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,5,7,Full,True,success,67.67,False,471,0.00428571428574287
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,6,7,Ring,False,failed,300.08,False,2467,0.0033333333333587234
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,7,7,Full,True,success,89.19,False,549,0.004285714285728659
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,8,7,Ring,True,success,36.4,False,323,0.0033333333333445125
+log_Fri Sep 16 165753 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,40.4,False,366,0.0033333333333445125
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,1,7,Ring,True,success,170.24,False,630,0.0033333333333445125
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,2,7,Hierarchy,False,failed,297.82,False,1467,0.0033333333333445125
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,3,7,Full,False,failed,300.01,False,1823,0.00428571428574287
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,108.51,False,733,0.0033333333333445125
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,5,7,Full,False,failed,299.81,False,2389,0.00428571428574287
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,6,7,Ring,True,success,45.61,False,232,0.0033333333333445125
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,7,7,Full,True,success,112.61,False,633,0.004285714285728659
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,8,7,Ring,True,success,38.15,False,259,0.0033333333333445125
+log_Mon Sep 19 164446 EDT 2016.txt,lab,CL,9,7,Hierarchy,False,failed,1.91,False,1,0.0
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,1,7,Ring,True,success,117.77,False,384,0.0033333333333587234
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,39.46,False,328,0.0033333333333445125
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,3,7,Full,True,success,83.26,False,705,0.00428571428574287
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,22.65,False,211,0.0033333333333445125
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,5,7,Full,True,success,70.45,False,471,0.004285714285728659
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,6,7,Ring,True,success,261.94,False,1853,0.0033333333333587234
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,7,7,Full,True,success,51.45,False,439,0.00428571428574287
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,8,7,Ring,True,success,144.5,False,1187,0.0033333333333587234
+log_Mon Sep 19 173635 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,93.2,False,636,0.0033333333333445125
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,1,7,Ring,True,success,201.56,False,986,0.0033333333333587234
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,67.74,False,488,0.0033333333333445125
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,3,7,Full,True,success,62.81,False,335,0.00428571428574287
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,55.3,False,425,0.0033333333333445125
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,5,7,Full,True,success,207.19,False,1220,0.0042857142857215536
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,6,7,Ring,True,success,62.19,False,511,0.0033333333333445125
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,7,7,Full,True,success,154.09,False,914,0.00428571428574287
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,8,7,Ring,True,success,127.46,False,979,0.0033333333333445125
+log_Tue Sep 20 142130 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,24.69,False,215,0.0033333333333445125
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,1,7,Hierarchy,True,success,81.0,False,317,0.0033333333333445125
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,39.0,False,335,0.0033333333333445125
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,65.0,False,560,0.0033333333333445125
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,4,7,Full,True,success,101.0,False,814,0.00428571428574287
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,5,7,Full,True,success,86.0,False,423,0.004285714285728659
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,6,7,Full,True,success,162.0,False,1028,0.00428571428574287
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,7,7,Ring,True,success,71.0,False,536,0.0033333333333445125
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,8,7,Ring,True,success,57.0,False,569,0.0033333333333587234
+log_Wed Sep 14 155221 EDT 2016.txt,lab,CL,9,7,Ring,True,success,47.0,False,454,0.0033333333333587234
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,1,7,Hierarchy,True,success,206.0,False,1269,0.0033333333333445125
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,91.0,False,697,0.0033333333333445125
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,213.0,False,826,0.0033333333333445125
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,4,7,Full,False,failed,299.0,False,2161,0.00428571428574287
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,5,7,Full,False,failed,300.0,False,1241,0.00428571428574287
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,6,7,Full,False,failed,169.0,False,285,0.0042857142857162245
+log_Wed Sep 14 170705 EDT 2016.txt,lab,CL,7,7,Ring,False,incomplete,,False,0,
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,1,7,Hierarchy,False,failed,300.08,False,1915,0.0033333333333587234
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,71.2,False,571,0.0033333333333445125
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,77.76,False,732,0.0033333333333587234
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,4,7,Full,True,success,120.7,False,901,0.00428571428574287
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,5,7,Full,True,success,38.05,False,244,0.00428571428574287
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,6,7,Full,False,failed,298.56,False,2100,0.0042857142857215536
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,7,7,Ring,True,success,52.16,False,320,0.0033333333333445125
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,8,7,Ring,True,success,147.4,False,1148,0.0033333333333445125
+log_Wed Sep 21 160602 EDT 2016.txt,lab,CL,9,7,Ring,False,incomplete,3.06,False,1,0.0
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,1,7,CT-Hierarchy,True,success,111.04,False,639,0.0033333333333445125
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,2,7,Hierarchy,True,success,58.95,False,445,0.0033333333333445125
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,3,7,Ring,True,success,152.16,False,956,0.0033333333333587234
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,4,7,CT-Hierarchy,True,success,27.01,False,214,0.0033333333333587234
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,5,7,Ring,True,success,28.6,False,216,0.0033333333333445125
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,6,7,Hierarchy,True,success,18.38,False,123,0.0033333333333445125
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,7,7,CT-Hierarchy,True,success,51.57,False,247,0.0033333333333445125
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,8,7,Ring,True,success,10.32,False,90,0.0033333333333587234
+log_v09_Fri Nov 04 155722 EDT 2016.txt,lab,EL,9,7,Hierarchy,True,success,10.18,False,47,0.0033333333333445125
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,1,7,CT-Hierarchy,True,success,19.22,False,82,0.0033333333333445125
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,2,7,Hierarchy,True,success,44.79,False,241,0.0033333333333445125
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,3,7,Ring,True,success,58.92,False,397,0.0033333333333587234
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,4,7,CT-Hierarchy,True,success,168.45,False,916,0.0033333333333587234
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,5,7,Ring,True,success,108.08,False,698,0.0033333333333587234
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,6,7,Hierarchy,True,success,8.36,False,69,0.0033333333333445125
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,7,7,CT-Hierarchy,True,success,90.28,False,495,0.0033333333333587234
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,8,7,Ring,True,success,98.25,False,687,0.0033333333333587234
+log_v09_Fri Nov 04 165730 EDT 2016.txt,lab,EL,9,7,Hierarchy,True,success,6.61,False,54,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,1,7,Ring,False,failed,298.85,False,1741,0.0033333333333587234
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,201.24,False,810,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,3,7,CT-Hierarchy,True,success,41.57,False,170,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,4,7,Hierarchy,True,success,25.52,False,161,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,5,7,Ring,True,success,19.56,False,138,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,6,7,CT-Hierarchy,False,failed,300.06,False,886,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,7,7,Ring,True,success,12.28,False,103,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,8,7,Hierarchy,True,success,238.95,False,1008,0.0033333333333445125
+log_v09_Fri Nov 11 155640 EST 2016.txt,lab,EL,9,7,CT-Hierarchy,False,failed,299.96,False,650,0.0033333333333445125
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,1,7,Ring,True,success,213.07,False,1001,0.0033333333333587234
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,20.11,False,71,0.0033333333333445125
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,3,7,CT-Hierarchy,True,success,11.14,False,68,0.0033333333333445125
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,4,7,Hierarchy,True,success,8.64,False,50,0.0033333333333445125
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,5,7,Ring,False,failed,298.16,False,1262,0.0033333333333587234
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,6,7,CT-Hierarchy,False,failed,297.55,False,812,0.0033333333333587234
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,7,7,Ring,True,success,48.68,False,284,0.0033333333333587234
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,8,7,Hierarchy,True,success,20.63,False,186,0.0033333333333445125
+log_v09_Fri Nov 11 160012 EST 2016.txt,lab,EL,9,7,CT-Hierarchy,True,success,11.77,False,87,0.0033333333333445125
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,1,7,CT-Hierarchy,True,success,155.55,False,962,0.0033333333333445125
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,36.28,False,228,0.0033333333333445125
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,3,7,Ring,True,success,203.47,False,1082,0.0033333333333587234
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,4,7,CT-Hierarchy,True,success,12.51,False,93,0.0033333333333587234
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,5,7,Ring,True,success,20.2,False,149,0.0033333333333445125
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,6,7,Hierarchy,True,success,14.18,False,107,0.0033333333333445125
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,7,7,CT-Hierarchy,False,failed,291.54,False,919,0.0033333333333587234
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,8,7,Ring,True,success,73.61,False,442,0.0033333333333587234
+log_v09_Fri Nov 11 165515 EST 2016.txt,lab,EL,9,7,Hierarchy,True,success,10.54,False,84,0.0033333333333445125
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,1,7,Full,False,failed,299.52,False,1430,0.00428571428574287
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,124.84,False,531,0.0033333333333445125
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,3,7,Full,True,success,72.31,False,380,0.0042857142857215536
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,4,7,Ring,True,success,74.58,False,403,0.0033333333333587234
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,5,7,Full,True,success,138.8,False,841,0.00428571428574287
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,6,7,Ring,True,success,39.4,False,167,0.0033333333333445125
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,7,7,Hierarchy,True,success,23.8,False,108,0.0033333333333445125
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,8,7,Ring,True,success,73.04,False,374,0.0033333333333587234
+log_v09_Fri Oct 07 155453 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,13.05,False,64,0.0033333333333445125
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,1,7,Ring,False,failed,300.0,False,1630,0.0033333333333587234
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,50.06,False,325,0.0033333333333445125
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,3,7,Full,True,success,95.17,False,428,0.00428571428574287
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,12.01,False,101,0.0033333333333445125
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,5,7,Full,True,success,9.03,False,62,0.00428571428574287
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,6,7,Ring,True,success,19.13,False,155,0.0033333333333587234
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,7,7,Full,True,success,266.92,False,1272,0.00428571428574287
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,8,7,Ring,True,success,46.45,False,273,0.0033333333333587234
+log_v09_Fri Oct 07 162937 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,16.84,False,126,0.0033333333333445125
+log_v09_Fri Oct 21 155407 EDT 2016.txt,lab,,1,15,other,False,failed,299.95,False,2240,0.0033333333333587234
+log_v09_Fri Oct 21 155407 EDT 2016.txt,lab,,2,15,other,False,failed,300.04,False,2539,0.0033333333333445125
+log_v09_Fri Oct 21 155407 EDT 2016.txt,lab,,3,15,other,True,success,88.89,False,428,0.0033333333333445125
+log_v09_Fri Oct 21 155407 EDT 2016.txt,lab,,4,15,other,False,failed,300.02,False,2059,0.003333333333351618
+log_v09_Fri Oct 21 155407 EDT 2016.txt,lab,,5,15,other,False,incomplete,258.62,False,1428,0.0033333333333587234
+log_v09_Fri Oct 21 164505 EDT 2016.txt,lab,,1,15,other,False,failed,300.05,False,1585,0.003333333333351618
+log_v09_Fri Oct 21 164505 EDT 2016.txt,lab,,2,15,other,False,failed,298.73,False,533,0.0033333333333445125
+log_v09_Fri Oct 21 164505 EDT 2016.txt,lab,,3,15,other,True,success,198.37,False,1189,0.0033333333333445125
+log_v09_Fri Oct 21 164505 EDT 2016.txt,lab,,4,15,other,False,failed,286.67,False,1220,0.0033333333333587234
+log_v09_Fri Oct 21 164505 EDT 2016.txt,lab,,5,15,other,False,incomplete,,False,0,
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,1,7,Hierarchy,False,failed,299.35,False,908,0.0033333333333445125
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,2,7,Full,True,success,76.45,False,454,0.00428571428574287
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,3,7,Hierarchy,True,success,44.77,False,274,0.0033333333333445125
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,4,7,Full,True,success,20.8,False,104,0.00428571428574287
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,5,7,Star,True,success,26.52,False,162,0.00428571428574287
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,6,7,Full,True,success,76.72,False,420,0.0042857142857215536
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,7,7,Star,True,success,23.45,False,215,0.00428571428574287
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,8,7,Hierarchy,True,success,16.14,False,136,0.0033333333333445125
+log_v09_Fri Oct 28 160321 EDT 2016.txt,lab,,9,7,Star,True,success,82.65,False,454,0.00428571428574287
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,1,7,CT-Hierarchy,True,success,26.11,False,133,0.0033333333333587234
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,2,7,Hierarchy,True,success,35.92,False,210,0.0033333333333445125
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,3,7,Ring,True,success,19.51,False,79,0.0033333333333445125
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,4,7,CT-Hierarchy,False,failed,299.92,False,955,0.0033333333333445125
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,5,7,Ring,True,success,46.52,False,252,0.0033333333333587234
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,6,7,Hierarchy,True,success,22.74,False,166,0.0033333333333587234
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,7,7,CT-Hierarchy,True,success,73.79,False,359,0.0033333333333445125
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,8,7,Ring,True,success,31.84,False,173,0.0033333333333445125
+log_v09_Fri Oct 28 163226 EDT 2016.txt,lab,,9,7,Hierarchy,True,success,241.01,False,898,0.0033333333333445125
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,1,7,Ring,True,success,110.75,False,362,0.0033333333333587234
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,11.51,False,105,0.0033333333333445125
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,3,7,Full,True,success,160.36,False,777,0.00428571428574287
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,18.21,False,114,0.0033333333333445125
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,5,7,Full,True,success,265.26,False,1278,0.004285714285728659
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,6,7,Ring,True,success,214.73,False,1043,0.0033333333333587234
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,7,7,Full,True,success,33.68,False,177,0.00428571428574287
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,8,7,Ring,True,success,13.62,False,119,0.0033333333333445125
+log_v09_Fri Sep 23 155758 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,22.6,False,162,0.0033333333333445125
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,1,7,Hierarchy,True,success,108.58,False,748,0.0033333333333445125
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,2,7,Full,True,success,11.97,False,88,0.00428571428574287
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,21.23,False,127,0.0033333333333445125
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,4,7,Full,True,success,5.87,False,43,0.0042857142857215536
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,5,7,Ring,True,success,50.69,False,288,0.0033333333333445125
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,6,7,Full,True,success,17.84,False,85,0.00428571428574287
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,7,7,Ring,True,success,11.03,False,90,0.0033333333333445125
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,8,7,Hierarchy,True,success,13.49,False,111,0.0033333333333445125
+log_v09_Fri Sep 23 170644 EDT 2016.txt,lab,CL,9,7,Ring,True,success,26.86,False,167,0.0033333333333445125
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,1,7,Ring,True,success,75.06,False,430,0.0033333333333587234
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,79.72,False,467,0.0033333333333445125
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,3,7,Full,True,success,71.09,False,571,0.0042857142857215536
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,55.44,False,297,0.0033333333333445125
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,5,7,Full,True,success,58.01,False,283,0.00428571428574287
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,6,7,Ring,True,success,31.07,False,211,0.0033333333333587234
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,7,7,Full,True,success,34.67,False,193,0.00428571428574287
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,8,7,Ring,True,success,50.72,False,399,0.0033333333333587234
+log_v09_Fri Sep 30 155411 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,42.08,False,294,0.0033333333333445125
+log_v09_Fri Sep 30 162439 EDT 2016.txt,lab,,1,7,Hierarchy,False,failed,299.7,False,1027,0.003333333333337407
+log_v09_Fri Sep 30 162439 EDT 2016.txt,lab,,2,7,Full,True,success,144.63,False,735,0.0042857142857215536
+log_v09_Fri Sep 30 162439 EDT 2016.txt,lab,,3,7,Hierarchy,False,failed,299.8,False,887,0.00333333333334096
+log_v09_Fri Sep 30 162439 EDT 2016.txt,lab,,4,7,Full,False,failed,299.16,False,1511,0.004285714285728659
+log_v09_Fri Sep 30 162439 EDT 2016.txt,lab,,5,7,Ring,False,failed,298.09,False,597,0.0033333333333445125
+log_v09_Fri Sep 30 162439 EDT 2016.txt,lab,,6,7,Full,False,incomplete,0.05,False,1,0.0
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,1,7,Ring,False,failed,298.56,False,1330,0.0033333333333587234
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,124.2,False,430,0.0033333333333445125
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,3,7,CT-Hierarchy,True,success,90.3,False,328,0.0033333333333587234
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,4,7,Hierarchy,True,success,7.86,False,45,0.0033333333333445125
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,5,7,Ring,True,success,22.44,False,152,0.0033333333333445125
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,6,7,CT-Hierarchy,True,success,9.69,False,59,0.0033333333333445125
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,7,7,Ring,True,success,8.93,False,80,0.0033333333333445125
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,8,7,Hierarchy,True,success,38.35,False,244,0.0033333333333587234
+log_v09_Mon Nov 07 164258 EST 2016.txt,lab,EL,9,7,CT-Hierarchy,True,success,12.14,False,83,0.0033333333333587234
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,1,7,Ring,True,success,30.84,False,207,0.0033333333333587234
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,276.68,False,1587,0.0033333333333587234
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,3,7,CT-Hierarchy,False,failed,282.58,False,1087,0.0033333333333587234
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,4,7,Hierarchy,True,success,43.52,False,242,0.0033333333333445125
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,5,7,Ring,True,success,191.26,False,1058,0.0033333333333587234
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,6,7,CT-Hierarchy,True,success,39.95,False,221,0.0033333333333445125
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,7,7,Ring,True,success,136.41,False,689,0.0033333333333445125
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,8,7,Hierarchy,True,success,42.79,False,163,0.0033333333333445125
+log_v09_Mon Nov 07 175505 EST 2016.txt,lab,EL,9,7,CT-Hierarchy,True,success,32.18,False,197,0.0033333333333587234
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,1,7,Hierarchy,True,success,155.04,False,758,0.0033333333333445125
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,2,7,Full,True,success,191.75,False,877,0.00428571428574287
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,45.1,False,343,0.0033333333333445125
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,4,7,Full,True,success,21.47,False,158,0.00428571428574287
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,5,7,Ring,False,failed,299.66,False,2073,0.0033333333333587234
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,6,7,Full,True,success,50.2,False,256,0.004285714285717113
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,7,7,Ring,True,success,44.12,False,279,0.0033333333333445125
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,8,7,Hierarchy,True,success,19.51,False,64,0.0033333333333445125
+log_v09_Mon Oct 17 171209 EDT 2016.txt,lab,CL,9,7,Ring,False,failed,0.05,False,1,0.0
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,1,7,Hierarchy,False,failed,299.48,False,1182,0.0033333333333445125
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,2,7,Full,False,failed,299.96,False,1234,0.0042857142857215536
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,3,7,Hierarchy,True,success,26.83,False,110,0.0033333333333445125
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,4,7,Full,True,success,46.4,False,134,0.00428571428574287
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,5,7,Star,True,success,10.35,False,113,0.0042857142857162245
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,6,7,Full,True,success,9.56,False,63,0.00428571428574287
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,7,7,Star,True,success,15.8,False,80,0.0042857142857162245
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,8,7,Hierarchy,True,success,114.77,False,361,0.0033333333333445125
+log_v09_Mon Oct 24 170439 EDT 2016.txt,lab,,9,7,Star,True,success,8.64,False,83,0.004285714285728659
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,1,7,Star,True,success,58.15,False,213,0.004285714285728659
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,2,7,Hierarchy,True,success,15.52,False,104,0.0033333333333445125
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,3,7,Full,True,success,42.07,False,280,0.0042857142857215536
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,4,7,Hierarchy,True,success,15.07,False,108,0.0033333333333445125
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,5,7,Full,True,success,13.99,False,138,0.00428571428574287
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,6,7,Star,True,success,6.38,False,59,0.00428571428574287
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,7,7,Full,True,success,153.65,False,879,0.004285714285728659
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,8,7,Star,True,success,10.35,False,91,0.004285714285715336
+log_v09_Mon Oct 24 180403 EDT 2016.txt,lab,,9,7,Hierarchy,True,success,10.7,False,86,0.0033333333333445125
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,1,7,Ring,True,success,70.35,False,367,0.0033333333333587234
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,2,7,Hierarchy,True,success,253.35,False,907,0.0033333333333587234
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,3,7,CT-Hierarchy,True,success,18.98,False,125,0.0033333333333445125
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,4,7,Hierarchy,False,failed,297.96,False,482,0.0033333333333445125
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,5,7,Ring,False,failed,299.85,False,1526,0.0033333333333587234
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,6,7,CT-Hierarchy,True,success,63.82,False,347,0.0033333333333587234
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,7,7,Ring,True,success,8.46,False,104,0.0033333333333445125
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,8,7,Hierarchy,True,success,71.62,False,408,0.0033333333333445125
+log_v09_Mon Oct 31 164716 EDT 2016.txt,lab,EL,9,7,CT-Hierarchy,True,success,159.6,False,964,0.0033333333333445125
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,1,7,Full,True,success,238.08,False,1199,0.00428571428574287
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,2,7,Hierarchy,False,failed,300.03,False,1457,0.0033333333333587234
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,3,7,Full,True,success,168.3,False,829,0.0042857142857215536
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,4,7,Ring,False,failed,297.93,False,1402,0.0033333333333587234
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,5,7,Full,False,failed,298.19,False,1056,0.00428571428574287
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,6,7,Ring,False,failed,294.38,False,1021,0.0033333333333587234
+log_v09_Mon Sep 26 170339 EDT 2016.txt,lab,,7,7,Hierarchy,False,incomplete,0.05,False,1,0.0
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,1,7,Full,False,failed,296.45,False,1570,0.00428571428574287
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,21.41,False,179,0.0033333333333445125
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,3,7,Full,True,success,111.42,False,553,0.00428571428574287
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,4,7,Ring,True,success,59.02,False,392,0.0033333333333587234
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,5,7,Full,True,success,55.46,False,339,0.0042857142857215536
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,6,7,Ring,True,success,12.81,False,96,0.0033333333333445125
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,7,7,Hierarchy,True,success,158.16,False,858,0.0033333333333445125
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,8,7,Ring,True,success,12.49,False,108,0.0033333333333587234
+log_v09_Mon Sep 26 173549 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,146.22,False,749,0.0033333333333445125
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,1,4,other,True,success,85.37,False,341,0.0033333333333445125
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,2,4,other,True,success,24.33,False,116,0.0033333333333587234
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,3,4,other,True,success,38.53,False,236,7.105427357601002e-15
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,4,4,other,True,success,4.66,False,34,0.0033333333333445125
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,5,4,other,True,success,27.04,False,158,7.105427357601002e-15
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,6,4,other,True,success,31.45,False,195,0.0033333333333445125
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,7,4,other,True,success,20.69,False,99,7.105427357601002e-15
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,8,4,other,True,success,26.31,False,152,0.0033333333333587234
+log_v09_Wed Dec 07 175233 EST 2016.txt,lab,,9,4,other,True,success,15.3,False,135,0.0033333333333445125
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,1,4,other,True,success,39.16,False,60,0.0033333333333445125
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,2,4,other,True,success,15.19,False,91,0.0033333333333445125
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,3,4,other,True,success,19.82,False,108,7.105427357601002e-15
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,4,4,other,True,success,9.4,False,70,0.0033333333333445125
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,5,4,other,True,success,9.64,False,71,7.105427357601002e-15
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,6,4,other,True,success,18.62,False,112,0.0033333333333445125
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,7,4,other,True,success,12.66,False,95,7.105427357601002e-15
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,8,4,other,True,success,21.85,False,140,0.0033333333333445125
+log_v09_Wed Dec 07 175517 EST 2016.txt,lab,,9,4,other,True,success,9.88,False,68,0.0033333333333445125
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,1,7,Hierarchy,True,success,25.65,False,110,0.0033333333333445125
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,2,7,Full,True,success,66.04,False,356,0.00428571428574287
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,3,7,Hierarchy,True,success,15.75,False,106,0.0033333333333445125
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,4,7,Full,True,success,57.66,False,219,0.0042857142857215536
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,5,7,Star,True,success,10.78,False,94,0.00428571428574287
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,6,7,Full,True,success,28.87,False,214,0.004285714285728659
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,7,7,Star,True,success,7.99,False,62,0.004285714285718001
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,8,7,Hierarchy,True,success,6.44,False,60,0.0033333333333445125
+log_v09_Wed Nov 02 161103 EDT 2016.txt,lab,,9,7,Star,True,success,9.74,False,85,0.0042857142857162245
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,1,7,Hierarchy,True,success,177.83,False,584,0.0033333333333445125
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,2,7,Full,True,success,28.2,False,194,0.00428571428574287
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,3,7,Hierarchy,True,success,93.67,False,420,0.0033333333333445125
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,4,7,Full,True,success,43.29,False,268,0.004285714285728659
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,5,7,Star,True,success,9.67,False,80,0.004285714285715336
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,6,7,Full,True,success,130.54,False,717,0.004285714285728659
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,7,7,Star,True,success,7.47,False,67,0.0042857142857162245
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,8,7,Hierarchy,True,success,9.97,False,76,0.0033333333333445125
+log_v09_Wed Nov 02 161208 EDT 2016.txt,lab,,9,7,Star,True,success,6.61,False,63,0.0042857142857215536
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,1,7,Hierarchy,True,success,134.25,False,885,0.0033333333333445125
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,2,7,CT-Hierarchy,False,failed,300.1,False,1411,0.0033333333333587234
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,3,7,Hierarchy,True,success,11.69,False,115,0.0033333333333445125
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,4,7,Ring,True,success,21.02,False,149,0.0033333333333587234
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,5,7,CT-Hierarchy,True,success,22.14,False,145,0.0033333333333445125
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,6,7,Ring,False,failed,292.77,False,1406,0.0033333333333587234
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,7,7,Hierarchy,True,success,54.06,False,250,0.0033333333333445125
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,8,7,CT-Hierarchy,False,failed,270.35,False,588,0.0033333333333445125
+log_v09_Wed Nov 02 170112 EDT 2016.txt,lab,EL,9,7,Ring,True,success,17.07,False,170,0.0033333333333445125
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,1,7,CT-Hierarchy,True,success,52.75,False,287,0.0033333333333587234
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,2,7,Hierarchy,True,success,10.84,False,51,0.0033333333333445125
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,3,7,Ring,True,success,109.55,False,771,0.0033333333333587234
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,4,7,CT-Hierarchy,True,success,57.1,False,411,0.0033333333333445125
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,5,7,Ring,True,success,63.69,False,395,0.0033333333333587234
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,6,7,Hierarchy,True,success,33.05,False,269,0.0033333333333445125
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,7,7,CT-Hierarchy,True,success,137.36,False,719,0.0033333333333587234
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,8,7,Ring,True,success,17.18,False,162,0.0033333333333445125
+log_v09_Wed Nov 02 173358 EDT 2016.txt,lab,EL,9,7,Hierarchy,False,failed,299.82,False,1189,0.0033333333333587234
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,1,7,Hierarchy,False,failed,287.76,False,708,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,2,7,CT-Hierarchy,True,success,31.98,False,275,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,3,7,Hierarchy,True,success,11.12,False,92,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,4,7,Ring,True,success,11.41,False,98,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,5,7,CT-Hierarchy,True,success,21.84,False,161,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,6,7,Ring,True,success,55.62,False,396,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,7,7,Hierarchy,True,success,24.66,False,164,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,8,7,CT-Hierarchy,True,success,25.56,False,135,0.0033333333333445125
+log_v09_Wed Nov 09 154710 EST 2016.txt,lab,EL,9,7,Ring,False,failed,290.58,False,1226,0.0033333333333587234
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,1,7,Hierarchy,True,success,64.54,False,235,0.0033333333333445125
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,2,7,CT-Hierarchy,True,success,31.8,False,204,0.0033333333333587234
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,3,7,Hierarchy,True,success,119.59,False,642,0.0033333333333445125
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,4,7,Ring,True,success,41.59,False,288,0.0033333333333587234
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,5,7,CT-Hierarchy,True,success,59.17,False,406,0.0033333333333445125
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,6,7,Ring,True,success,153.5,False,741,0.0033333333333445125
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,7,7,Hierarchy,True,success,18.93,False,124,0.0033333333333445125
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,8,7,CT-Hierarchy,False,failed,267.43,False,604,0.0033333333333587234
+log_v09_Wed Nov 09 162248 EST 2016.txt,lab,EL,9,7,Ring,True,success,17.47,False,145,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,1,7,Ring,True,success,225.44,False,1079,0.0033333333333587234
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,140.54,False,649,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,3,7,CT-Hierarchy,True,success,30.67,False,143,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,4,7,Hierarchy,True,success,21.02,False,126,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,5,7,Ring,True,success,8.65,False,84,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,6,7,CT-Hierarchy,True,success,10.48,False,87,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,7,7,Ring,True,success,5.64,False,46,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,8,7,Hierarchy,True,success,40.2,False,224,0.0033333333333445125
+log_v09_Wed Nov 09 175020 EST 2016.txt,lab,EL,9,7,CT-Hierarchy,False,failed,299.99,False,1167,0.0033333333333587234
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,1,7,CT-Hierarchy,True,success,38.15,False,140,0.0033333333333445125
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,12.93,False,114,0.0033333333333445125
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,3,7,Ring,True,success,22.28,False,202,0.0033333333333445125
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,4,7,CT-Hierarchy,True,success,58.61,False,347,0.0033333333333445125
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,5,7,Ring,True,success,55.95,False,382,0.0033333333333587234
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,6,7,Hierarchy,True,success,24.5,False,138,0.0033333333333445125
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,7,7,CT-Hierarchy,True,success,113.56,False,729,0.0033333333333587234
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,8,7,Ring,True,success,40.06,False,253,0.0033333333333587234
+log_v09_Wed Nov 16 154247 EST 2016.txt,lab,EL,9,7,Hierarchy,True,success,74.56,False,434,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,1,7,Hierarchy,True,success,97.2,False,557,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,2,7,CT-Hierarchy,True,success,282.7,False,1641,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,3,7,Hierarchy,True,success,127.35,False,643,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,4,7,Ring,True,success,156.62,False,791,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,5,7,CT-Hierarchy,True,success,44.26,False,299,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,6,7,Ring,True,success,35.42,False,170,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,7,7,Hierarchy,True,success,13.79,False,110,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,8,7,CT-Hierarchy,True,success,6.11,False,83,0.0033333333333445125
+log_v09_Wed Nov 16 155109 EST 2016.txt,lab,EL,9,7,Ring,True,success,9.82,False,82,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,1,7,Ring,True,success,82.54,False,446,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,2,7,Hierarchy,True,success,76.51,False,337,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,3,7,CT-Hierarchy,True,success,62.99,False,362,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,4,7,Hierarchy,True,success,12.73,False,84,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,5,7,Ring,True,success,29.29,False,218,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,6,7,CT-Hierarchy,True,success,13.25,False,79,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,7,7,Ring,True,success,82.11,False,572,0.0033333333333587234
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,8,7,Hierarchy,True,success,12.8,False,93,0.0033333333333445125
+log_v09_Wed Nov 16 171311 EST 2016.txt,lab,EL,9,7,CT-Hierarchy,True,success,17.25,False,150,0.0033333333333587234
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,1,7,Hierarchy,True,success,28.64,False,90,0.0033333333333445125
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,2,7,CT-Hierarchy,True,success,9.93,False,94,0.0033333333333587234
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,3,7,Hierarchy,True,success,99.48,False,450,0.0033333333333445125
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,4,7,Ring,True,success,64.55,False,345,0.0033333333333587234
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,5,7,CT-Hierarchy,True,success,33.67,False,251,0.0033333333333445125
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,6,7,Ring,True,success,41.64,False,310,0.0033333333333445125
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,7,7,Hierarchy,True,success,14.72,False,136,0.0033333333333445125
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,8,7,CT-Hierarchy,True,success,111.43,False,654,0.0033333333333445125
+log_v09_Wed Nov 16 172824 EST 2016.txt,lab,EL,9,7,Ring,True,success,125.97,False,879,0.0033333333333587234
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,1,7,Full,True,success,135.23,False,522,0.00428571428574287
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,29.97,False,118,0.0033333333333445125
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,3,7,Full,True,success,106.17,False,490,0.00428571428574287
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,4,7,Ring,True,success,32.65,False,158,0.0033333333333445125
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,5,7,Full,True,success,72.0,False,377,0.00428571428574287
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,6,7,Ring,True,success,41.36,False,254,0.0033333333333587234
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,7,7,Hierarchy,True,success,19.25,False,136,0.0033333333333445125
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,8,7,Ring,True,success,14.31,False,120,0.0033333333333587234
+log_v09_Wed Oct 05 154352 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,41.07,False,234,0.0033333333333445125
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,1,7,Ring,True,success,288.45,False,1847,0.0033333333333587234
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,68.91,False,422,0.0033333333333445125
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,3,7,Full,True,success,72.62,False,508,0.0042857142857215536
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,11.21,False,95,0.0033333333333445125
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,5,7,Full,True,success,10.05,False,87,0.0042857142857215536
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,6,7,Ring,True,success,7.19,False,61,0.0033333333333445125
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,7,7,Full,True,success,14.62,False,103,0.004285714285728659
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,8,7,Ring,True,success,49.93,False,350,0.0033333333333445125
+log_v09_Wed Oct 05 165348 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,52.1,False,310,0.0033333333333445125
+log_v09_Wed Oct 19 154913 EDT 2016.txt,lab,,1,15,other,True,success,183.34,False,1456,0.0033333333333587234
+log_v09_Wed Oct 19 154913 EDT 2016.txt,lab,,2,15,other,False,failed,300.08,False,778,0.0033333333333445125
+log_v09_Wed Oct 19 154913 EDT 2016.txt,lab,,3,15,other,False,failed,299.91,False,2083,0.0033333333333480653
+log_v09_Wed Oct 19 154913 EDT 2016.txt,lab,,4,15,other,False,failed,300.03,False,843,0.0033333333333445125
+log_v09_Wed Oct 19 154913 EDT 2016.txt,lab,,5,15,other,False,incomplete,43.59,False,253,0.0033333333333445125
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,1,7,Star,True,success,114.44,False,418,0.00428571428574287
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,2,7,Hierarchy,True,success,78.3,False,479,0.0033333333333445125
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,3,7,Full,True,success,95.87,False,489,0.00428571428574287
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,4,7,Hierarchy,False,failed,294.79,False,1018,0.0033333333333445125
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,5,7,Full,True,success,50.04,False,233,0.004285714285728659
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,6,7,Star,True,success,79.74,False,166,0.0042857142857215536
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,7,7,Full,True,success,57.88,False,313,0.0042857142857215536
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,8,7,Star,True,success,10.56,False,88,0.004285714285728659
+log_v09_Wed Oct 19 170411 EDT 2016.txt,lab,,9,7,Hierarchy,False,failed,289.49,False,664,0.0033333333333445125
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,1,7,Hierarchy,True,success,84.15,False,490,0.0033333333333445125
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,2,7,Full,False,failed,299.73,False,1449,0.00428571428574287
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,3,7,Hierarchy,True,success,53.39,False,192,0.0033333333333445125
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,4,7,Full,False,failed,299.93,False,1882,0.00428571428574287
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,5,7,Star,True,success,8.42,False,68,0.0042857142857215536
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,6,7,Full,True,success,108.95,False,526,0.00428571428574287
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,7,7,Star,True,success,7.87,False,91,0.004285714285718001
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,8,7,Hierarchy,True,success,21.73,False,156,0.0033333333333445125
+log_v09_Wed Oct 19 173032 EDT 2016.txt,lab,,9,7,Star,True,success,19.24,False,121,0.004285714285717113
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,1,7,Ring,True,success,90.08,False,338,0.0033333333333587234
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,2,7,Hierarchy,True,success,29.24,False,197,0.0033333333333587234
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,3,7,CT-Hierarchy,False,failed,300.05,False,1158,0.0033333333333587234
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,4,7,Hierarchy,True,success,27.74,False,184,0.0033333333333445125
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,5,7,Ring,True,success,93.23,False,362,0.0033333333333587234
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,6,7,other,True,success,22.33,False,85,0.0033333333333445125
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,7,7,Ring,True,success,91.55,False,518,0.0033333333333445125
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,8,7,other,False,failed,300.02,False,339,0.0033333333333445125
+log_v09_Wed Oct 26 155839 EDT 2016.txt,lab,,9,7,CT-Hierarchy,True,success,26.68,False,196,0.0033333333333445125
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,1,7,Ring,True,success,13.75,False,76,0.0033333333333587234
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,2,7,Hierarchy,True,success,28.08,False,191,0.0033333333333587234
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,3,7,CT-Hierarchy,True,success,25.49,False,158,0.0033333333333587234
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,4,7,Hierarchy,True,success,47.14,False,328,0.0033333333333445125
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,5,7,Ring,True,success,60.82,False,477,0.0033333333333587234
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,6,7,other,True,success,29.61,False,195,0.0033333333333445125
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,7,7,Ring,True,success,24.59,False,203,0.0033333333333445125
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,8,7,other,True,success,140.3,False,928,0.0033333333333445125
+log_v09_Wed Oct 26 162500 EDT 2016.txt,lab,,9,7,CT-Hierarchy,True,success,47.58,False,285,0.0033333333333587234
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,1,7,Ring,True,success,157.63,False,717,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,2,7,Hierarchy,False,failed,300.04,False,493,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,3,7,CT-Hierarchy,False,failed,292.64,False,834,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,4,7,Hierarchy,True,success,23.92,False,159,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,5,7,Ring,True,success,40.64,False,272,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,6,7,other,True,success,12.29,False,94,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,7,7,Ring,True,success,35.13,False,202,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,8,7,other,False,failed,188.13,False,122,0.0033333333333445125
+log_v09_Wed Oct 26 171748 EDT 2016.txt,lab,,9,7,CT-Hierarchy,True,success,15.03,False,109,0.0033333333333445125
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,1,7,Hierarchy,True,success,22.64,False,90,0.0033333333333445125
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,2,7,Full,False,failed,300.0,False,1394,0.0042857142857215536
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,189.61,False,841,0.0033333333333445125
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,4,7,Full,True,success,84.28,False,342,0.0042857142857215536
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,5,7,Ring,True,success,229.55,False,1072,0.0033333333333587234
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,6,7,Full,True,success,59.56,False,280,0.0042857142857215536
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,7,7,Ring,True,success,32.22,False,185,0.0033333333333587234
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,8,7,Hierarchy,True,success,17.97,False,151,0.0033333333333445125
+log_v09_Wed Sep 21 170402 EDT 2016.txt,lab,CL,9,7,Ring,True,success,12.25,False,91,0.0033333333333445125
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,1,7,Full,True,success,123.25,False,644,0.004285714285728659
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,2,7,Hierarchy,True,success,39.24,False,241,0.0033333333333445125
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,3,7,Full,True,success,59.31,False,295,0.004285714285728659
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,4,7,Ring,True,success,91.77,False,576,0.0033333333333587234
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,5,7,Full,True,success,196.09,False,869,0.004285714285728659
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,6,7,Ring,True,success,70.72,False,324,0.0033333333333587234
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,7,7,Hierarchy,True,success,47.06,False,334,0.0033333333333445125
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,8,7,Ring,True,success,148.1,False,753,0.0033333333333587234
+log_v09_Wed Sep 21 173748 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,75.88,False,360,0.0033333333333445125
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,1,7,Ring,False,failed,299.67,False,1235,0.0033333333333587234
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,2,7,Hierarchy,False,failed,288.16,False,825,0.0033333333333445125
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,3,7,Full,False,failed,300.1,False,880,0.004285714285728659
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,4,7,Hierarchy,False,failed,299.83,False,722,0.0033333333333445125
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,5,7,Full,False,failed,300.07,False,1154,0.0042857142857215536
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,6,7,Ring,True,success,275.06,False,980,0.0033333333333445125
+log_v09_Wed Sep 28 153023 EDT 2016.txt,lab,,7,7,Full,False,incomplete,,False,0,
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,1,7,Ring,False,failed,251.55,False,674,0.0033333333333587234
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,2,7,Hierarchy,False,failed,175.58,False,321,0.0033333333333445125
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,3,7,Full,False,failed,253.61,False,692,0.00428571428574287
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,4,7,Hierarchy,True,success,9.42,False,61,0.0033333333333445125
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,5,7,Full,True,success,9.04,False,51,0.00428571428574287
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,6,7,Ring,True,success,191.56,False,1135,0.0033333333333587234
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,7,7,Full,True,success,101.16,False,635,0.00428571428574287
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,8,7,Ring,True,success,24.59,False,145,0.0033333333333587234
+log_v09_Wed Sep 28 163724 EDT 2016.txt,lab,CL,9,7,Hierarchy,True,success,36.84,False,135,0.0033333333333445125
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,1,7,Hierarchy,True,success,194.45,False,849,0.0033333333333587234
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,2,7,Full,True,success,65.35,False,442,0.00428571428574287
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,3,7,Hierarchy,True,success,19.51,False,110,0.0033333333333445125
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,4,7,Full,True,success,118.7,False,616,0.004285714285728659
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,5,7,Ring,True,success,207.17,False,1304,0.0033333333333587234
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,6,7,Full,True,success,31.31,False,232,0.0042857142857215536
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,7,7,Ring,True,success,19.15,False,114,0.0033333333333445125
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,8,7,Hierarchy,True,success,10.86,False,77,0.0033333333333445125
+log_v09_Wed Sep 28 173239 EDT 2016.txt,lab,CL,9,7,Ring,True,success,60.62,False,329,0.0033333333333445125
+log_Wed Sep 14 180549 EDT 2016.txt,lab,,1,15,other,True,success,211.0,False,1172,0.0033333333333445125
+log_Wed Sep 14 180549 EDT 2016.txt,lab,,2,15,other,True,success,234.0,False,2225,0.0033333333333587234
+log_Wed Sep 14 180549 EDT 2016.txt,lab,,3,15,other,True,success,34.0,False,327,0.0033333333333445125
+log_Wed Sep 14 180549 EDT 2016.txt,lab,,4,15,other,False,failed,300.0,False,2736,0.003333333333351618
+log_Wed Sep 14 180549 EDT 2016.txt,lab,,5,15,other,False,incomplete,179.0,False,204,0.0033333333333338544
+Log_2018-05-31_132916.txt,cloud,CC,1,7,Star,True,success,42.29599999999999,False,593,0.00428571428574287
+Log_2018-05-31_132916.txt,cloud,CC,2,7,Hierarchy,True,success,21.139999999999986,False,318,0.0033333333333445125
+Log_2018-05-31_132916.txt,cloud,CC,3,7,Full,True,success,80.519,False,1331,0.00428571428574287
+Log_2018-05-31_132916.txt,cloud,CC,4,7,Hierarchy,True,success,25.173999999999978,False,390,0.0033333333333445125
+Log_2018-05-31_132916.txt,cloud,CC,5,7,Star,True,success,119.86099999999999,False,2028,0.00428571428574287
+Log_2018-05-31_132916.txt,cloud,CC,6,7,Full,True,success,47.882999999999925,False,875,0.004285714285728659
+Log_2018-05-31_132916.txt,cloud,CC,7,7,Hierarchy,False,failed,180.029,False,2231,0.0033333333333445125
+Log_2018-05-31_132916.txt,cloud,CC,8,7,Full,True,success,21.067000000000007,False,460,0.00428571428574287
+Log_2018-05-31_132916.txt,cloud,CC,9,7,Star,True,success,26.07899999999995,False,347,0.00428571428574287
+Log_2018-05-31_134403.txt,cloud,CC,1,7,Star,False,failed,179.736,True,2123,0.00428571428574287
+Log_2018-05-31_134403.txt,cloud,CC,2,7,Hierarchy,True,success,146.48900000000003,True,1268,0.0033333333333445125
+Log_2018-05-31_134403.txt,cloud,CC,3,7,Full,True,success,55.349000000000046,True,742,0.00428571428574287
+Log_2018-05-31_134403.txt,cloud,CC,4,7,Hierarchy,True,success,14.380999999999972,True,223,0.0033333333333445125
+Log_2018-05-31_134403.txt,cloud,CC,5,7,Star,True,success,72.26999999999998,True,811,0.004285714285719777
+Log_2018-05-31_134403.txt,cloud,CC,6,7,Full,True,success,69.46500000000003,True,812,0.0042857142857215536
+Log_2018-05-31_134403.txt,cloud,CC,7,7,Hierarchy,True,success,12.530000000000086,True,164,0.0033333333333445125
+Log_2018-05-31_134403.txt,cloud,CC,8,7,Full,True,success,27.235000000000014,True,350,0.0042857142857215536
+Log_2018-05-31_134403.txt,cloud,CC,9,7,Star,True,success,5.22199999999998,True,92,0.004285714285728659
+Log_2018-05-31_135852.txt,cloud,CC,1,7,Star,True,success,176.42400000000004,True,1561,0.00428571428574287
+Log_2018-05-31_135852.txt,cloud,CC,2,7,Hierarchy,True,success,19.424000000000035,True,294,0.0033333333333445125
+Log_2018-05-31_135852.txt,cloud,CC,3,7,Full,True,success,21.63299999999998,True,325,0.00428571428574287
+Log_2018-05-31_135852.txt,cloud,CC,4,7,Hierarchy,True,success,8.374000000000024,True,137,0.0033333333333445125
+Log_2018-05-31_135852.txt,cloud,CC,5,7,Star,True,success,12.837999999999965,True,194,0.00428571428574287
+Log_2018-05-31_135852.txt,cloud,CC,6,7,Full,True,success,53.88900000000001,True,990,0.004285714285728659
+Log_2018-05-31_135852.txt,cloud,CC,7,7,Hierarchy,False,incomplete,0.04099999999999682,True,2,0.0
+Log_2018-05-31_135852.txt,cloud,CC,8,7,Full,True,success,11.675000000000011,True,188,0.0042857142857215536
+Log_2018-05-31_135852.txt,cloud,CC,9,7,Star,True,success,54.146000000000015,True,561,0.00428571428574287
+Log_2018-05-31_140824.txt,cloud,CC,1,7,Star,True,success,132.647,False,1391,0.0042857142857215536
+Log_2018-05-31_140824.txt,cloud,CC,2,7,Hierarchy,True,success,49.21700000000001,False,660,0.0033333333333445125
+Log_2018-05-31_140824.txt,cloud,CC,3,7,Full,True,success,59.95400000000001,False,795,0.004285714285728659
+Log_2018-05-31_140824.txt,cloud,CC,4,7,Hierarchy,True,success,35.33300000000003,False,330,0.0033333333333445125
+Log_2018-05-31_140824.txt,cloud,CC,5,7,Star,True,success,8.382000000000005,False,173,0.0042857142857215536
+Log_2018-05-31_140824.txt,cloud,CC,6,7,Full,False,incomplete,,False,0,
+Log_2018-05-31_140824.txt,cloud,CC,7,7,Hierarchy,True,success,60.49899999999997,False,810,0.0033333333333445125
+Log_2018-05-31_140824.txt,cloud,CC,8,7,Full,True,success,21.031999999999982,False,354,0.00428571428574287
+Log_2018-05-31_140824.txt,cloud,CC,9,7,Star,True,success,31.44999999999999,False,582,0.00428571428574287
+Log_2018-05-31_141642.txt,cloud,CC,1,7,Star,True,success,53.597999999999985,True,684,0.0042857142857215536
+Log_2018-05-31_141642.txt,cloud,CC,2,7,Hierarchy,True,success,32.507000000000005,True,504,0.0033333333333587234
+Log_2018-05-31_141642.txt,cloud,CC,3,7,Full,True,success,40.214,True,527,0.004285714285728659
+Log_2018-05-31_141642.txt,cloud,CC,4,7,Hierarchy,False,failed,180.17399999999998,True,1618,0.0033333333333445125
+Log_2018-05-31_141642.txt,cloud,CC,5,7,Star,False,incomplete,0.10000000000002274,True,3,0.0
+Log_2018-05-31_141642.txt,cloud,CC,6,7,Full,True,success,50.329999999999984,True,745,0.004285714285728659
+Log_2018-05-31_141642.txt,cloud,CC,7,7,Hierarchy,True,success,37.65900000000005,True,405,0.0033333333333445125
+Log_2018-05-31_141642.txt,cloud,CC,8,7,Full,False,incomplete,0.049999999999954525,True,3,0.0
+Log_2018-05-31_141642.txt,cloud,CC,9,7,Star,True,success,5.6340000000000146,True,87,0.0042857142857215536
+Log_2018-05-31_142529.txt,cloud,CC,1,7,Star,True,success,117.306,True,1049,0.0042857142857215536
+Log_2018-05-31_142529.txt,cloud,CC,2,7,Hierarchy,True,success,70.00500000000002,True,870,0.0033333333333445125
+Log_2018-05-31_142529.txt,cloud,CC,3,7,Full,True,success,15.799000000000035,True,222,0.0042857142857215536
+Log_2018-05-31_142529.txt,cloud,CC,4,7,Hierarchy,True,success,23.297000000000025,True,415,0.0033333333333445125
+Log_2018-05-31_142529.txt,cloud,CC,5,7,Star,True,success,12.182999999999993,True,217,0.00428571428574287
+Log_2018-05-31_142529.txt,cloud,CC,6,7,Full,True,success,70.96199999999999,True,976,0.0042857142857215536
+Log_2018-05-31_142529.txt,cloud,CC,7,7,Hierarchy,True,success,18.478999999999985,True,312,0.0033333333333445125
+Log_2018-05-31_142529.txt,cloud,CC,8,7,Full,False,incomplete,0.24799999999999045,True,12,0.0
+Log_2018-05-31_142529.txt,cloud,CC,9,7,Star,True,success,5.877999999999986,True,124,0.0042857142857162245
+Log_2018-05-31_143303.txt,cloud,CC,1,7,Star,True,success,37.125,False,520,0.00428571428574287
+Log_2018-05-31_143303.txt,cloud,CC,2,7,Hierarchy,True,success,24.143,False,503,0.0033333333333445125
+Log_2018-05-31_143303.txt,cloud,CC,3,7,Full,True,success,75.10399999999998,False,1564,0.00428571428574287
+Log_2018-05-31_143303.txt,cloud,CC,4,7,Hierarchy,True,success,104.231,True,1437,0.0033333333333445125
+Log_2018-05-31_143303.txt,cloud,CC,5,7,Star,True,success,27.729000000000042,True,327,0.00428571428574287
+Log_2018-05-31_143303.txt,cloud,CC,6,7,Full,True,success,26.908999999999992,True,392,0.004285714285728659
+Log_2018-05-31_143303.txt,cloud,CC,7,7,Hierarchy,True,success,45.888000000000034,True,454,0.0033333333333445125
+Log_2018-05-31_143303.txt,cloud,CC,8,7,Full,True,success,156.344,True,2470,0.0042857142857215536
+Log_2018-05-31_143303.txt,cloud,CC,9,7,Star,True,success,11.216000000000008,True,150,0.004285714285714448
+Log_2018-05-31_144501.txt,cloud,CC,1,7,Star,True,success,50.09500000000001,False,670,0.0042857142857215536
+Log_2018-05-31_144501.txt,cloud,CC,2,7,Hierarchy,True,success,44.53399999999999,False,693,0.0033333333333445125
+Log_2018-05-31_144501.txt,cloud,CC,3,7,Full,True,success,18.700999999999993,False,332,0.0042857142857215536
+Log_2018-05-31_144501.txt,cloud,CC,4,7,Hierarchy,True,success,48.02200000000002,False,601,0.0033333333333445125
+Log_2018-05-31_144501.txt,cloud,CC,5,7,Star,True,success,24.319000000000017,False,413,0.0042857142857215536
+Log_2018-05-31_144501.txt,cloud,CC,6,7,Full,True,success,32.72199999999998,False,488,0.0042857142857162245
+Log_2018-05-31_144501.txt,cloud,CC,7,7,Hierarchy,True,success,11.150000000000034,False,204,0.0033333333333445125
+Log_2018-05-31_144501.txt,cloud,CC,8,7,Full,True,success,11.508999999999958,False,236,0.0042857142857215536
+Log_2018-05-31_144501.txt,cloud,CC,9,7,Star,True,success,38.40899999999999,False,585,0.004285714285718001
+Log_2018-05-31_145138.txt,cloud,CC,1,7,Star,True,success,90.123,False,1537,0.00428571428574287
+Log_2018-05-31_145138.txt,cloud,CC,2,7,Hierarchy,True,success,30.546999999999997,False,648,0.0033333333333445125
+Log_2018-05-31_145138.txt,cloud,CC,3,7,Full,False,incomplete,,False,0,
+Log_2018-05-31_145138.txt,cloud,CC,4,7,Hierarchy,True,success,66.59200000000001,False,1566,0.0033333333333587234
+Log_2018-05-31_145138.txt,cloud,CC,5,7,Star,True,success,16.460999999999956,False,539,0.00428571428574287
+Log_2018-05-31_145138.txt,cloud,CC,6,7,Full,True,success,41.71999999999997,False,1019,0.00428571428574287
+Log_2018-05-31_145138.txt,cloud,CC,7,7,Hierarchy,False,failed,180.39700000000005,False,4163,0.0033333333333445125
+Log_2018-05-31_145138.txt,cloud,CC,8,7,Full,True,success,84.28999999999996,False,2105,0.00428571428574287
+Log_2018-05-31_145138.txt,cloud,CC,9,7,Star,False,incomplete,0.05099999999993088,False,4,0.0
+Log_2018-05-31_150621.txt,cloud,CC,1,7,Star,True,success,59.897999999999996,False,937,0.00428571428574287
+Log_2018-05-31_150621.txt,cloud,CC,2,7,Hierarchy,True,success,47.19400000000002,False,774,0.0033333333333587234
+Log_2018-05-31_150621.txt,cloud,CC,3,7,Full,True,success,38.041,False,567,0.004285714285728659
+Log_2018-05-31_150621.txt,cloud,CC,4,7,Hierarchy,True,success,15.540999999999997,False,226,0.0033333333333445125
+Log_2018-05-31_150621.txt,cloud,CC,5,7,Star,True,success,29.158000000000015,False,560,0.0042857142857215536
+Log_2018-05-31_150621.txt,cloud,CC,6,7,Full,True,success,63.571,False,1014,0.004285714285728659
+Log_2018-05-31_150621.txt,cloud,CC,7,7,Hierarchy,True,success,173.98999999999995,False,2098,0.0033333333333445125
+Log_2018-05-31_150621.txt,cloud,CC,8,7,Full,True,success,60.30599999999998,False,979,0.00428571428574287
+Log_2018-05-31_150621.txt,cloud,CC,9,7,Star,True,success,12.884999999999991,False,244,0.0042857142857215536
+Log_2018-05-31_151609.txt,cloud,CC,1,7,Star,True,success,37.068,False,483,0.00428571428574287
+Log_2018-05-31_151609.txt,cloud,CC,2,7,Hierarchy,True,success,32.412000000000006,False,473,0.0033333333333587234
+Log_2018-05-31_151609.txt,cloud,CC,3,7,Full,True,success,15.890999999999991,False,299,0.0042857142857215536
+Log_2018-05-31_151609.txt,cloud,CC,4,7,Hierarchy,True,success,17.083,False,340,0.0033333333333445125
+Log_2018-05-31_151609.txt,cloud,CC,5,7,Star,True,success,16.620000000000005,False,226,0.0042857142857215536
+Log_2018-05-31_151609.txt,cloud,CC,6,7,Full,True,success,135.081,False,2221,0.004285714285728659
+Log_2018-05-31_151609.txt,cloud,CC,7,7,Hierarchy,True,success,108.79499999999996,False,1321,0.0033333333333445125
+Log_2018-05-31_151609.txt,cloud,CC,8,7,Full,True,success,12.264999999999986,False,289,0.00428571428574287
+Log_2018-05-31_151609.txt,cloud,CC,9,7,Star,True,success,25.215000000000032,False,522,0.00428571428574287
+Log_2018-05-31_155214.txt,cloud,CC,1,7,Star,True,success,32.93000000000001,False,494,0.00428571428574287
+Log_2018-05-31_155214.txt,cloud,CC,2,7,Hierarchy,True,success,36.291,False,567,0.0033333333333445125
+Log_2018-05-31_155214.txt,cloud,CC,3,7,Full,True,success,23.295000000000016,False,376,0.0042857142857215536
+Log_2018-05-31_155214.txt,cloud,CC,4,7,Hierarchy,True,success,25.871000000000038,False,423,0.0033333333333587234
+Log_2018-05-31_155214.txt,cloud,CC,5,7,Star,True,success,11.095000000000027,False,168,0.0042857142857162245
+Log_2018-05-31_155214.txt,cloud,CC,6,7,Full,True,success,48.764999999999986,False,875,0.00428571428574287
+Log_2018-05-31_155214.txt,cloud,CC,7,7,Hierarchy,True,success,172.42099999999994,False,2375,0.0033333333333445125
+Log_2018-05-31_155214.txt,cloud,CC,8,7,Full,True,success,78.19000000000005,False,1369,0.00428571428574287
+Log_2018-05-31_155214.txt,cloud,CC,9,7,Star,True,success,37.87099999999998,False,714,0.0042857142857215536
+Log_2018-05-31_160337.txt,cloud,CC,1,7,Star,True,success,28.298999999999978,False,320,0.00428571428574287
+Log_2018-05-31_160337.txt,cloud,CC,2,7,Hierarchy,False,incomplete,0.09800000000007003,False,6,0.0
+Log_2018-05-31_160337.txt,cloud,CC,3,7,Full,True,success,50.00100000000009,False,846,0.00428571428574287
+Log_2018-05-31_160337.txt,cloud,CC,4,7,Hierarchy,True,success,22.02299999999991,False,295,0.0033333333333445125
+Log_2018-05-31_160337.txt,cloud,CC,5,7,Star,False,incomplete,,False,0,
+Log_2018-05-31_160337.txt,cloud,CC,6,7,Full,False,incomplete,32.17699999999991,False,454,0.004285714285728659
+Log_2018-05-31_161916.txt,cloud,CC,1,7,Star,True,success,30.66300000000001,False,445,0.0042857142857162245
+Log_2018-05-31_161916.txt,cloud,CC,2,7,Hierarchy,True,success,22.26600000000002,False,373,0.0033333333333587234
+Log_2018-05-31_161916.txt,cloud,CC,3,7,Full,True,success,138.30200000000002,False,2149,0.00428571428574287
+Log_2018-05-31_161916.txt,cloud,CC,4,7,Hierarchy,True,success,63.85899999999998,False,838,0.0033333333333445125
+Log_2018-05-31_161916.txt,cloud,CC,5,7,Star,True,success,47.76999999999998,False,696,0.0042857142857215536
+Log_2018-05-31_161916.txt,cloud,CC,6,7,Full,True,success,38.48900000000003,False,715,0.0042857142857215536
+Log_2018-05-31_161916.txt,cloud,CC,7,7,Hierarchy,True,success,41.271000000000015,False,622,0.0033333333333445125
+Log_2018-05-31_161916.txt,cloud,CC,8,7,Full,True,success,39.238,False,572,0.0042857142857162245
+Log_2018-05-31_161916.txt,cloud,CC,9,7,Star,True,success,34.275999999999954,False,707,0.00428571428574287
+Log_2018-05-31_162906.txt,cloud,CC,1,7,Star,True,success,20.533999999999992,True,225,0.0042857142857162245
+Log_2018-05-31_162906.txt,cloud,CC,2,7,Hierarchy,True,success,128.07299999999998,True,1634,0.0033333333333445125
+Log_2018-05-31_162906.txt,cloud,CC,3,7,Full,True,success,17.958000000000027,True,327,0.00428571428574287
+Log_2018-05-31_162906.txt,cloud,CC,4,7,Hierarchy,True,success,17.488999999999976,True,318,0.0033333333333445125
+Log_2018-05-31_162906.txt,cloud,CC,5,7,Star,True,success,14.305000000000007,True,225,0.00428571428574287
+Log_2018-05-31_162906.txt,cloud,CC,6,7,Full,True,success,17.829000000000008,True,360,0.00428571428574287
+Log_2018-05-31_162906.txt,cloud,CC,7,7,Hierarchy,True,success,39.59699999999998,True,513,0.0033333333333445125
+Log_2018-05-31_162906.txt,cloud,CC,8,7,Full,True,success,62.59100000000001,True,1057,0.0042857142857215536
+Log_2018-05-31_162906.txt,cloud,CC,9,7,Star,True,success,7.7620000000000005,True,198,0.0042857142857215536
+Log_2018-05-31_163720.txt,cloud,CC,1,7,Star,True,success,58.82599999999999,False,695,0.0042857142857215536
+Log_2018-05-31_163720.txt,cloud,CC,2,7,Hierarchy,True,success,30.376000000000005,True,513,0.0033333333333445125
+Log_2018-05-31_163720.txt,cloud,CC,3,7,Full,True,success,29.825999999999965,True,389,0.00428571428574287
+Log_2018-05-31_163720.txt,cloud,CC,4,7,Hierarchy,True,success,53.077999999999975,True,820,0.0033333333333445125
+Log_2018-05-31_163720.txt,cloud,CC,5,7,Star,True,success,21.926999999999964,True,311,0.004285714285728659
+Log_2018-05-31_163720.txt,cloud,CC,6,7,Full,True,success,59.293000000000006,True,936,0.0042857142857215536
+Log_2018-05-31_163720.txt,cloud,CC,7,7,Hierarchy,False,incomplete,0.09300000000001774,True,5,0.0
+Log_2018-05-31_163720.txt,cloud,CC,8,7,Full,True,success,33.82900000000001,True,351,0.0042857142857162245
+Log_2018-05-31_163720.txt,cloud,CC,9,7,Star,True,success,31.115999999999985,True,434,0.0042857142857215536
+Log_2018-05-31_164527.txt,cloud,CC,1,7,Star,True,success,102.019,False,1188,0.00428571428574287
+Log_2018-05-31_164527.txt,cloud,CC,2,7,Hierarchy,True,success,42.89299999999997,False,567,0.0033333333333445125
+Log_2018-05-31_164527.txt,cloud,CC,3,7,Full,True,success,67.01699999999994,False,961,0.0042857142857215536
+Log_2018-05-31_164527.txt,cloud,CC,4,7,Hierarchy,True,success,136.2829999999999,True,1382,0.0033333333333445125
+Log_2018-05-31_164527.txt,cloud,CC,5,7,Star,True,success,39.192999999999984,True,526,0.004285714285717113
+Log_2018-05-31_164527.txt,cloud,CC,6,7,Full,True,success,23.918000000000006,True,237,0.0042857142857215536
+Log_2018-05-31_164527.txt,cloud,CC,7,7,Hierarchy,True,success,19.871999999999957,True,240,0.0033333333333445125
+Log_2018-05-31_164527.txt,cloud,CC,8,7,Full,True,success,19.283999999999992,True,260,0.0042857142857215536
+Log_2018-05-31_164527.txt,cloud,CC,9,7,Star,True,success,8.841000000000008,True,168,0.0042857142857215536
+Log_2018-05-31_170035.txt,cloud,CC,1,7,Star,True,success,39.712999999999994,False,612,0.004285714285718001
+Log_2018-05-31_170035.txt,cloud,CC,2,7,Hierarchy,True,success,12.687999999999988,False,259,0.0033333333333587234
+Log_2018-05-31_170035.txt,cloud,CC,3,7,Full,True,success,89.17199999999997,False,1592,0.0042857142857215536
+Log_2018-05-31_170035.txt,cloud,CC,4,7,Hierarchy,True,success,16.67700000000002,False,251,0.0033333333333445125
+Log_2018-05-31_170035.txt,cloud,CC,5,7,Star,True,success,10.100999999999999,False,144,0.00428571428574287
+Log_2018-05-31_170035.txt,cloud,CC,6,7,Full,True,success,31.548999999999978,False,474,0.004285714285717113
+Log_2018-05-31_170035.txt,cloud,CC,7,7,Hierarchy,True,success,7.480000000000018,False,178,0.0033333333333445125
+Log_2018-05-31_170035.txt,cloud,CC,8,7,Full,False,incomplete,0.11199999999996635,False,6,0.0
+Log_2018-05-31_170035.txt,cloud,CC,9,7,Star,True,success,18.902000000000044,False,395,0.0042857142857215536
+Log_2018-05-31_170742.txt,cloud,CC,1,7,Star,True,success,64.43600000000004,False,847,0.00428571428574287
+Log_2018-05-31_170742.txt,cloud,CC,2,7,Hierarchy,True,success,124.721,False,1566,0.0033333333333445125
+Log_2018-05-31_170742.txt,cloud,CC,3,7,Full,True,success,27.053000000000054,False,556,0.00428571428574287
+Log_2018-05-31_170742.txt,cloud,CC,4,7,Hierarchy,True,success,71.10299999999995,False,1064,0.0033333333333445125
+Log_2018-05-31_170742.txt,cloud,CC,5,7,Star,False,incomplete,,False,0,
+Log_2018-05-31_170742.txt,cloud,CC,6,7,Full,False,failed,180.76199999999994,False,2668,0.0042857142857215536
+Log_2018-05-31_170742.txt,cloud,CC,7,7,Hierarchy,True,success,67.91300000000001,True,893,0.0033333333333587234
+Log_2018-05-31_170742.txt,cloud,CC,8,7,Full,True,success,16.19399999999996,True,261,0.00428571428574287
+Log_2018-05-31_170742.txt,cloud,CC,9,7,Star,False,incomplete,20.77800000000002,True,343,0.004285714285718001
+Log_2018-05-31_172532.txt,cloud,CC,1,7,Star,True,success,34.79599999999999,False,488,0.004285714285719777
+Log_2018-05-31_172532.txt,cloud,CC,2,7,Hierarchy,True,success,13.543999999999983,False,257,0.0033333333333445125
+Log_2018-05-31_172532.txt,cloud,CC,3,7,Full,True,success,27.59699999999998,False,578,0.004285714285718001
+Log_2018-05-31_172532.txt,cloud,CC,4,7,Hierarchy,True,success,12.99799999999999,False,269,0.0033333333333445125
+Log_2018-05-31_172532.txt,cloud,CC,5,7,Star,True,success,18.06000000000006,False,287,0.0042857142857215536
+Log_2018-05-31_172532.txt,cloud,CC,6,7,Full,True,success,17.70999999999998,False,413,0.004285714285719777
+Log_2018-05-31_172532.txt,cloud,CC,7,7,Hierarchy,True,success,11.776999999999987,False,262,0.0033333333333445125
+Log_2018-05-31_172532.txt,cloud,CC,8,7,Full,True,success,113.66499999999996,False,2186,0.00428571428574287
+Log_2018-05-31_172532.txt,cloud,CC,9,7,Star,True,success,11.459000000000003,False,175,0.004285714285718001
+Log_2018-05-31_173338.txt,cloud,CC,1,7,Star,True,success,29.385000000000048,True,317,0.004285714285718001
+Log_2018-05-31_173338.txt,cloud,CC,2,7,Hierarchy,True,success,16.262,True,280,0.0033333333333445125
+Log_2018-05-31_173338.txt,cloud,CC,3,7,Full,True,success,20.82000000000005,True,306,0.00428571428574287
+Log_2018-05-31_173338.txt,cloud,CC,4,7,Hierarchy,True,success,89.918,True,1032,0.0033333333333445125
+Log_2018-05-31_173338.txt,cloud,CC,5,7,Star,True,success,9.972999999999956,True,168,0.0042857142857215536
+Log_2018-05-31_173338.txt,cloud,CC,6,7,Full,True,success,38.764999999999986,True,574,0.0042857142857215536
+Log_2018-05-31_173338.txt,cloud,CC,7,7,Hierarchy,True,success,10.470000000000027,True,188,0.0033333333333445125
+Log_2018-05-31_173338.txt,cloud,CC,8,7,Full,True,success,32.055999999999926,True,446,0.004285714285718001
+Log_2018-05-31_173338.txt,cloud,CC,9,7,Star,True,success,19.53200000000004,True,328,0.004285714285717113
+Log_2018-05-31_175916.txt,cloud,CC,1,7,Star,True,success,50.32099999999997,True,490,0.004285714285728659
+Log_2018-05-31_175916.txt,cloud,CC,2,7,Hierarchy,True,success,11.146000000000015,True,214,0.0033333333333445125
+Log_2018-05-31_175916.txt,cloud,CC,3,7,Full,True,success,45.113999999999976,True,730,0.0042857142857215536
+Log_2018-05-31_175916.txt,cloud,CC,4,7,Hierarchy,True,success,11.324999999999989,True,192,0.0033333333333445125
+Log_2018-05-31_175916.txt,cloud,CC,5,7,Star,True,success,21.81400000000002,True,242,0.0042857142857162245
+Log_2018-05-31_175916.txt,cloud,CC,6,7,Full,True,success,52.228999999999985,True,756,0.00428571428574287
+Log_2018-05-31_175916.txt,cloud,CC,7,7,Hierarchy,True,success,20.493999999999915,True,274,0.0033333333333445125
+Log_2018-05-31_175916.txt,cloud,CC,8,7,Full,True,success,11.259999999999991,True,174,0.0042857142857162245
+Log_2018-05-31_175916.txt,cloud,CC,9,7,Star,True,success,17.976999999999975,True,422,0.0042857142857215536
+Log_2018-05-31_180941.txt,cloud,CC,1,7,Star,True,success,62.78000000000003,True,692,0.00428571428574287
+Log_2018-05-31_180941.txt,cloud,CC,2,7,Hierarchy,True,success,22.767999999999972,True,335,0.003333333333337407
+Log_2018-05-31_180941.txt,cloud,CC,3,7,Full,True,success,16.758000000000038,True,202,0.004285714285728659
+Log_2018-05-31_180941.txt,cloud,CC,4,7,Hierarchy,True,success,17.797000000000025,True,282,0.0033333333333445125
+Log_2018-05-31_180941.txt,cloud,CC,5,7,Star,True,success,9.987999999999943,True,137,0.0042857142857162245
+Log_2018-05-31_180941.txt,cloud,CC,6,7,Full,False,failed,180.09500000000003,True,2520,0.00428571428574287
+Log_2018-05-31_180941.txt,cloud,CC,7,7,Hierarchy,True,success,15.715000000000032,True,217,0.0033333333333445125
+Log_2018-05-31_180941.txt,cloud,CC,8,7,Full,True,success,32.111000000000104,True,339,0.004285714285714448
+Log_2018-05-31_180941.txt,cloud,CC,9,7,Star,True,success,17.91199999999992,True,289,0.0042857142857215536
+Log_2018-05-31_182335.txt,cloud,CC,1,7,Star,True,success,22.452999999999975,False,273,0.00428571428574287
+Log_2018-05-31_182335.txt,cloud,CC,2,7,Hierarchy,True,success,90.43200000000002,False,1335,0.0033333333333587234
+Log_2018-05-31_182335.txt,cloud,CC,3,7,Full,True,success,107.36499999999995,False,1692,0.00428571428574287
+Log_2018-05-31_182335.txt,cloud,CC,4,7,Hierarchy,False,failed,180.05999999999995,False,2316,0.0033333333333445125
+Log_2018-05-31_182335.txt,cloud,CC,5,7,Star,True,success,66.67700000000002,False,750,0.00428571428574287
+Log_2018-05-31_182335.txt,cloud,CC,6,7,Full,True,success,45.986999999999966,False,851,0.004285714285728659
+Log_2018-05-31_182335.txt,cloud,CC,7,7,Hierarchy,False,incomplete,0.03499999999996817,False,2,0.0
+Log_2018-05-31_182335.txt,cloud,CC,8,7,Full,False,incomplete,80.41499999999996,False,1366,0.004285714285728659
+Log_2018-05-31_183920.txt,cloud,CC,1,7,Star,True,success,36.43700000000001,False,451,0.0042857142857215536
+Log_2018-05-31_183920.txt,cloud,CC,2,7,Hierarchy,True,success,57.64999999999998,False,697,0.0033333333333587234
+Log_2018-05-31_183920.txt,cloud,CC,3,7,Full,False,incomplete,,False,0,
+Log_2018-05-31_183920.txt,cloud,CC,4,7,Hierarchy,True,success,16.639999999999986,False,231,0.0033333333333445125
+Log_2018-05-31_183920.txt,cloud,CC,5,7,Star,True,success,11.343000000000018,False,222,0.00428571428574287
+Log_2018-05-31_183920.txt,cloud,CC,6,7,Full,True,success,105.95300000000003,False,1370,0.00428571428574287
+Log_2018-05-31_183920.txt,cloud,CC,7,7,Hierarchy,True,success,18.812000000000012,False,268,0.0033333333333445125
+Log_2018-05-31_183920.txt,cloud,CC,8,7,Full,True,success,17.970000000000027,False,221,0.0042857142857162245
+Log_2018-05-31_183920.txt,cloud,CC,9,7,Star,True,success,41.266000000000076,False,591,0.004285714285718001
