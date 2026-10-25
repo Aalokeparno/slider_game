@@ -275,7 +275,8 @@ def show(lines, start, count):
 
 # ------------------------------------------------- loading runs for new analyses
 
-# filters for each purpose (False = drop those runs); any of them can be overridden, e.g. keep_whole_second=True
+# filters for each purpose (False = drop those runs); any of them can be overridden, e.g. keep_whole_second=True.
+# keep_empty is about runs with fewer than 2 logged rows: unplayed waves (0 rows) and 1-row rounds.
 PURPOSES = {
     "outcome":  {"keep_aborted": False, "keep_incomplete": False, "keep_bot": False, "keep_whole_second": True,  "keep_empty": False},
     "behavior": {"keep_aborted": False, "keep_incomplete": True,  "keep_bot": True,  "keep_whole_second": False, "keep_empty": False},
@@ -300,9 +301,10 @@ def load_runs(purpose, roles={"train"}, allow_test=False, reason=None, **overrid
     """Runs for new analyses. Returns (runs, table): runs[k] is the run on row k of table.
 
     purpose="outcome"   drops aborted 1-row rounds, runs with no end marker and runs with a bot.
-    purpose="behavior"  drops aborted 1-row rounds, runs in whole-second files and runs with no logged rows.
-    (Runs with no logged rows have no end marker either, so "outcome" drops them too.)
-    Overrides: keep_aborted, keep_incomplete, keep_bot, keep_whole_second, keep_empty (True = keep those runs).
+    purpose="behavior"  drops aborted 1-row rounds and runs in whole-second files.
+    Both purposes also drop runs with fewer than 2 logged rows (unplayed waves and 1-row rounds).
+    Overrides: keep_aborted, keep_incomplete, keep_bot, keep_whole_second, keep_empty (True = keep those runs;
+    an aborted 1-row round comes back only with both keep_aborted=True and keep_empty=True).
 
     roles: any of "train", "val", "test". Test runs are returned only with allow_test=True and a
     reason, and every such call is written to results/test_access_log.csv.
@@ -345,7 +347,7 @@ def load_runs(purpose, roles={"train"}, allow_test=False, reason=None, **overrid
     if not keep["keep_whole_second"]:
         drop |= table["coarse_time"]
     if not keep["keep_empty"]:
-        drop |= table["T"] == 0
+        drop |= table["T"] < 2
     chosen = table[~drop & table["role"].isin(roles)]
 
     # guard on the test runs
