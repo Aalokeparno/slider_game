@@ -16,14 +16,18 @@ Each parser returns a list of runs. One run is a dict with
     general  (T,)    logged General-Success (percent)
     end      "success", "failed" or "incomplete"
     bot      True if a robot played in this run (cloud only)
+    bot_players  set of seats (1-based) that a robot played at some point (cloud only)
 """
+import inspect
 import re
 import zipfile
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
+from slider import config
 from slider.config import OSF_DATA as DATA, LAB_DIR, CLOUD_DIR
 
 
@@ -44,7 +48,7 @@ def new_run(path, session, wave, name, A_log, weights):
         "A_log": A_log, "A": A_log - np.diag(np.diag(A_log)),
         "weights": np.array(weights, dtype=float),
         "t": [], "X": [], "agree": [], "general": [],
-        "end": "incomplete", "bot": False,
+        "end": "incomplete", "bot": False, "bot_players": set(),
     }
 
 
@@ -140,6 +144,7 @@ def parse_cloud(path):
             values = msg.split(":")[1]
             if "(" in values:
                 run["bot"] = True
+                run["bot_players"].update(k + 1 for k, v in enumerate(values.split()) if v.startswith("("))
             run["X"].append(values.replace("(", "").replace(")", "").split())
             t_play = clock - t0
         elif msg.startswith("Extra: \t") and t_play is not None:   # 7 agreements + general
@@ -266,3 +271,92 @@ def find(lines, text):
 def show(lines, start, count):
     for i in range(start, start + count):
         print(f"{i + 1:6d} | {lines[i]}")
+
+
+# ------------------------------------------------- loading runs for new analyses
+
+# filters for each purpose (False = drop those runs); any of them can be overridden, e.g. keep_whole_second=True
+PURPOSES = {
+    "outcome":  {"keep_aborted": False, "keep_incomplete": False, "keep_bot": False, "keep_whole_second": True},
+    "behavior": {"keep_aborted": False, "keep_incomplete": True,  "keep_bot": True,  "keep_whole_second": False},
+}
+ROLES = {"train", "val", "test"}      # "other" is never returned
+
+
+class HeldOutError(Exception):
+    """Test runs (Ring, CT-Hierarchy) would be returned without allow_test=True."""
+
+
+def run_role(topology, group_label):
+    """test for Ring / CT-Hierarchy (any group); the group's split G label for Hierarchy / Full / Star; else other."""
+    if topology in config.TEST_TOPOLOGIES:
+        return "test"
+    if topology in config.TRAIN_TOPOLOGIES:
+        return group_label            # "train" or "val" ("other" if the group is not in split_G.csv)
+    return "other"
+
+
+def load_runs(purpose, roles={"train"}, allow_test=False, reason=None, **overrides):
+    """Runs for new analyses. Returns (runs, table): runs[k] is the run on row k of table.
+
+    purpose="outcome"   drops aborted 1-row rounds, runs with no end marker and runs with a bot.
+    purpose="behavior"  drops aborted 1-row rounds and runs in whole-second files.
+    Overrides: keep_aborted, keep_incomplete, keep_bot, keep_whole_second (True = keep those runs).
+
+    roles: any of "train", "val", "test". Test runs are returned only with allow_test=True and a
+    reason, and every such call is written to results/test_access_log.csv.
+    Columns added to the table: role, has_bot, bot_players (robot seats), coarse_time (whole-second file).
+    """
+    if purpose not in PURPOSES:
+        raise ValueError(f"purpose must be one of {sorted(PURPOSES)}, not {purpose!r}")
+    unknown = set(overrides) - set(PURPOSES[purpose])
+    if unknown:
+        raise TypeError(f"unknown filter {sorted(unknown)}; the filters are {sorted(PURPOSES[purpose])}")
+    keep = {**PURPOSES[purpose], **overrides}
+    roles = {roles} if isinstance(roles, str) else set(roles)
+    if not roles <= ROLES:
+        raise ValueError(f"roles must be from {sorted(ROLES)}, not {sorted(roles - ROLES)}")
+
+    runs = parse_all()
+    table = runs_table(runs)
+
+    # new columns
+    split = pd.read_csv(config.SPLIT_G)
+    label = dict(zip(split["group_id"], split["split"]))
+    table["role"] = [run_role(top, label.get(f, "other")) for top, f in zip(table["topology"], table["file"])]
+    table["has_bot"] = [run["bot"] for run in runs]
+    table["bot_players"] = [tuple(sorted(run["bot_players"])) for run in runs]
+    coarse = []       # files whose timestamps are all whole seconds
+    for f in table["file"].unique():
+        t = np.concatenate([runs[i]["t"] for i in table.index[table["file"] == f]])
+        if len(t) > 0 and np.all(t == np.round(t)):
+            coarse.append(f)
+    table["coarse_time"] = table["file"].isin(coarse)
+
+    # filters
+    drop = pd.Series(False, index=table.index)
+    if not keep["keep_aborted"]:
+        drop |= (table["T"] == 1) & (table["end"] == "failed")
+    if not keep["keep_incomplete"]:
+        drop |= table["end"] == "incomplete"
+    if not keep["keep_bot"]:
+        drop |= table["has_bot"]
+    if not keep["keep_whole_second"]:
+        drop |= table["coarse_time"]
+    chosen = table[~drop & table["role"].isin(roles)]
+
+    # guard on the test runs
+    n_test = int((chosen["role"] == "test").sum())
+    if n_test > 0:
+        if not allow_test:
+            raise HeldOutError(f"{n_test} test runs (Ring, CT-Hierarchy) would be returned. They are held out "
+                               "(no new metrics before Nov 25); pass allow_test=True and a reason to use them.")
+        if not reason:
+            raise ValueError("allow_test=True needs a reason")
+        caller = inspect.currentframe().f_back
+        caller_file = caller.f_globals.get("__vsc_ipynb_file__", caller.f_code.co_filename)   # the notebook, in VS Code
+        row = pd.DataFrame([{"timestamp": datetime.now().isoformat(timespec="seconds"), "caller": caller_file,
+                             "reason": reason, "n_test_runs": n_test}])
+        row.to_csv(config.TEST_ACCESS_LOG, mode="a", header=not config.TEST_ACCESS_LOG.exists(), index=False)
+
+    return [runs[i] for i in chosen.index], chosen.reset_index(drop=True)

@@ -20,8 +20,10 @@ SPLITS_DIR = ROOT / "data" / "splits"
 SPLIT_G = SPLITS_DIR / "split_G.csv"               # split G: by group (log file), train / val
 
 # results
-TABLES = ROOT / "results" / "tables"
-FIGURES = ROOT / "results" / "figures"
+RESULTS = ROOT / "results"
+TABLES = RESULTS / "tables"
+FIGURES = RESULTS / "figures"
+TEST_ACCESS_LOG = RESULTS / "test_access_log.csv"   # every load_runs call that returns test runs
 RING_TRAPS = TABLES / "ring_traps.csv"
 APEM_SWEEP = TABLES / "apem_sweep.csv"
 APEM_TOPOLOGIES = TABLES / "apem_topologies.csv"

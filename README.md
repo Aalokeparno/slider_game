@@ -71,3 +71,18 @@ Run the notebooks in order: `stage0`, then `stage1_hw1` (writes `runs_table.csv`
 `pytest` checks the parser and the fraught measures against known numbers: 718 runs, recomputed Agreement within 0.005 of the log, CL Hierarchy mean time to consensus 61.61 s and mean 11.58 % fraught (forward hold), and no fraught rows on Full.
 
 Seeds: the Stage 0 and Stage 1 notebooks use seed 0. New work uses `config.SEED` (573).
+
+## New analyses: load runs with `load_runs`
+
+New code gets its runs from `slider_logs.load_runs`, not from `parse_all`. The Stage 0 and Stage 1 notebooks are left as they were.
+
+```python
+from slider import slider_logs as sl
+runs, table = sl.load_runs("outcome")                         # train runs only (default)
+runs, table = sl.load_runs("behavior", roles={"train", "val"}, keep_whole_second=True)
+```
+
+- Role of a run: Ring / CT-Hierarchy → `test` (any group); Hierarchy / Full / Star → the group's label in `split_G.csv` (`train` / `val`); any other graph → `other` (never returned).
+- `purpose="outcome"` drops aborted 1-row rounds, runs with no end marker and runs with a bot. `purpose="behavior"` drops aborted 1-row rounds and runs in whole-second files. Override with `keep_aborted`, `keep_incomplete`, `keep_bot`, `keep_whole_second`.
+- Added columns: `role`, `has_bot`, `bot_players` (robot seats), `coarse_time` (whole-second file).
+- Asking for test runs raises `HeldOutError`. With `allow_test=True` you must give a `reason`, and the call is logged in `results/test_access_log.csv`.
