@@ -1,0 +1,64 @@
+group_id,dataset,split
+log_v09_Fri Nov 04 155722 EDT 2016.txt,EL,train
+log_v09_Fri Nov 04 165730 EDT 2016.txt,EL,train
+log_v09_Fri Nov 11 155640 EST 2016.txt,EL,val
+log_v09_Fri Nov 11 160012 EST 2016.txt,EL,train
+log_v09_Fri Nov 11 165515 EST 2016.txt,EL,train
+log_v09_Mon Nov 07 164258 EST 2016.txt,EL,train
+log_v09_Mon Nov 07 175505 EST 2016.txt,EL,train
+log_v09_Mon Oct 31 164716 EDT 2016.txt,EL,val
+log_v09_Wed Nov 02 170112 EDT 2016.txt,EL,val
+log_v09_Wed Nov 02 173358 EDT 2016.txt,EL,train
+log_v09_Wed Nov 09 154710 EST 2016.txt,EL,val
+log_v09_Wed Nov 09 162248 EST 2016.txt,EL,train
+log_v09_Wed Nov 09 175020 EST 2016.txt,EL,train
+log_v09_Wed Nov 16 154247 EST 2016.txt,EL,val
+log_v09_Wed Nov 16 155109 EST 2016.txt,EL,val
+log_v09_Wed Nov 16 171311 EST 2016.txt,EL,train
+log_v09_Wed Nov 16 172824 EST 2016.txt,EL,train
+log_Fri Sep 16 161000 EDT 2016.txt,CL,train
+log_Fri Sep 16 165753 EDT 2016.txt,CL,val
+log_Mon Sep 19 164446 EDT 2016.txt,CL,val
+log_Mon Sep 19 173635 EDT 2016.txt,CL,val
+log_Tue Sep 20 142130 EDT 2016.txt,CL,train
+log_Wed Sep 14 155221 EDT 2016.txt,CL,train
+log_Wed Sep 14 170705 EDT 2016.txt,CL,train
+log_Wed Sep 21 160602 EDT 2016.txt,CL,train
+log_v09_Fri Oct 07 155453 EDT 2016.txt,CL,val
+log_v09_Fri Oct 07 162937 EDT 2016.txt,CL,train
+log_v09_Fri Sep 23 155758 EDT 2016.txt,CL,val
+log_v09_Fri Sep 23 170644 EDT 2016.txt,CL,train
+log_v09_Fri Sep 30 155411 EDT 2016.txt,CL,train
+log_v09_Mon Oct 17 171209 EDT 2016.txt,CL,train
+log_v09_Mon Sep 26 173549 EDT 2016.txt,CL,train
+log_v09_Wed Oct 05 154352 EDT 2016.txt,CL,train
+log_v09_Wed Oct 05 165348 EDT 2016.txt,CL,train
+log_v09_Wed Sep 21 170402 EDT 2016.txt,CL,val
+log_v09_Wed Sep 21 173748 EDT 2016.txt,CL,val
+log_v09_Wed Sep 28 163724 EDT 2016.txt,CL,train
+log_v09_Wed Sep 28 173239 EDT 2016.txt,CL,train
+Log_2018-05-31_132916.txt,CC,train
+Log_2018-05-31_134403.txt,CC,val
+Log_2018-05-31_135852.txt,CC,val
+Log_2018-05-31_140824.txt,CC,train
+Log_2018-05-31_141642.txt,CC,train
+Log_2018-05-31_142529.txt,CC,train
+Log_2018-05-31_143303.txt,CC,train
+Log_2018-05-31_144501.txt,CC,train
+Log_2018-05-31_145138.txt,CC,val
+Log_2018-05-31_150621.txt,CC,val
+Log_2018-05-31_151609.txt,CC,train
+Log_2018-05-31_155214.txt,CC,train
+Log_2018-05-31_160337.txt,CC,train
+Log_2018-05-31_161916.txt,CC,train
+Log_2018-05-31_162906.txt,CC,val
+Log_2018-05-31_163720.txt,CC,val
+Log_2018-05-31_164527.txt,CC,train
+Log_2018-05-31_170035.txt,CC,train
+Log_2018-05-31_170742.txt,CC,train
+Log_2018-05-31_172532.txt,CC,train
+Log_2018-05-31_173338.txt,CC,val
+Log_2018-05-31_175916.txt,CC,val
+Log_2018-05-31_180941.txt,CC,train
+Log_2018-05-31_182335.txt,CC,train
+Log_2018-05-31_183920.txt,CC,train

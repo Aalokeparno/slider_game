@@ -16,7 +16,8 @@ RUNS_TABLE = PROCESSED / "runs_table.csv"
 RUNS_FRAUGHT = PROCESSED / "runs_fraught.csv"
 
 # splits of the runs (split T, by topology, is TRAIN_TOPOLOGIES / TEST_TOPOLOGIES below)
-SPLITS = ROOT / "data" / "splits"
+SPLITS_DIR = ROOT / "data" / "splits"
+SPLIT_G = SPLITS_DIR / "split_G.csv"               # split G: by group (log file), train / val
 
 # results
 TABLES = ROOT / "results" / "tables"

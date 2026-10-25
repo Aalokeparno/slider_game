@@ -6,6 +6,7 @@ Analysis of the Slider Game logs from Tabor, Smith & Dankowicz, *Escaping fraugh
 
 **No new metrics on the test topologies (Ring, CT-Hierarchy) before Nov 25 (2026).**
 New work uses the train topologies only (Hierarchy, Full, Star). This split (split T) is `TRAIN_TOPOLOGIES` / `TEST_TOPOLOGIES` in `src/slider/config.py`.
+Split G splits the groups (one group = one log file) into train / val, 1/3 val within each of EL, CL and CC: `data/splits/split_G.csv`.
 
 ## Data source
 
@@ -18,13 +19,13 @@ OSF project **gvcpz**: <https://osf.io/gvcpz>. Download the archive (`gvcpz-osfs
 data/
   raw/osf/            OSF archive gvcpz, unchanged (Code/ + Data/)
   processed/          runs_table.csv (HW 1), runs_fraught.csv (HW 3)
-  splits/             (empty for now)
+  splits/             split_G.csv: split G (group_id, dataset, train / val)
 src/slider/           the package: from slider import config
   config.py           all paths, SEED, train/test topologies
   slider_logs.py      log parser
   fraught.py          fraught tests and % fraught measures
   stats.py            bootstrap / Wilcoxon test, summary tables
-  splits.py           (no splits yet; split T is in config.py)
+  splits.py           check_cc_groups, make_split_G (python -m slider.splits)
   models/             apem.py (APEM simulator), apem_osf.py (port of the authors' Matlab code)
 notebooks/
   stage0/             stage0_hw5_fraught_corners.ipynb
