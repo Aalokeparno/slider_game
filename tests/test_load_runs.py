@@ -28,9 +28,17 @@ def test_allow_test_without_reason_raises():
         sl.load_runs("outcome", roles={"test"}, allow_test=True)
 
 
+def test_behavior_drops_runs_with_no_rows():
+    runs, table = sl.load_runs("behavior", roles={"train", "val"})
+    assert (table["T"] == 0).sum() == 0
+    assert all(len(run["t"]) > 0 for run in runs)
+    runs, table = sl.load_runs("behavior", roles={"train", "val"}, keep_empty=True)
+    assert (table["T"] == 0).sum() > 0
+
+
 def test_role_counts_match_split_G():
     split = pd.read_csv(config.SPLIT_G)
-    runs, table = sl.load_runs("behavior", roles={"train", "val"}, keep_aborted=True, keep_whole_second=True)
+    runs, table = sl.load_runs("behavior", roles={"train", "val"}, keep_aborted=True, keep_whole_second=True, keep_empty=True)
 
     # every run carries its group's label, and the groups per role are the groups per split
     label = dict(zip(split["group_id"], split["split"]))
