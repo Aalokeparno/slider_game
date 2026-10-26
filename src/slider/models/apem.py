@@ -27,7 +27,10 @@ GRAPHS = {
 }
 
 
-def apem(A, a_th=0.5, s_th=0.5, mu=0.1, speed=1.0, T=300, rng=None):
+def apem(A, a_th=0.5, s_th=0.5, mu=0.1, speed=1.0, T=300, rng=None, record_flips=False):
+    # t and X already hold every check-in time and all positions at it (plus t = 0 and the end).
+    # record_flips=True also returns run["flips"]: one (time, agent, new direction) per flip, agents 0-based.
+    # It does not change the random draws, so t, X and success are the same as with record_flips=False.
     if rng is None:
         rng = np.random.default_rng()
     n = len(A)
@@ -37,6 +40,7 @@ def apem(A, a_th=0.5, s_th=0.5, mu=0.1, speed=1.0, T=300, rng=None):
     phi = rng.choice([-1.0, 1.0], size=n)   # random starting directions
     t = 0.0
     ts, X = [t], [s.copy()]                 # record (t, s)
+    flips = []                              # (time, agent, new direction), only if record_flips
     success = False
 
     while True:
@@ -56,6 +60,8 @@ def apem(A, a_th=0.5, s_th=0.5, mu=0.1, speed=1.0, T=300, rng=None):
         A_i = abs(s[i] + A[i] @ s) / (deg[i] + 1)   # agreement of i with its neighbourhood
         if A_i <= a_th and abs(s[i]) >= s_th:       # low agreement and far out: turn around
             phi[i] = -phi[i]
+            if record_flips:
+                flips.append((t, int(i), phi[i]))
 
         ts.append(t)                                # record (t, s)
         X.append(s.copy())
@@ -64,4 +70,7 @@ def apem(A, a_th=0.5, s_th=0.5, mu=0.1, speed=1.0, T=300, rng=None):
             success = True
             break
 
-    return {"A": A, "t": np.array(ts), "X": np.array(X), "weights": np.ones(n), "success": success}
+    run = {"A": A, "t": np.array(ts), "X": np.array(X), "weights": np.ones(n), "success": success}
+    if record_flips:
+        run["flips"] = flips
+    return run
