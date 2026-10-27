@@ -3,3 +3,6 @@ data/raw/
 __pycache__/
 .ipynb_checkpoints/
 *.egg-info/
+
+# regenerable data (notebooks/path1/p8_hazard_table.ipynb)
+data/processed/*.parquet

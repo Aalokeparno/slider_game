@@ -14,6 +14,7 @@ CLOUD_DIR = OSF_DATA / "2018-05-31 RunsScrubbed"  # cloud logs (2018)
 PROCESSED = ROOT / "data" / "processed"
 RUNS_TABLE = PROCESSED / "runs_table.csv"
 RUNS_FRAUGHT = PROCESSED / "runs_fraught.csv"
+HAZARD_TABLE = PROCESSED / "hazard_table.parquet"
 
 # splits of the runs (split T, by topology, is TRAIN_TOPOLOGIES / TEST_TOPOLOGIES below)
 SPLITS_DIR = ROOT / "data" / "splits"
