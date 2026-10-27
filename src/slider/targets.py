@@ -6,6 +6,8 @@ come from h5 (main setting: cutoff 0.9, tau 1 s), Kaplan-Meier from stats.kaplan
 end-sitting uses the rule of HW 4 part B (forward-hold weights, every player counts, |s| >= 0.9).
 CIs: stats.group_bootstrap_mean for means and shares, stats.group_bootstrap (same draws) for KM
 quantiles and pooled ratios; 10,000 resamples, seed 573.
+
+Target 8 (reversal rate, reversal_rate_table) uses the P2c method of labclock.py.
 """
 import numpy as np
 import pandas as pd
@@ -14,6 +16,7 @@ from slider import config
 from slider import h5
 from slider import slider_logs as sl
 from slider.fraught import fraught_percent_hold, round_end
+from slider.labclock import CELLS, events_table, exposure
 from slider.stats import group_bootstrap, group_bootstrap_mean, kaplan_meier, km_quantiles
 
 ROLES = [("train", {"train"}), ("val", {"val"}), ("train+val", {"train", "val"})]
@@ -123,3 +126,32 @@ def show(targets, topology):
     order = list(dict.fromkeys(t["stat"]))
     wide = t.pivot_table(index="stat", columns=["dataset", "role"], values="cell", aggfunc="first")
     return wide.reindex(order).reindex(columns=[(d, r) for d in sorted(t["dataset"].unique()) for r, _ in ROLES])
+
+
+# ------------------------------------------------------------- target 8: reversal rate
+
+def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True):
+    """Target 8: reversals per human player-minute in each cell (topology x dataset), pooled over runs.
+
+    Reversals: labclock.events_table (reversals.run_events with m, human players only). With
+    lab_clock_cc=True, CC runs first go through labclock.lab_log with this tick; lab data is used as logged.
+    Player-minutes: labclock.exposure (every human player until fraught.round_end).
+    rate = all reversals / all player-minutes of the cell; 95% CI by group bootstrap
+    (log files resampled, stats.group_bootstrap, 10,000 resamples, seed 573), as in P2c.
+    """
+    events = events_table(runs, m=m, lab_clock=lab_clock_cc, tick=tick)
+    reversals = events[events["type"] == "reversal"].groupby(["file", "wave"]).size().rename("reversals")
+    r = exposure(runs).groupby(["topology", "dataset", "file", "wave"], as_index=False)["minutes"].sum()
+    r = r.join(reversals, on=["file", "wave"])
+    r["reversals"] = r["reversals"].fillna(0)                  # runs with no reversal
+    out = []
+    for topology, dataset in CELLS:
+        c = r[(r["topology"] == topology) & (r["dataset"] == dataset)]
+        if len(c) == 0:
+            continue
+        per_group = [(d["reversals"].to_numpy(float), d["minutes"].to_numpy(float)) for _, d in c.groupby("file", sort=True)]
+        lo, hi = group_bootstrap(per_group, lambda rev, mi: rev.sum() / mi.sum(), 10000, config.SEED)
+        out.append({"topology": topology, "dataset": dataset, "groups": c["file"].nunique(), "runs": len(c),
+                    "reversals": int(c["reversals"].sum()), "player_min": c["minutes"].sum(),
+                    "rate": c["reversals"].sum() / c["minutes"].sum(), "ci_lo": lo, "ci_hi": hi})
+    return pd.DataFrame(out)

@@ -44,3 +44,18 @@ def test_targets_agree_with_h5_on_train():
     for topology, d in cells.groupby("topology"):
         pooled = np.sum(d["value"] * d["n_runs"]) / d["n_runs"].sum()     # runs-weighted mean over datasets
         assert np.isclose(pooled, h5_main.loc[topology, "mean % committed"])
+
+
+def test_reversal_rate_on_a_synthetic_run():
+    # player 0: k = 0, 1, 2, 3, 1, 3, 1 -> 3 reversals (m = 2); seat 7 is a bot with the same moves (not counted)
+    t = [0, 10, 20, 30, 40, 50, 120]
+    s0 = [0, .1, .2, .3, .1, .3, .1]
+    X = np.full((len(t), 7), 0.5)
+    X[:, 0] = X[:, 6] = s0
+    run = {"file": "f", "wave": 1, "dataset": "CL", "session": "lab", "end": "failed", "bot_players": {7},
+           "A": np.ones((7, 7), dtype=int) - np.eye(7, dtype=int), "weights": np.ones(7), "t": np.array(t), "X": X}
+    r = targets.reversal_rate_table([run]).iloc[0]
+    # failed lab round: lasts until the 300 s limit -> 6 human players x 5 min = 30 player-min
+    assert (r["topology"], r["dataset"], r["groups"], r["runs"], r["reversals"]) == ("Full", "CL", 1, 1, 3)
+    assert r["player_min"] == 30
+    assert r["rate"] == r["ci_lo"] == r["ci_hi"] == 0.1
