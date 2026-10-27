@@ -13,6 +13,7 @@ Split G splits the groups (one group = one log file) into train / val, 1/3 val w
 What has been seen on held-out data, and what was frozen at that point.
 
 - Oct 25: H5 summaries on val seen. Path 1 candidate rule features frozen: Agreement level, Agreement trend, |s| / at-end indicator, time since reaching the end, time since last reversal.
+- Oct 27: P8 hazard table (`hazard.build_hazard_table`, m = 2; train + val) built; outcome counts per cell and split seen, no model fitted. Known property, kept as is: 33 reversals in the bot-free complete subset (Hierarchy EL 6, Hierarchy CL 5, Hierarchy CC 4, Full CL 14, Full CC 3, Star CC 1) have their first step in a dropped mid-event bin (the bin starts while the player's previous probe or reversal is pending), so they are in no kept bin's `y_rev`. With 1 bin holding 2 reversals (Full CL): sum(`y_rev`) = 8,476 = target 8 (b) 8,510 − 1 − 33. See `notebooks/path1/p8_hazard_table.ipynb`.
 
 ## Data source
 
