@@ -39,6 +39,8 @@ TARGET9_FIGURE = FIGURES / "target9_agreement_at_reversal.png"
 TARGET10 = TABLES / "target10_crossing_time.csv"
 TARGET10_FIGURE = FIGURES / "target10_crossing_time.png"
 INTERFACE_TABLE = TABLES / "interface_table.csv"
+P10_DECISION1 = TABLES / "p10_decision1.csv"
+P10_COEFS = TABLES / "p10_coefs.csv"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
