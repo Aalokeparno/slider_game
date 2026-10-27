@@ -9,6 +9,7 @@ quantiles and pooled ratios; 10,000 resamples, seed 573.
 
 Target 8 (reversal rate, reversal_rate_table) uses the P2c method of labclock.py.
 Target 9 (Agreement at reversal, agreement_at_reversal_table) uses hazard.py for the at-risk time.
+Target 10 (crossing time, crossing_time_table) uses crossings.py.
 """
 import numpy as np
 import pandas as pd
@@ -17,9 +18,10 @@ from slider import config
 from slider import h5
 from slider import hazard
 from slider import slider_logs as sl
+from slider.crossings import JUMP, crossing_events
 from slider.fraught import fraught_percent_hold, round_end
 from slider.labclock import CELLS, events_table, exposure, lab_log
-from slider.reversals import run_events
+from slider.reversals import run_events, step_sizes, to_steps
 from slider.stats import group_bootstrap, group_bootstrap_mean, kaplan_meier, km_quantiles
 
 ROLES = [("train", {"train"}), ("val", {"val"}), ("train+val", {"train", "val"})]
@@ -242,3 +244,76 @@ def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True):
                       "at_risk_min": minutes[j], "rate": point[j], "ci_lo": lo[j], "ci_hi": hi[j],
                       "sparse": minutes[j] < 0.5})
     return pd.DataFrame(summary), pd.DataFrame(h)
+
+
+# ------------------------------------------------------------- target 10: crossing time
+
+STATUSES = ["complete", "aborted", "returned", "unfinished"]
+CROSSING_STATS = ["crossing_time_median_s", "crossing_time_q1_s", "crossing_time_q3_s", "pace_steps_per_s",
+                  "pause_share_pct", "pct_with_pause", "jumps_per_player_min"]
+
+
+def crossing_stats(duration, steps, moving, pause_time, n_pauses, jumps, minutes):
+    """CROSSING_STATS of a set of complete, jump-free crossings (and the jumps and player-minutes of their runs)."""
+    if len(duration) == 0:
+        return np.append(np.full(6, np.nan), jumps.sum() / minutes.sum())
+    return np.append(np.percentile(duration, [50, 25, 75]),
+                     [steps.sum() / moving.sum(), 100 * pause_time.sum() / duration.sum(),
+                      100 * np.mean(n_pauses > 0), jumps.sum() / minutes.sum()])
+
+
+def crossing_time_table(runs, pause=0.3, lab_clock_cc=True):
+    """Target 10: crossings from one end band to the other (crossings.crossing_events), per cell.
+
+    With lab_clock_cc=True, CC runs first go through labclock.lab_log (tick 0.1 s); lab data is used as logged.
+    has_jump and the jump rate always use the raw rows. Returns (summary, crossings):
+      summary    long format, one row per cell and stat: groups, runs, stat, value, ci_lo, ci_hi.
+                 Counts (no CI): started, complete, aborted, returned, unfinished, with_jump (any status),
+                 used (complete, no jump), jumps (raw rows with |Δk| >= 4, reversals.step_sizes, human players)
+                 and player_min (labclock.exposure).
+                 With CI (CROSSING_STATS, used crossings only): 10a median, Q1, Q3 of crossing time (s);
+                 10b pace = all steps / all moving time (steps/s); 10c pause share = all pause time / all
+                 crossing time (%) and % of crossings with >= 1 pause; jumps per human player-minute (all rows).
+      crossings  every crossing: topology, dataset, file, wave, player, then the crossing_events columns.
+    95% CIs: group bootstrap (log files resampled, stats.group_bootstrap, 10,000 resamples, seed 573).
+    """
+    crossings, per_run = [], []
+    for run in runs:
+        raw_k = to_steps(sl.sign_correct(run))
+        t, k = run["t"], raw_k
+        if lab_clock_cc and run["dataset"] == "CC":
+            t, X_lab = lab_log(run["t"], run["X"])
+            k = to_steps(sl.sign_correct({**run, "X": X_lab}))
+        info = {"topology": sl.label_topology(run["A"]), "dataset": run["dataset"], "file": run["file"],
+                "wave": run["wave"]}
+        for j in range(7):
+            if j + 1 not in run["bot_players"]:
+                crossings.append(crossing_events(t, k[:, j], run["t"], raw_k[:, j], pause).assign(**info, player=j))
+        per_run.append({**info, "jumps": int(np.sum(step_sizes(run) >= JUMP))})
+    cr = pd.concat([c for c in crossings if len(c) > 0], ignore_index=True)
+    cr = cr[["topology", "dataset", "file", "wave", "player"] + [c for c in cr.columns if c not in info and c != "player"]]
+    minutes = exposure(runs).groupby(["file", "wave"], as_index=False)["minutes"].sum()
+    per_run = pd.DataFrame(per_run).merge(minutes, on=["file", "wave"])
+
+    summary = []
+    for topology, dataset in CELLS:
+        rc = per_run[(per_run["topology"] == topology) & (per_run["dataset"] == dataset)]
+        if len(rc) == 0:
+            continue
+        c = cr[(cr["topology"] == topology) & (cr["dataset"] == dataset)]
+        used = c[(c["status"] == "complete") & ~c["has_jump"].astype(bool)]
+        files = sorted(rc["file"].unique())
+        per_group = [tuple(used.loc[used["file"] == f, col].to_numpy(float)
+                           for col in ["duration", "steps", "moving", "pause_time", "n_pauses"])
+                     + tuple(rc.loc[rc["file"] == f, col].to_numpy(float) for col in ["jumps", "minutes"])
+                     for f in files]
+        lo, hi = group_bootstrap(per_group, crossing_stats, 10000, config.SEED)
+        value = crossing_stats(*[np.concatenate(a) for a in zip(*per_group)])
+        cell = {"topology": topology, "dataset": dataset, "groups": len(files), "runs": len(rc)}
+        counts = {"started": len(c), **{s: int(np.sum(c["status"] == s)) for s in STATUSES},
+                  "with_jump": int(c["has_jump"].sum()), "used": len(used), "jumps": int(rc["jumps"].sum()),
+                  "player_min": rc["minutes"].sum()}
+        summary += [{**cell, "stat": s, "value": v, "ci_lo": np.nan, "ci_hi": np.nan} for s, v in counts.items()]
+        summary += [{**cell, "stat": s, "value": value[j], "ci_lo": lo[j], "ci_hi": hi[j]}
+                    for j, s in enumerate(CROSSING_STATS)]
+    return pd.DataFrame(summary), cr
