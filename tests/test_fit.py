@@ -53,6 +53,14 @@ def test_bin_ll_sums_to_the_model_ll(data):
     assert bin_ll(m, df).sum() == pytest.approx(m.llf, rel=1e-10)
 
 
+def test_another_outcome_column(data):
+    df, _ = data
+    d = df.assign(y_probe=df["y_rev"].to_numpy()[::-1])        # any other 0/1 column
+    m = fit(d, FEATURES, False, outcome="y_probe")
+    assert m.model.endog_names == "y_probe" and m.model.endog.sum() == d["y_probe"].sum()
+    assert bin_ll(m, d).sum() == pytest.approx(m.llf, rel=1e-10)
+
+
 def test_boot_delta_of_x_and_x_is_zero(data):
     df, _ = data
     x = bin_ll(fit(df, FEATURES, False), df)

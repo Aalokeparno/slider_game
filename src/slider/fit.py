@@ -1,6 +1,6 @@
-"""Path A, P10: Decision 1 (R0 vs R1), pre-registered in the Path A Workbook Ch. A8.2.
+"""Path A, P10 / P11: logistic hazard models, pre-registered in the Path A Workbook Ch. A8.2 / A8.4.
 
-Unpenalized logistic regression of y_rev on the hazard table (hazard.build_hazard_table), raw features.
+Unpenalized logistic regression of y_rev (or y_probe) on the hazard table (hazard.build_hazard_table), raw features.
 lab = 1 if dataset in {EL, CL}, 0 if CC.
   R0: const + lab + feats                    (shared weights)
   R1: R0 + lab x each feature                (cloud weights beta_j, lab weights beta_j + gamma_j)
@@ -27,18 +27,19 @@ def design(df, feats, lab_interact):
     return X
 
 
-def fit(df, feats, lab_interact):
-    """Fit R0 (lab_interact=False) or R1 (True) with statsmodels Logit (Newton). Returns the fitted model."""
-    return sm.Logit(df[OUTCOME].astype(float), design(df, feats, lab_interact)).fit(disp=0)
+def fit(df, feats, lab_interact, outcome=OUTCOME):
+    """Fit R0 (lab_interact=False) or R1 (True) of outcome (y_rev or y_probe) with statsmodels Logit (Newton).
+    Returns the fitted model."""
+    return sm.Logit(df[outcome].astype(float), design(df, feats, lab_interact)).fit(disp=0)
 
 
 def bin_ll(model, df):
-    """Log-likelihood of each bin under a fitted model: y ln h + (1 - y) ln(1 - h)."""
+    """Log-likelihood of each bin under a fitted model: y ln h + (1 - y) ln(1 - h), y = the model's outcome."""
     names = model.model.exog_names
     feats = [n for n in names if n not in ("const", "lab") and not n.startswith("lab:")]
     X = design(df, feats, any(n.startswith("lab:") for n in names))[names]
     h = np.asarray(model.predict(X))
-    y = df[OUTCOME].to_numpy(float)
+    y = df[model.model.endog_names].to_numpy(float)
     return y * np.log(h) + (1 - y) * np.log1p(-h)
 
 
