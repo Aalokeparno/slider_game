@@ -32,6 +32,9 @@ H5_TRAIN_CHECKS = TABLES / "h5_train_checks.csv"
 H5_VAL = TABLES / "h5_val.csv"
 TRAIN_TARGETS = TABLES / "train_targets.csv"
 TARGET8 = TABLES / "target8_reversal_rate.csv"
+TARGET9 = TABLES / "target9_agreement_at_reversal.csv"
+TARGET9_HAZARD = TABLES / "target9_hazard.csv"
+TARGET9_FIGURE = FIGURES / "target9_agreement_at_reversal.png"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}

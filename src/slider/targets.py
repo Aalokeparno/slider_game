@@ -8,15 +8,18 @@ CIs: stats.group_bootstrap_mean for means and shares, stats.group_bootstrap (sam
 quantiles and pooled ratios; 10,000 resamples, seed 573.
 
 Target 8 (reversal rate, reversal_rate_table) uses the P2c method of labclock.py.
+Target 9 (Agreement at reversal, agreement_at_reversal_table) uses hazard.py for the at-risk time.
 """
 import numpy as np
 import pandas as pd
 
 from slider import config
 from slider import h5
+from slider import hazard
 from slider import slider_logs as sl
 from slider.fraught import fraught_percent_hold, round_end
-from slider.labclock import CELLS, events_table, exposure
+from slider.labclock import CELLS, events_table, exposure, lab_log
+from slider.reversals import run_events
 from slider.stats import group_bootstrap, group_bootstrap_mean, kaplan_meier, km_quantiles
 
 ROLES = [("train", {"train"}), ("val", {"val"}), ("train+val", {"train", "val"})]
@@ -155,3 +158,87 @@ def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True):
                     "reversals": int(c["reversals"].sum()), "player_min": c["minutes"].sum(),
                     "rate": c["reversals"].sum() / c["minutes"].sum(), "ci_lo": lo, "ci_hi": hi})
     return pd.DataFrame(out)
+
+
+# ------------------------------------------------------------- target 9: Agreement at reversal
+
+A_STATS = ["median", "q1", "q3", "pct_A_gt_0.5"]
+
+
+def describe_A(x):
+    """median, q1, q3 and % above 0.5 of Agreement values (NaN if there are none)."""
+    if len(x) == 0:
+        return np.full(4, np.nan)
+    return np.append(np.percentile(x, [50, 25, 75]), 100 * np.mean(x > 0.5))
+
+
+def agreement_bin(A):
+    """Bin 0..9 of width 0.1 on [0, 1], left-closed; the last bin includes 1.0."""
+    return np.minimum(np.floor(np.asarray(A, dtype=float) * 10 + 1e-9), 9).astype(int)
+
+
+def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True):
+    """Target 9: Agreement A_i (hazard.agreement, in [0, 1]) at reversals and over at-risk time, per cell.
+
+    f_rev   A_i of the reverser at the last row before the reversal's first step (row_before of run_events, m).
+    f_time  A of hazard.at_risk_samples (bins of b seconds from each player's first move to fraught.round_end).
+    With lab_clock_cc=True, CC runs first go through labclock.lab_log with this tick; lab data is used as logged.
+    Returns (summary, h):
+      summary  long format, one row per cell, measure (f_rev, f_time) and stat (A_STATS):
+               groups, runs, n (reversals or samples), value, ci_lo, ci_hi.
+      h        one row per cell and A bin (width 0.1, left-closed, last bin includes 1.0): reversals,
+               at_risk_min (samples x b / 60), rate = reversals / at_risk_min, ci_lo, ci_hi,
+               sparse (at_risk_min < 0.5).
+    95% CIs: group bootstrap (log files resampled, stats.group_bootstrap, 10,000 resamples, seed 573).
+    A resample with no at-risk time in a bin has rate NaN, which group_bootstrap counts as +inf.
+    """
+    rev, smp, info = [], [], []
+    for run in runs:
+        if lab_clock_cc and run["dataset"] == "CC":
+            t_lab, X_lab = lab_log(run["t"], run["X"], tick)
+            run = {**run, "t": t_lab, "X": X_lab}
+        cell = {"topology": sl.label_topology(run["A"]), "dataset": run["dataset"], "file": run["file"]}
+        A = hazard.agreement(run)
+        ev = run_events(run, m)
+        ev = ev[ev["type"] == "reversal"]
+        rev.append(pd.DataFrame({**cell, "A": A[ev["row_before"].to_numpy(int), ev["player"].to_numpy(int)]}))
+        smp.append(hazard.at_risk_samples(run, b)[["A"]].assign(**cell))
+        info.append(cell)
+    rev, smp, info = pd.concat(rev), pd.concat(smp), pd.DataFrame(info)
+
+    def rate(rv, sm):
+        with np.errstate(divide="ignore", invalid="ignore"):
+            return rv.reshape(-1, 10).sum(axis=0) / (sm.reshape(-1, 10).sum(axis=0) * b / 60)
+
+    summary, h = [], []
+    for topology, dataset in CELLS:
+        runs_c = info[(info["topology"] == topology) & (info["dataset"] == dataset)]
+        if len(runs_c) == 0:
+            continue
+        r = rev[(rev["topology"] == topology) & (rev["dataset"] == dataset)]
+        s = smp[(smp["topology"] == topology) & (smp["dataset"] == dataset)]
+        files = sorted(runs_c["file"].unique())
+        per_group = [(r.loc[r["file"] == f, "A"].to_numpy(float), s.loc[s["file"] == f, "A"].to_numpy(float))
+                     for f in files]
+        cell = {"topology": topology, "dataset": dataset}
+
+        # f_rev and f_time: median, q1, q3, % > 0.5
+        lo, hi = group_bootstrap(per_group, lambda a, c: np.append(describe_A(a), describe_A(c)), 10000, config.SEED)
+        value = np.append(describe_A(r["A"].to_numpy(float)), describe_A(s["A"].to_numpy(float)))
+        for i, (measure, n) in enumerate([("f_rev", len(r)), ("f_time", len(s))]):
+            for j, stat in enumerate(A_STATS):
+                summary.append({**cell, "measure": measure, "groups": len(files), "runs": len(runs_c), "n": n,
+                                "stat": stat, "value": value[4 * i + j], "ci_lo": lo[4 * i + j], "ci_hi": hi[4 * i + j]})
+
+        # h(A): reversals / at-risk minutes in each A bin
+        counts = [(np.bincount(agreement_bin(a), minlength=10), np.bincount(agreement_bin(c), minlength=10))
+                  for a, c in per_group]
+        lo, hi = group_bootstrap(counts, rate, 10000, config.SEED)
+        n_rev = np.bincount(agreement_bin(r["A"]), minlength=10)
+        n_smp = np.bincount(agreement_bin(s["A"]), minlength=10)
+        point, minutes = rate(n_rev, n_smp), n_smp * b / 60
+        for j in range(10):
+            h.append({**cell, "A_lo": j / 10, "A_hi": (j + 1) / 10, "reversals": int(n_rev[j]),
+                      "at_risk_min": minutes[j], "rate": point[j], "ci_lo": lo[j], "ci_hi": hi[j],
+                      "sparse": minutes[j] < 0.5})
+    return pd.DataFrame(summary), pd.DataFrame(h)
