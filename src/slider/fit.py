@@ -1,4 +1,4 @@
-"""Path A, P10 / P11: logistic hazard models, pre-registered in the Path A Workbook Ch. A8.2 / A8.4.
+"""Path A, P10 - P13: logistic hazard models, pre-registered in the Path A Workbook Ch. A8.2 / A8.4 / A8.6.
 
 Unpenalized logistic regression of y_rev (or y_probe) on the hazard table (hazard.build_hazard_table), raw features.
 lab = 1 if dataset in {EL, CL}, 0 if CC.
@@ -55,3 +55,19 @@ def boot_delta(ll_big, ll_small, groups, n=10000, seed=config.SEED):
     boot = sums[idx].sum(axis=1) / counts[idx].sum(axis=1)
     low, high = np.percentile(boot, [2.5, 97.5])
     return sums.sum() / counts.sum(), (low, high)
+
+
+def rcs(x, knots):
+    """Natural (restricted) cubic spline of x with knots t_1 < ... < t_k (Harrell's form): the k - 2 nonlinear
+    columns; with x itself they span the spline (cubic between knots, linear below t_1 and above t_k).
+    Column j: (x - t_j)+^3 - (x - t_k-1)+^3 (t_k - t_j) / (t_k - t_k-1) + (x - t_k)+^3 (t_k-1 - t_j) / (t_k - t_k-1),
+    divided by (t_k - t_1)^2."""
+    x, t = np.asarray(x, dtype=float), np.asarray(knots, dtype=float)
+    k = len(t)
+
+    def cube(u):
+        return np.maximum(u, 0) ** 3
+
+    cols = [cube(x - t[j]) - cube(x - t[k - 2]) * (t[k - 1] - t[j]) / (t[k - 1] - t[k - 2])
+            + cube(x - t[k - 1]) * (t[k - 2] - t[j]) / (t[k - 1] - t[k - 2]) for j in range(k - 2)]
+    return np.column_stack(cols) / (t[k - 1] - t[0]) ** 2

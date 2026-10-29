@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from slider.fit import FEATURES, bin_ll, boot_delta, fit
+from slider.fit import FEATURES, bin_ll, boot_delta, fit, rcs
 
 BETA = {"const": -3.0, "lab": 0.3, "A": -2.0, "trend": -1.5, "abs_s": 0.5, "at_end": -0.4,
         "time_at_end_log1p": -0.2, "time_since_rev_log1p": -0.3}
@@ -66,3 +66,14 @@ def test_boot_delta_of_x_and_x_is_zero(data):
     x = bin_ll(fit(df, FEATURES, False), df)
     delta, (low, high) = boot_delta(x, x, df["group_id"], n=1000)
     assert (delta, low, high) == (0, 0, 0)
+
+
+def test_rcs_is_zero_below_the_first_knot_and_linear_above_the_last():
+    knots = [0.05, 0.4, 0.8, 1.0]
+    x = np.linspace(-1, 3, 4001)
+    f = rcs(x, knots)
+    assert f.shape == (len(x), 2)
+    assert np.all(f[x <= 0.05] == 0)
+    above = f[x >= 1.0]
+    assert np.allclose(np.diff(above, n=2, axis=0), 0, atol=1e-12)      # second differences vanish: linear
+    assert np.all(np.abs(np.diff(f, axis=0)) < 1e-2)                   # continuous on a fine grid
