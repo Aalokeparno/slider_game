@@ -23,6 +23,11 @@ Features, each tick, from the positions at the tick start t (hazard.build_hazard
 The first move and a reversal's first step are steps of k, as in reversals.detect_events (m = 2): the first
 change of k, and the first step of k against the direction. On the 0.1 grid these are the player's own steps;
 on the 0.02 grid they can come a few ticks later. The reversal hazard is 0 before the first move.
+Decisions (2026-10-29):
+    - Old CL (0.02 grid) keeps hazard.py's definitions, not the |s| wording of the spec: at_end = |k| >= 9
+      (|s| >= 0.86 there), first move = the first change of k, tau_r resets at a reversal's first step of k.
+    - CC features come from the snapshot at each 0.033 s tick, as built (hazard.py computed them on CC rows
+      put on the 0.1 s lab clock).
 
 Tick j, from t = j dt to t + dt (synchronous):
     (a) features from the positions at t
@@ -371,7 +376,8 @@ def to_run(events, meta, logger, rng=None):
 
 
 def table(runs, role="train"):
-    """The table slider_logs.load_runs returns with runs, for runs from to_run (no bots, one round per file)."""
+    """The table slider_logs.load_runs returns with runs, for runs from to_run (no bots). role: one for all runs,
+    or one per run. coarse_time is per run (all rounds of a whole-second file are whole-second)."""
     out = sl.runs_table(runs)
     out["role"] = role
     out["has_bot"] = False

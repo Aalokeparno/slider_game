@@ -53,6 +53,7 @@ P13_WEIGHTS = TABLES / "p13_weights.csv"
 P13_VERDICTS = TABLES / "p13_verdicts.csv"
 P17_RATES = TABLES / "p17_rates.csv"
 P17_SURVIVAL = FIGURES / "p17_survival.png"
+P23_RECOVERY = TABLES / "p23_recovery.csv"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
