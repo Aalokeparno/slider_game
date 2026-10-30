@@ -344,25 +344,58 @@ def crossing_time_table(runs, pause=0.3, lab_clock_cc=True, n_boot=10000):
 CHECKS = {1: "success_rate_pct", 2: "consensus_time_km_median_s", 3: "fraught_pct_mean", 4: "committed_pct_mean",
           5: "breaker_excess", 6: "end_sitting_pct", 7: "relapse_pct", 8: "reversal_rate",
           9: "f_rev_median", 10: "crossing_time_median_s"}
+PAUSE_SHARE = "pause_share_pct"           # 10c, used only by the L1b trigger (P24)
+GROUP_RATE = "reversal_rate_group"        # target 8 per group, used only by the L3 trigger (P24)
+
+
+def median_or_limit(median, sessions):
+    """Target 2 for every model (P24): the KM median, or the cell's time limit if there is none (success < 50%)."""
+    return sessions.map(config.TIME_LIMIT).max() if np.isnan(median) else median
+
+
+def group_rates(rates):
+    """Target 8 per group: topology, dataset, group, rate (reversals / player-minutes of the group's runs in the
+    cell), from reversal_rate_runs; groups in sorted order within each cell."""
+    out = []
+    for (topology, dataset, group), g in rates.groupby(["topology", "dataset", "file"], sort=True):
+        out.append({"topology": topology, "dataset": dataset, "group": group,
+                    "rate": g["reversals"].sum() / g["minutes"].sum()})
+    return pd.DataFrame(out, columns=["topology", "dataset", "group", "rate"])
+
+
+def between_group_sd(rates):
+    """L3 trigger statistic: SD (ddof = 1) of the per-group reversal rates of one cell."""
+    return np.std(np.asarray(rates, dtype=float), ddof=1)
+
+
+def between_group_sd_ci(rates, n_boot=10000, seed=config.SEED):
+    """95% CI of between_group_sd by group bootstrap (one value per group, in sorted group order)."""
+    return group_bootstrap([(np.array([x], dtype=float),) for x in rates], between_group_sd, n_boot, seed)
 
 
 def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
     """The check statistics, one per target per cell, as point values (no bootstrap), with the same code as
-    the full functions. Long format: target, stat, topology, dataset, value.
+    the full functions. Long format: target, stat, topology, dataset, group ("" for a cell value), value,
+    in_check_list.
 
     targets 1-7  train_targets on (runs3, table3), all runs pooled (= its "train+val" rows for train + val runs):
                  success_rate_pct, consensus_time_km_median_s, fraught_pct_mean, committed_pct_mean,
                  breaker_excess (Full only), end_sitting_pct, relapse_pct
+                 target 2: the cell's time limit if there is no KM median (success < 50%), see median_or_limit
     target 8     reversal_rate_table(runs5): rate
     target 9     agreement_at_reversal_table(runs5): f_rev median (Agreement at reversal)
     target 10    crossing_time_table(runs5): crossing_time_median_s (10a)
     That is 56 statistics; in_check_list marks the 53 of the check list: target 3 (% fraught) only in the
     Hierarchy cells (Full and Star have no fraught states, so it is structurally 0 there).
+    Not in the check list (P24 triggers only):
+    10c          crossing_time_table(runs5): pause_share_pct, per cell (L1b)
+    8 per group  reversal_rate_table of each group's runs5: rate, one row per cell and group (L3)
     """
     rows = []
 
-    def add(target, topology, dataset, value):
-        rows.append({"target": target, "stat": CHECKS[target], "topology": topology, "dataset": dataset, "value": value})
+    def add(target, topology, dataset, value, stat=None, group=""):
+        rows.append({"target": target, "stat": stat or CHECKS[target], "topology": topology, "dataset": dataset,
+                     "group": group, "value": value})
 
     r_all, sp_all = per_run_values(runs3, table3)
     for topology in h5.TOPOLOGIES:
@@ -370,7 +403,7 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
             r = r_all[(r_all["topology"] == topology) & (r_all["dataset"] == dataset)]
             sp = sp_all[(sp_all["topology"] == topology) & (sp_all["dataset"] == dataset)]
             add(1, topology, dataset, 100 * r["success"].mean())
-            add(2, topology, dataset, km_quantile(kaplan_meier(r["ttc"], r["success"])[0], 0.5))
+            add(2, topology, dataset, median_or_limit(km_quantile(kaplan_meier(r["ttc"], r["success"])[0], 0.5), r["session"]))
             add(3, topology, dataset, r["fraught %"].mean())
             add(4, topology, dataset, r["committed %"].mean())
             if topology == "Full":                                # h5.breaker_test: mean of minority - k/7
@@ -383,8 +416,10 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
             add(7, topology, dataset, relapse.mean() if len(ended) > 0 else np.nan)
 
     rates = reversal_rate_runs(runs5, m, tick)
+    per_group = group_rates(rates)
     rev, _, _ = agreement_values(runs5, m, tick, samples=False)
     cr, _ = crossing_values(runs5, pause)
+    extra = []
     for topology, dataset in CELLS:
         c = rates[(rates["topology"] == topology) & (rates["dataset"] == dataset)]
         if len(c) == 0:
@@ -395,23 +430,66 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
         x = cr[(cr["topology"] == topology) & (cr["dataset"] == dataset)]
         used = x[(x["status"] == "complete") & ~x["has_jump"].astype(bool)]
         add(10, topology, dataset, np.percentile(used["duration"].to_numpy(float), [50, 25, 75])[0] if len(used) else np.nan)
-    out = pd.DataFrame(rows, columns=["target", "stat", "topology", "dataset", "value"])
-    out["in_check_list"] = (out["target"] != 3) | (out["topology"] == "Hierarchy")
+        u = used.sort_values("file", kind="stable")              # crossing_time_table's group order: same sums
+        extra.append((10, topology, dataset, 100 * u["pause_time"].to_numpy(float).sum() / u["duration"].to_numpy(float).sum()
+                      if len(used) else np.nan, PAUSE_SHARE, ""))
+        g = per_group[(per_group["topology"] == topology) & (per_group["dataset"] == dataset)]
+        extra += [(8, topology, dataset, rate, GROUP_RATE, group) for group, rate in zip(g["group"], g["rate"])]
+    n_main = len(rows)
+    for e in extra:
+        add(*e)
+    out = pd.DataFrame(rows, columns=["target", "stat", "topology", "dataset", "group", "value"])
+    out["in_check_list"] = (np.arange(len(out)) < n_main) & ((out["target"] != 3) | (out["topology"] == "Hierarchy"))
     return out
 
 
 def full_check_values(runs3, table3, runs5, n_boot=10000):
     """The same statistics read from the full functions (train_targets "train+val" rows, reversal_rate_table,
-    agreement_at_reversal_table, crossing_time_table), in check_stats' row order. For tests."""
+    agreement_at_reversal_table, crossing_time_table; target 8 per group: reversal_rate_table of the group's
+    runs), in check_stats' row order. Target 2 takes median_or_limit here too. For tests."""
     tt = train_targets(runs3, table3, n_boot=n_boot)
     tt = tt[tt["role"] == "train+val"].set_index(["stat", "topology", "dataset"])["value"]
     rr = reversal_rate_table(runs5, n_boot=n_boot).set_index(["topology", "dataset"])["rate"]
     ag = agreement_at_reversal_table(runs5, n_boot=n_boot)[0]
     ag = ag[(ag["measure"] == "f_rev") & (ag["stat"] == "median")].set_index(["topology", "dataset"])["value"]
-    cs = crossing_time_table(runs5, n_boot=n_boot)[0]
-    cs = cs[cs["stat"] == "crossing_time_median_s"].set_index(["topology", "dataset"])["value"]
-    full = {8: rr, 9: ag, 10: cs}
+    cs = crossing_time_table(runs5, n_boot=n_boot)[0].set_index(["stat", "topology", "dataset"])["value"]
+    by_group = {}
+    for f in sorted({run["file"] for run in runs5}):
+        t = reversal_rate_table([run for run in runs5 if run["file"] == f], n_boot=n_boot)
+        by_group.update({(top, ds, f): rate for top, ds, rate in zip(t["topology"], t["dataset"], t["rate"])})
     fast = check_stats(runs3, table3, runs5)
-    values = [tt[(s, top, ds)] if t <= 7 else full[t][(top, ds)]
-              for t, s, top, ds in zip(fast["target"], fast["stat"], fast["topology"], fast["dataset"])]
+    values = []
+    for t, s, top, ds, g in zip(fast["target"], fast["stat"], fast["topology"], fast["dataset"], fast["group"]):
+        if s == GROUP_RATE:
+            values.append(by_group[(top, ds, g)])
+        elif t == 2:
+            sessions = table3.loc[(table3["topology"] == top) & (table3["dataset"] == ds), "session"]
+            values.append(median_or_limit(tt[(s, top, ds)], sessions))
+        elif t <= 7:
+            values.append(tt[(s, top, ds)])
+        else:
+            values.append({8: rr, 9: ag}[t][(top, ds)] if t < 10 else cs[(s, top, ds)])
     return fast.assign(full=values)
+
+
+def human_check_values():
+    """Human value and 95% CI of the 53 check statistics (in_check_list) and of 10c, from the saved tables:
+    targets 1-7  train_targets.csv, "train+val" rows
+    target 8     target8_reversal_rate.csv, set b_target8 (rate)
+    target 9     target9_agreement_at_reversal.csv, set target9, f_rev median
+    target 10    target10_crossing_time.csv, set target10: crossing_time_median_s (10a) and pause_share_pct (10c)
+    Columns: target, stat, topology, dataset, value, ci_lo, ci_hi, in_check_list."""
+    tt = pd.read_csv(config.TRAIN_TARGETS)
+    tt = tt[tt["role"] == "train+val"]
+    parts = [tt[tt["stat"] == CHECKS[t]].assign(target=t) for t in range(1, 8)]
+    t8 = pd.read_csv(config.TARGET8)
+    parts.append(t8[t8["set"] == "b_target8"].rename(columns={"rate": "value"}).assign(target=8, stat=CHECKS[8]))
+    t9 = pd.read_csv(config.TARGET9)
+    t9 = t9[(t9["set"] == "target9") & (t9["measure"] == "f_rev") & (t9["stat"] == "median")]
+    parts.append(t9.assign(target=9, stat=CHECKS[9]))
+    t10 = pd.read_csv(config.TARGET10)
+    t10 = t10[t10["set"] == "target10"]
+    parts += [t10[t10["stat"] == stat].assign(target=10) for stat in [CHECKS[10], PAUSE_SHARE]]
+    out = pd.concat(parts)[["target", "stat", "topology", "dataset", "value", "ci_lo", "ci_hi"]].reset_index(drop=True)
+    out["in_check_list"] = (out["stat"] != PAUSE_SHARE) & ((out["target"] != 3) | (out["topology"] == "Hierarchy"))
+    return out

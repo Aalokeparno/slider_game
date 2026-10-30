@@ -18,6 +18,7 @@ What has been seen on held-out data, and what was frozen at that point.
 - Oct 27: P11 2x2 (pre-registered in the Path A Workbook Ch. A8.2 / A8.4): M1 (A, |s|, at_end), M2 (M1 + trend), M2' (M1 + e, r), M3 (all six), R0 structure, fit on G-train (all training cells, 336,073 bins, 6,073 reversals), G-val scored (225,033 bins, 21 groups). delta per bin: M2 − M1 2.09e-4 (CI −1.28e-4 to 4.74e-4, includes 0); M2' − M1 2.86e-3 (1.53e-3 to 4.75e-3, above 0); M3 − M2' 4.67e-4 (−1.21e-5 to 8.28e-4, includes 0); M3 − M2 3.12e-3 (1.82e-3 to 4.90e-3, above 0). Secondary, descriptive: the same 4 models with `y_probe`, also scored on G-val. See `notebooks/path1/p11_2x2.ipynb` (`results/tables/p11_2x2.csv`, `p11_coefs.csv`, `p11_probe.csv`).
 - Oct 28: P13 sensitivities (pre-registered in the Path A Workbook Ch. A8.6): S1 b = 0.1 s, S2 b = 0.5 s, S3 m = 3 (rebuilt tables, git-ignored `data/processed/hazard_table_s1/s2/s3.parquet`), S4 no abs_s, S5 capped e / r, S6 no bot runs, S7 no old-CL rows, S8 spline in A (descriptive); M1, M2, M2' fit on G-train. G-val reused for robustness only (no choice changed, P10–P12 not refit): M2' − M1 CI above 0 in all 8, M2 − M1 CI includes 0 in all 8. See `notebooks/path1/p13_sensitivity.ipynb` (`results/tables/p13_tables_check.csv`, `p13_weights.csv`, `p13_verdicts.csv`).
 - Oct 29: Step 4 simulator (`src/slider/sim.py`). To fill in the end-of-round rule, the last rows of train and val rounds (behavior runs) were checked against candidate consensus rules: |sum of s| / 7 >= 0.99 gives every logged round end and no earlier row (an interface property, no behavior metric). No simulated target compared with human targets.
+- Oct 29: P24 pilot (`scripts/p24_pilot.py`, L1, 10 replicates, seed 573): only the SD over replicates and the human CI half-widths were looked at (`results/tables/p24_pilot.csv`, no simulated means, no human point values). R = 200 (cap): Star CC success rate has a zero-width human CI (R needed = inf) and the Full CC / Star CC 10a CIs have width ~1e-15; without them R is still 200 (target 2 Hierarchy CL needs 628). Smoke test of `p24_main.py` / `p24_checks.py` on L1 (R = 3, seed 1001, outputs deleted): one line of its report was seen by mistake (L1 target 5 misses in 2 of 2 Full cells at R = 3), plus the word TRIGGERED for one of L1b / L3; no code changed because of it.
 
 ## Data source
 
@@ -48,6 +49,7 @@ notebooks/
 results/
   tables/             ring_traps.csv (HW 4), apem_sweep.csv, apem_topologies.csv (HW 5), h5_train.csv, h5_train_checks.csv, h5_val.csv, train_targets.csv (HW 6)
   figures/
+scripts/              p24_pilot.py, p24_main.py (resumable main runs), p24_checks.py (checks + triggers)
 tests/test_sanity.py
 environment.yml       conda env "elec573"
 ```

@@ -77,45 +77,71 @@ def design(run_set):
     return pd.DataFrame(rows)
 
 
-def simulate_design(design, preset, R=1, seed=None, **apem):
-    """R simulated copies of every round of a design, as (runs, table) like load_runs, all seats human.
-
-    Each round keeps its dataset, role, topology, wave, graph, seat map, interface, speed and T. preset: sim.preset
-    name (APEM takes a, s_th, mu). Logger: whole_second for whole-second rounds, cloud for CC, else lab.
-    Copy r of a round goes into group sim<r>_<group>, so each copy of a file holds the same rounds.
-    """
+def simulate_rounds(design, preset, R=1, seed=None, **apem):
+    """sim.simulate of every round of a design, R copies at once (one call per round): a list, one
+    (outputs, log_rng) per round. copy_runs turns copy r into runs. preset: sim.preset name (APEM takes a, s_th,
+    mu). Round i uses SeedSequence(seed).spawn(len(design))[i], split into a simulation and a logger stream."""
     model = sim.preset(preset, **apem)
     streams = np.random.SeedSequence(seed).spawn(len(design))
-    runs, roles = [], []
+    out = []
     for row, stream in zip(design.itertuples(), streams):
         sim_seed, log_seed = stream.spawn(2)
         A = row.graph[np.ix_(row.seat_node, row.seat_node)]
-        out = sim.simulate(A, row.T, row.interface, R=R, seed=sim_seed, speed=row.speed, **model)
-        log_rng = np.random.default_rng(log_seed)
+        out.append((sim.simulate(A, row.T, row.interface, R=R, seed=sim_seed, speed=row.speed, **model),
+                    np.random.default_rng(log_seed)))
+    return out
+
+
+def copy_runs(design, rounds, r, seed=None):
+    """Copy r of every round of simulate_rounds as runs (like load_runs; all seats human), in design order.
+
+    Each round keeps its dataset, topology, wave, graph, seat map, interface and T; copy r goes into group
+    sim<r>_<group>, so each copy of a file holds the same rounds. Logger: whole_second for whole-second rounds,
+    cloud for CC, else lab. Each round's logger stream is used in copy order: call r = 0, 1, 2, ... in turn.
+    """
+    runs = []
+    for row, (out, log_rng) in zip(design.itertuples(), rounds):
+        o = out[r]
         logger = "whole_second" if row.whole_second else "cloud" if row.interface == "cc" else "lab"
-        for r, o in enumerate(out):
-            meta = {"group": f"sim{r}_{row.group}", "dataset": row.dataset, "topology": row.topology, "wave": row.wave,
-                    "graph": row.graph, "seat_node": row.seat_node, "interface": row.interface, "time_limit": row.T,
-                    "end": "success" if o["success"] else "failed", "seed": seed}
-            runs.append(sim.to_run(o["events"], meta, logger, log_rng))
-            roles.append(row.role)
-    return runs, sim.table(runs, roles)
+        meta = {"group": f"sim{r}_{row.group}", "dataset": row.dataset, "topology": row.topology, "wave": row.wave,
+                "graph": row.graph, "seat_node": row.seat_node, "interface": row.interface, "time_limit": row.T,
+                "end": "success" if o["success"] else "failed", "seed": seed}
+        runs.append(sim.to_run(o["events"], meta, logger, log_rng))
+    return runs
+
+
+def simulate_design(design, preset, R=1, seed=None, **apem):
+    """R simulated copies of every round of a design, as (runs, table) like load_runs, all seats human:
+    simulate_rounds, then copy_runs for every copy. Runs in round order, the R copies of a round together.
+    Each round keeps its dataset, role, topology, wave, graph, seat map, interface, speed and T."""
+    rounds = simulate_rounds(design, preset, R, seed, **apem)
+    copies = [copy_runs(design, rounds, r, seed) for r in range(R)]
+    runs = [copies[r][i] for i in range(len(design)) for r in range(R)]
+    return runs, sim.table(runs, list(np.repeat(design["role"].to_numpy(), R)))
+
+
+BATCH = 20      # replicates per job: 21.9 s per replicate wall with 2 processes, 541 MB peak per process (Oct 29)
 
 
 def check_job(job):
-    """One batch for check_replicates: (d3, preset, R, seed, first replicate number, apem) -> check_stats rows."""
+    """One batch for check_replicates: (d3, preset, R, seed, first replicate number, apem) -> check_stats rows.
+    The R copies of each round are simulated at once (simulate_rounds); the runs of one copy at a time are then
+    built, scored and dropped, so only the batch's position events stay in memory."""
     d3, preset, R, seed, first, apem = job
-    runs, table = simulate_design(d3, preset, R=R, seed=seed, **apem)
+    rounds = simulate_rounds(d3, preset, R=R, seed=seed, **apem)
     keep5 = ~d3["whole_second"].to_numpy()                     # L5 = L3 without the whole-second rounds
+    roles = list(d3["role"])
     out = []
-    for r in range(R):                                          # copy r of every round: runs[r::R]
-        runs3, table3 = runs[r::R], table.iloc[r::R].reset_index(drop=True)
+    for r in range(R):
+        runs3 = copy_runs(d3, rounds, r, seed)
         runs5 = [run for run, keep in zip(runs3, keep5) if keep]
-        out.append(targets.check_stats(runs3, table3, runs5).assign(replicate=first + r))
+        out.append(targets.check_stats(runs3, sim.table(runs3, roles), runs5).assign(replicate=first + r))
+        for o, _ in rounds:
+            o[r] = None                                         # copy r is done
     return pd.concat(out, ignore_index=True)
 
 
-def check_replicates(d3, preset, n_rep, seed=None, workers=2, batch=4, **apem):
+def check_replicates(d3, preset, n_rep, seed=None, workers=2, batch=BATCH, **apem):
     """targets.check_stats of n_rep simulated replicates of the L3 design d3 (targets 8-10 on each replicate's L5
     rounds), in `workers` processes, `batch` replicates per job (simulated together, one call per round).
     Batch b uses seed [seed, b]. Returns (stats with a replicate column, wall seconds per replicate)."""

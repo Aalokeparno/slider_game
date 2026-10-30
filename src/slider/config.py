@@ -56,6 +56,9 @@ P17_RATES_V1 = TABLES / "p17_rates_v1.csv"    # before F1b (Oct 29): steps onto 
 P17_SURVIVAL = FIGURES / "p17_survival.png"
 P23_RECOVERY = TABLES / "p23_recovery.csv"
 P23_RECOVERY_V1 = TABLES / "p23_recovery_v1.csv"    # first run, simulator at commit 59b7e68 (before F1-F3, F1b)
+P24_PILOT = TABLES / "p24_pilot.csv"                 # pilot: SD over 10 L1 replicates, human CI half-width, R needed
+P24_REPS = {preset: TABLES / f"p24_reps_{preset}.parquet" for preset in ["L1", "L1_M3", "L0"]}   # main runs
+P24_CHECKS = TABLES / "p24_checks.csv"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
