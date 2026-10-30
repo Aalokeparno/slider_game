@@ -135,27 +135,33 @@ def show(targets, topology):
 
 # ------------------------------------------------------------- target 8: reversal rate
 
-def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True):
+def reversal_rate_runs(runs, m=2, tick=0.1, lab_clock_cc=True):
+    """Target 8 per run: topology, dataset, file, wave, minutes (human players, labclock.exposure) and reversals."""
+    events = events_table(runs, m=m, lab_clock=lab_clock_cc, tick=tick)
+    reversals = events[events["type"] == "reversal"].groupby(["file", "wave"]).size().rename("reversals")
+    r = exposure(runs).groupby(["topology", "dataset", "file", "wave"], as_index=False)["minutes"].sum()
+    r = r.join(reversals, on=["file", "wave"])
+    r["reversals"] = r["reversals"].fillna(0)                  # runs with no reversal
+    return r
+
+
+def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True, n_boot=10000):
     """Target 8: reversals per human player-minute in each cell (topology x dataset), pooled over runs.
 
     Reversals: labclock.events_table (reversals.run_events with m, human players only). With
     lab_clock_cc=True, CC runs first go through labclock.lab_log with this tick; lab data is used as logged.
     Player-minutes: labclock.exposure (every human player until fraught.round_end).
     rate = all reversals / all player-minutes of the cell; 95% CI by group bootstrap
-    (log files resampled, stats.group_bootstrap, 10,000 resamples, seed 573), as in P2c.
+    (log files resampled, stats.group_bootstrap, n_boot = 10,000 resamples, seed 573), as in P2c.
     """
-    events = events_table(runs, m=m, lab_clock=lab_clock_cc, tick=tick)
-    reversals = events[events["type"] == "reversal"].groupby(["file", "wave"]).size().rename("reversals")
-    r = exposure(runs).groupby(["topology", "dataset", "file", "wave"], as_index=False)["minutes"].sum()
-    r = r.join(reversals, on=["file", "wave"])
-    r["reversals"] = r["reversals"].fillna(0)                  # runs with no reversal
+    r = reversal_rate_runs(runs, m, tick, lab_clock_cc)
     out = []
     for topology, dataset in CELLS:
         c = r[(r["topology"] == topology) & (r["dataset"] == dataset)]
         if len(c) == 0:
             continue
         per_group = [(d["reversals"].to_numpy(float), d["minutes"].to_numpy(float)) for _, d in c.groupby("file", sort=True)]
-        lo, hi = group_bootstrap(per_group, lambda rev, mi: rev.sum() / mi.sum(), 10000, config.SEED)
+        lo, hi = group_bootstrap(per_group, lambda rev, mi: rev.sum() / mi.sum(), n_boot, config.SEED)
         out.append({"topology": topology, "dataset": dataset, "groups": c["file"].nunique(), "runs": len(c),
                     "reversals": int(c["reversals"].sum()), "player_min": c["minutes"].sum(),
                     "rate": c["reversals"].sum() / c["minutes"].sum(), "ci_lo": lo, "ci_hi": hi})
@@ -179,7 +185,26 @@ def agreement_bin(A):
     return np.minimum(np.floor(np.asarray(A, dtype=float) * 10 + 1e-9), 9).astype(int)
 
 
-def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True):
+def agreement_values(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True, samples=True):
+    """Target 9 inputs: (rev, smp, info). rev: A of the reverser at row_before of each reversal; smp: A of the
+    at-risk samples (only if samples); info: one row per run. Each with topology, dataset, file."""
+    rev, smp, info = [], [], []
+    for run in runs:
+        if lab_clock_cc and run["dataset"] == "CC":
+            t_lab, X_lab = lab_log(run["t"], run["X"], tick)
+            run = {**run, "t": t_lab, "X": X_lab}
+        cell = {"topology": sl.label_topology(run["A"]), "dataset": run["dataset"], "file": run["file"]}
+        A = hazard.agreement(run)
+        ev = run_events(run, m)
+        ev = ev[ev["type"] == "reversal"]
+        rev.append(pd.DataFrame({**cell, "A": A[ev["row_before"].to_numpy(int), ev["player"].to_numpy(int)]}))
+        if samples:
+            smp.append(hazard.at_risk_samples(run, b)[["A"]].assign(**cell))
+        info.append(cell)
+    return pd.concat(rev), (pd.concat(smp) if samples else None), pd.DataFrame(info)
+
+
+def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True, n_boot=10000):
     """Target 9: Agreement A_i (hazard.agreement, in [0, 1]) at reversals and over at-risk time, per cell.
 
     f_rev   A_i of the reverser at the last row before the reversal's first step (row_before of run_events, m).
@@ -191,22 +216,10 @@ def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True):
       h        one row per cell and A bin (width 0.1, left-closed, last bin includes 1.0): reversals,
                at_risk_min (samples x b / 60), rate = reversals / at_risk_min, ci_lo, ci_hi,
                sparse (at_risk_min < 0.5).
-    95% CIs: group bootstrap (log files resampled, stats.group_bootstrap, 10,000 resamples, seed 573).
+    95% CIs: group bootstrap (log files resampled, stats.group_bootstrap, n_boot = 10,000 resamples, seed 573).
     A resample with no at-risk time in a bin has rate NaN, which group_bootstrap counts as +inf.
     """
-    rev, smp, info = [], [], []
-    for run in runs:
-        if lab_clock_cc and run["dataset"] == "CC":
-            t_lab, X_lab = lab_log(run["t"], run["X"], tick)
-            run = {**run, "t": t_lab, "X": X_lab}
-        cell = {"topology": sl.label_topology(run["A"]), "dataset": run["dataset"], "file": run["file"]}
-        A = hazard.agreement(run)
-        ev = run_events(run, m)
-        ev = ev[ev["type"] == "reversal"]
-        rev.append(pd.DataFrame({**cell, "A": A[ev["row_before"].to_numpy(int), ev["player"].to_numpy(int)]}))
-        smp.append(hazard.at_risk_samples(run, b)[["A"]].assign(**cell))
-        info.append(cell)
-    rev, smp, info = pd.concat(rev), pd.concat(smp), pd.DataFrame(info)
+    rev, smp, info = agreement_values(runs, m, tick, b, lab_clock_cc)
 
     def rate(rv, sm):
         with np.errstate(divide="ignore", invalid="ignore"):
@@ -225,7 +238,7 @@ def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True):
         cell = {"topology": topology, "dataset": dataset}
 
         # f_rev and f_time: median, q1, q3, % > 0.5
-        lo, hi = group_bootstrap(per_group, lambda a, c: np.append(describe_A(a), describe_A(c)), 10000, config.SEED)
+        lo, hi = group_bootstrap(per_group, lambda a, c: np.append(describe_A(a), describe_A(c)), n_boot, config.SEED)
         value = np.append(describe_A(r["A"].to_numpy(float)), describe_A(s["A"].to_numpy(float)))
         for i, (measure, n) in enumerate([("f_rev", len(r)), ("f_time", len(s))]):
             for j, stat in enumerate(A_STATS):
@@ -235,7 +248,7 @@ def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True):
         # h(A): reversals / at-risk minutes in each A bin
         counts = [(np.bincount(agreement_bin(a), minlength=10), np.bincount(agreement_bin(c), minlength=10))
                   for a, c in per_group]
-        lo, hi = group_bootstrap(counts, rate, 10000, config.SEED)
+        lo, hi = group_bootstrap(counts, rate, n_boot, config.SEED)
         n_rev = np.bincount(agreement_bin(r["A"]), minlength=10)
         n_smp = np.bincount(agreement_bin(s["A"]), minlength=10)
         point, minutes = rate(n_rev, n_smp), n_smp * b / 60
@@ -262,21 +275,9 @@ def crossing_stats(duration, steps, moving, pause_time, n_pauses, jumps, minutes
                       100 * np.mean(n_pauses > 0), jumps.sum() / minutes.sum()])
 
 
-def crossing_time_table(runs, pause=0.3, lab_clock_cc=True):
-    """Target 10: crossings from one end band to the other (crossings.crossing_events), per cell.
-
-    With lab_clock_cc=True, CC runs first go through labclock.lab_log (tick 0.1 s); lab data is used as logged.
-    has_jump and the jump rate always use the raw rows. Returns (summary, crossings):
-      summary    long format, one row per cell and stat: groups, runs, stat, value, ci_lo, ci_hi.
-                 Counts (no CI): started, complete, aborted, returned, unfinished, with_jump (any status),
-                 used (complete, no jump), jumps (raw rows with |Δk| >= 4, reversals.step_sizes, human players)
-                 and player_min (labclock.exposure).
-                 With CI (CROSSING_STATS, used crossings only): 10a median, Q1, Q3 of crossing time (s);
-                 10b pace = all steps / all moving time (steps/s); 10c pause share = all pause time / all
-                 crossing time (%) and % of crossings with >= 1 pause; jumps per human player-minute (all rows).
-      crossings  every crossing: topology, dataset, file, wave, player, then the crossing_events columns.
-    95% CIs: group bootstrap (log files resampled, stats.group_bootstrap, 10,000 resamples, seed 573).
-    """
+def crossing_values(runs, pause=0.3, lab_clock_cc=True):
+    """Target 10 inputs: (crossings, per_run). crossings: every crossing with topology, dataset, file, wave, player
+    and the crossing_events columns; per_run: topology, dataset, file, wave and jumps (raw rows)."""
     crossings, per_run = [], []
     for run in runs:
         raw_k = to_steps(sl.sign_correct(run))
@@ -292,8 +293,27 @@ def crossing_time_table(runs, pause=0.3, lab_clock_cc=True):
         per_run.append({**info, "jumps": int(np.sum(step_sizes(run) >= JUMP))})
     cr = pd.concat([c for c in crossings if len(c) > 0], ignore_index=True)
     cr = cr[["topology", "dataset", "file", "wave", "player"] + [c for c in cr.columns if c not in info and c != "player"]]
+    return cr, pd.DataFrame(per_run)
+
+
+def crossing_time_table(runs, pause=0.3, lab_clock_cc=True, n_boot=10000):
+    """Target 10: crossings from one end band to the other (crossings.crossing_events), per cell.
+
+    With lab_clock_cc=True, CC runs first go through labclock.lab_log (tick 0.1 s); lab data is used as logged.
+    has_jump and the jump rate always use the raw rows. Returns (summary, crossings):
+      summary    long format, one row per cell and stat: groups, runs, stat, value, ci_lo, ci_hi.
+                 Counts (no CI): started, complete, aborted, returned, unfinished, with_jump (any status),
+                 used (complete, no jump), jumps (raw rows with |Δk| >= 4, reversals.step_sizes, human players)
+                 and player_min (labclock.exposure).
+                 With CI (CROSSING_STATS, used crossings only): 10a median, Q1, Q3 of crossing time (s);
+                 10b pace = all steps / all moving time (steps/s); 10c pause share = all pause time / all
+                 crossing time (%) and % of crossings with >= 1 pause; jumps per human player-minute (all rows).
+      crossings  every crossing: topology, dataset, file, wave, player, then the crossing_events columns.
+    95% CIs: group bootstrap (log files resampled, stats.group_bootstrap, n_boot = 10,000 resamples, seed 573).
+    """
+    cr, per_run = crossing_values(runs, pause, lab_clock_cc)
     minutes = exposure(runs).groupby(["file", "wave"], as_index=False)["minutes"].sum()
-    per_run = pd.DataFrame(per_run).merge(minutes, on=["file", "wave"])
+    per_run = per_run.merge(minutes, on=["file", "wave"])
 
     summary = []
     for topology, dataset in CELLS:
@@ -307,7 +327,7 @@ def crossing_time_table(runs, pause=0.3, lab_clock_cc=True):
                            for col in ["duration", "steps", "moving", "pause_time", "n_pauses"])
                      + tuple(rc.loc[rc["file"] == f, col].to_numpy(float) for col in ["jumps", "minutes"])
                      for f in files]
-        lo, hi = group_bootstrap(per_group, crossing_stats, 10000, config.SEED)
+        lo, hi = group_bootstrap(per_group, crossing_stats, n_boot, config.SEED)
         value = crossing_stats(*[np.concatenate(a) for a in zip(*per_group)])
         cell = {"topology": topology, "dataset": dataset, "groups": len(files), "runs": len(rc)}
         counts = {"started": len(c), **{s: int(np.sum(c["status"] == s)) for s in STATUSES},
@@ -317,3 +337,81 @@ def crossing_time_table(runs, pause=0.3, lab_clock_cc=True):
         summary += [{**cell, "stat": s, "value": value[j], "ci_lo": lo[j], "ci_hi": hi[j]}
                     for j, s in enumerate(CROSSING_STATS)]
     return pd.DataFrame(summary), cr
+
+
+# ------------------------------------------------------------- check statistics (fast path)
+
+CHECKS = {1: "success_rate_pct", 2: "consensus_time_km_median_s", 3: "fraught_pct_mean", 4: "committed_pct_mean",
+          5: "breaker_excess", 6: "end_sitting_pct", 7: "relapse_pct", 8: "reversal_rate",
+          9: "f_rev_median", 10: "crossing_time_median_s"}
+
+
+def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
+    """The check statistics, one per target per cell, as point values (no bootstrap), with the same code as
+    the full functions. Long format: target, stat, topology, dataset, value.
+
+    targets 1-7  train_targets on (runs3, table3), all runs pooled (= its "train+val" rows for train + val runs):
+                 success_rate_pct, consensus_time_km_median_s, fraught_pct_mean, committed_pct_mean,
+                 breaker_excess (Full only), end_sitting_pct, relapse_pct
+    target 8     reversal_rate_table(runs5): rate
+    target 9     agreement_at_reversal_table(runs5): f_rev median (Agreement at reversal)
+    target 10    crossing_time_table(runs5): crossing_time_median_s (10a)
+    That is 56 statistics; in_check_list marks the 53 of the check list: target 3 (% fraught) only in the
+    Hierarchy cells (Full and Star have no fraught states, so it is structurally 0 there).
+    """
+    rows = []
+
+    def add(target, topology, dataset, value):
+        rows.append({"target": target, "stat": CHECKS[target], "topology": topology, "dataset": dataset, "value": value})
+
+    r_all, sp_all = per_run_values(runs3, table3)
+    for topology in h5.TOPOLOGIES:
+        for dataset in sorted(r_all.loc[r_all["topology"] == topology, "dataset"].unique()):
+            r = r_all[(r_all["topology"] == topology) & (r_all["dataset"] == dataset)]
+            sp = sp_all[(sp_all["topology"] == topology) & (sp_all["dataset"] == dataset)]
+            add(1, topology, dataset, 100 * r["success"].mean())
+            add(2, topology, dataset, km_quantile(kaplan_meier(r["ttc"], r["success"])[0], 0.5))
+            add(3, topology, dataset, r["fraught %"].mean())
+            add(4, topology, dataset, r["committed %"].mean())
+            if topology == "Full":                                # h5.breaker_test: mean of minority - k/7
+                ok = sp[(sp["after"] != "censored") & (sp["breaker_status"] == "ok")]
+                d = ok["minority"].astype(float).to_numpy() - np.asarray(ok["k"] / 7, dtype=float)
+                add(5, topology, dataset, d.mean() if len(ok) > 0 else np.nan)
+            add(6, topology, dataset, 100 * r["end time"].sum() / r["player time"].sum())
+            ended = sp[sp["after"] != "censored"]
+            relapse = 100 * (ended["after"] == "relapse")
+            add(7, topology, dataset, relapse.mean() if len(ended) > 0 else np.nan)
+
+    rates = reversal_rate_runs(runs5, m, tick)
+    rev, _, _ = agreement_values(runs5, m, tick, samples=False)
+    cr, _ = crossing_values(runs5, pause)
+    for topology, dataset in CELLS:
+        c = rates[(rates["topology"] == topology) & (rates["dataset"] == dataset)]
+        if len(c) == 0:
+            continue
+        add(8, topology, dataset, c["reversals"].sum() / c["minutes"].sum())
+        a = rev[(rev["topology"] == topology) & (rev["dataset"] == dataset)]
+        add(9, topology, dataset, describe_A(a["A"].to_numpy(float))[0])
+        x = cr[(cr["topology"] == topology) & (cr["dataset"] == dataset)]
+        used = x[(x["status"] == "complete") & ~x["has_jump"].astype(bool)]
+        add(10, topology, dataset, np.percentile(used["duration"].to_numpy(float), [50, 25, 75])[0] if len(used) else np.nan)
+    out = pd.DataFrame(rows, columns=["target", "stat", "topology", "dataset", "value"])
+    out["in_check_list"] = (out["target"] != 3) | (out["topology"] == "Hierarchy")
+    return out
+
+
+def full_check_values(runs3, table3, runs5, n_boot=10000):
+    """The same statistics read from the full functions (train_targets "train+val" rows, reversal_rate_table,
+    agreement_at_reversal_table, crossing_time_table), in check_stats' row order. For tests."""
+    tt = train_targets(runs3, table3, n_boot=n_boot)
+    tt = tt[tt["role"] == "train+val"].set_index(["stat", "topology", "dataset"])["value"]
+    rr = reversal_rate_table(runs5, n_boot=n_boot).set_index(["topology", "dataset"])["rate"]
+    ag = agreement_at_reversal_table(runs5, n_boot=n_boot)[0]
+    ag = ag[(ag["measure"] == "f_rev") & (ag["stat"] == "median")].set_index(["topology", "dataset"])["value"]
+    cs = crossing_time_table(runs5, n_boot=n_boot)[0]
+    cs = cs[cs["stat"] == "crossing_time_median_s"].set_index(["topology", "dataset"])["value"]
+    full = {8: rr, 9: ag, 10: cs}
+    fast = check_stats(runs3, table3, runs5)
+    values = [tt[(s, top, ds)] if t <= 7 else full[t][(top, ds)]
+              for t, s, top, ds in zip(fast["target"], fast["stat"], fast["topology"], fast["dataset"])]
+    return fast.assign(full=values)

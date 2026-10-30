@@ -52,8 +52,10 @@ P13_TABLES_CHECK = TABLES / "p13_tables_check.csv"
 P13_WEIGHTS = TABLES / "p13_weights.csv"
 P13_VERDICTS = TABLES / "p13_verdicts.csv"
 P17_RATES = TABLES / "p17_rates.csv"
+P17_RATES_V1 = TABLES / "p17_rates_v1.csv"    # before F1b (Oct 29): steps onto the wall counted as stop exposure
 P17_SURVIVAL = FIGURES / "p17_survival.png"
 P23_RECOVERY = TABLES / "p23_recovery.csv"
+P23_RECOVERY_V1 = TABLES / "p23_recovery_v1.csv"    # first run, simulator at commit 59b7e68 (before F1-F3, F1b)
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}

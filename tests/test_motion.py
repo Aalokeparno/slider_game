@@ -41,3 +41,18 @@ def test_moving_time_is_steps_times_dt():
     assert seats.loc[0, "start_delay"] == pytest.approx(0.0)         # 0.1 s gap from t = 0, 1 step
     assert seats.loc[0, "residual_s"] == pytest.approx(0.0)
     assert seats.loc[1, "pre_s"] == pytest.approx(1.0) and seats.loc[1, "moved"] == 0
+
+
+def test_a_step_onto_the_wall_is_wall_time_not_stop_exposure():
+    """Player 0 steps 0.1 ... 1.0 at t = 0.1 ... 1.0 and the round succeeds at 1.0: 9 steps of moving time,
+    the step that lands on the wall (|s| = 1) is wall time (F1b)."""
+    t = np.round(np.arange(1, 11) * 0.1, 2)
+    X = np.zeros((10, 7))
+    X[:, 0] = t
+    run = {"file": "f", "wave": 1, "dataset": "EL", "session": "lab", "end": "success", "bot": False,
+           "bot_players": set(), "A_log": np.ones((7, 7), dtype=int), "A": np.ones((7, 7), dtype=int) - np.eye(7, dtype=int),
+           "weights": np.ones(7), "t": t, "X": X}
+    seats, _ = motion_spells(run, IFACE)
+    seat = seats.set_index("player").loc[0]
+    assert seat["moving_s"] == pytest.approx(0.9) and seat["wall_s"] == pytest.approx(0.1)
+    assert seat["stops"] == 0 and seat["residual_s"] == pytest.approx(0.0)

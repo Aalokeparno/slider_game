@@ -8,6 +8,7 @@ import pytest
 
 from slider import config
 from slider import fraught
+from slider import hazard
 from slider import interface
 from slider import sim
 from slider import slider_logs as sl
@@ -30,7 +31,8 @@ def test_coefficients_are_the_p11_values():
 
 
 def test_rates_are_the_p17_values():
-    expected = {"lab_v09": (3.04, 1.77, 0.317), "old_cl": (1.76, 1.74, 0.080), "cc": (10.35, 2.55, 0.204)}
+    # lam_stop after F1b (Oct 29: a step onto the wall is not stop exposure); before: 3.04, 1.76, 10.35
+    expected = {"lab_v09": (3.26, 1.77, 0.317), "old_cl": (1.80, 1.74, 0.080), "cc": (11.10, 2.55, 0.204)}
     for iface, (stop, resume, begin) in expected.items():
         lam = sim.rates(iface)
         assert (round(lam["lam_stop"], 2), round(lam["lam_resume"], 2), round(lam["lam_start"], 3)) == (stop, resume, begin)
@@ -45,6 +47,15 @@ def test_speeds_are_the_modal_file_speeds():
 
 def test_hazard_conversion():
     assert round(sim.per_tick(0.055, 0.1), 4) == 0.0224
+
+
+def test_motion_probabilities_are_per_tick_as_motion_py_counts_them():
+    lam = sim.rates("lab_v09")
+    c = sim.constants(GRAPHS["Full"], "lab_v09", sim.Logistic("M2'"), speed=1.0)
+    x = lam["lam_start"] * 0.1
+    assert c["p"]["stop"] == pytest.approx(lam["lam_stop"] * 0.1)
+    assert c["p"]["resume"] == pytest.approx(lam["lam_resume"] * 0.1)
+    assert c["p"]["start"] == pytest.approx(x / (1 + x))
 
 
 # ------------------------------------------------------------------ hand-set states
@@ -98,33 +109,82 @@ class Once:
 
 
 def reversal(iface, s0, phi0):
-    """Player 0 moving at s0 in direction phi0 reverses in the first tick; tick until the script ends.
-    Returns (ticks in reversing, final n, final phi, final mode, N)."""
+    """Player 0 moving at s0 in direction phi0 reverses in the first tick (no stops); tick until the detector
+    confirms the reversal or the player is at the wall. Returns (ticks, protected ticks, final n, phi, mode, N)."""
     c, st = hand_state(iface, Once(), "none", True, n0=round(s0 * sim.IFACES[iface]["d"] ** -1), phi0=phi0)
-    ticks = 0
+    ticks = protected = 0
     for j in range(100):
         during, _ = sim.tick(st, j, c, np.random.default_rng(j))
-        ticks += during[0, 0] == sim.REVERSING
-        if st["mode"][0, 0] != sim.REVERSING:
+        ticks += 1
+        protected += during[0, 0] == sim.REVERSING
+        if st["dir"][0, 0] == -phi0 or st["mode"][0, 0] == sim.AT_WALL:
             break
-    return ticks, st["n"][0, 0], st["phi"][0, 0], st["mode"][0, 0], c["N"]
+    return ticks, protected, st["n"][0, 0], st["phi"][0, 0], st["mode"][0, 0], c["N"]
 
 
 def test_reversal_lab_is_two_ticks():
-    ticks, n, phi, mode, _ = reversal("lab_v09", 0.5, 1)
-    assert (ticks, n, phi, mode) == (2, 3, -1, sim.MOVING)
+    ticks, protected, n, phi, mode, _ = reversal("lab_v09", 0.5, 1)
+    assert (ticks, protected, n, phi, mode) == (2, 2, 3, -1, sim.MOVING)
 
 
-@pytest.mark.parametrize("s0, n_ticks", [(0.94, 10), (0.86, 6)])
-def test_reversal_old_cl(s0, n_ticks):
-    ticks, n, phi, mode, N = reversal("old_cl", s0, 1)
-    assert (ticks, phi, mode) == (n_ticks, -1, sim.MOVING)
+@pytest.mark.parametrize("s0, n_ticks, n_protected", [(0.94, 10, 5), (0.86, 6, 6)])
+def test_reversal_old_cl(s0, n_ticks, n_protected):
+    """F3: from 0.94 the first 4 steps do not change k (ordinary moving steps), then 5 protected steps; from 0.86
+    the first step changes k, so all 6 are protected. Both end at k = 7, moving in the new direction."""
+    ticks, protected, n, phi, mode, N = reversal("old_cl", s0, 1)
+    assert (ticks, protected, phi, mode) == (n_ticks, n_protected, -1, sim.MOVING)
     assert sim.to_k(np.array([n]), N)[0] == 7                 # k 9 -> 7
 
 
 def test_reversal_stopped_by_the_wall():
-    ticks, n, phi, mode, N = reversal("lab_v09", 0.9, -1)
+    ticks, protected, n, phi, mode, N = reversal("lab_v09", 0.9, -1)
     assert (ticks, n, phi, mode) == (1, N, 1, sim.AT_WALL)
+
+
+@pytest.mark.parametrize("iface", ["lab_v09", "old_cl", "cc"])
+def test_reversal_bins_match_the_hazard_table(iface):
+    """F2: the bins the simulator draws from are hazard.build_hazard_table's bins of the logged round.
+    lab v09: identical features (M3, trend included), risk = kept / dropped, fired bins = y_rev bins, n decisions.
+    old CL: identical features and risk (reversals are dated at their first step of k, later than the flip).
+    CC: the cloud logger's 1-2 ms split can put a lab tick inside one tick's moves, so >= 99% identical."""
+    T = config.TIME_LIMIT[sim.IFACES[iface]["session"]]
+    for seed in [5, 6]:
+        trace = []
+        o = sim.simulate(GRAPHS["Hierarchy"], T, iface, R=1, seed=seed, trace=trace, **sim.preset("L1_M3"))[0]
+        meta = {"group": f"sim_{sim.IFACES[iface]['tag']}_check.txt", "dataset": "CC" if iface == "cc" else "CL",
+                "topology": "Hierarchy", "wave": 1, "graph": GRAPHS["Hierarchy"].astype(int), "seat_node": range(7),
+                "interface": iface, "time_limit": T, "end": "success" if o["success"] else "failed", "seed": seed}
+        run = sim.to_run(o["events"], meta, "cloud" if iface == "cc" else "lab")
+        ht, dropped = hazard.build_hazard_table([run])
+        t_end = fraught.round_end(run["t"], run["end"], run["session"])
+        bins = pd.concat([d for d in trace if "tau" in d], ignore_index=True)
+        bins = bins[bins["tau"] < t_end - 1e-9]                  # the table has no bin at or after the round end
+        last = bins.groupby("player")["tau"].max()
+        key = lambda d, col: list(zip(d["player"], np.round(d[col], 6)))
+        bins["key"], ht["key"], dropped["key"] = key(bins, "tau"), key(ht, "t"), key(dropped, "t")
+        ht = ht[ht["t"] <= ht["player"].map(last) + 1e-9]
+        dropped = dropped[dropped["t"] <= dropped["player"].map(last) + 1e-9]
+        m = bins[bins["risk"]].merge(ht, on="key", suffixes=("_sim", "_ht"))
+        same = np.ones(len(m), dtype=bool)
+        for f in ["A", "abs_s", "at_end", "time_at_end", "time_since_rev", "trend"]:
+            same &= np.isclose(m[f + "_sim"], m[f + "_ht"], atol=1e-9, rtol=0)
+        risk_ok = set(bins.loc[bins["risk"], "key"]) == set(ht["key"]) and set(bins.loc[~bins["risk"], "key"]) == set(dropped["key"])
+        if iface == "cc":
+            assert len(m) >= 0.99 * len(ht) and same.mean() >= 0.99
+            continue
+        assert risk_ok and len(m) == len(ht) and same.all()
+        if iface == "lab_v09":
+            fires = pd.concat([d for d in trace if "fire" in d], ignore_index=True)
+            fired = {bins.loc[(bins["player"] == f.player) & (bins["tau"] <= f.fire + 1e-6), "key"].iloc[-1]
+                     for f in fires.itertuples() if f.fire < t_end - 1e-9}
+            assert fired == set(ht.loc[ht["y_rev"] == 1, "key"])
+            dt = o["dt"]
+            first = bins.groupby("player")["tau"].min()
+            for b in bins.itertuples():                           # decisions per bin: steps dated in it, after the first move
+                k = np.arange(1, int(T / dt) + 2)
+                when = np.round(k * dt, 2)
+                inside = (when >= b.tau - 1e-6) & (when < b.tau + 0.25 - 1e-6) & (when > first[b.player] + 1e-6)
+                assert b.n == inside.sum()
 
 
 # ------------------------------------------------------------------ round trip through to_run

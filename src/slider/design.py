@@ -1,4 +1,5 @@
-"""Path A, Step 4: the design of a simulation, one row per real round, and the simulation of a design.
+"""Path A, Step 4: the design of a simulation, one row per real round, the simulation of a design, and the
+check statistics of simulated replicates (targets.check_stats, in parallel processes).
 
 Run sets (slider_logs.load_runs; test runs are never loaded):
     L3       load_runs("outcome", roles={"train", "val"})                                   targets 1-7
@@ -14,6 +15,9 @@ Speed (units/s), as in hazard.build_hazard_table:
 File speeds are the P7e values in results/tables/interface_table.csv. Step d is the interface's grid step
 (sim.IFACES: 0.1, old CL 0.02) and dt = d / speed.
 """
+import time
+from concurrent.futures import ProcessPoolExecutor
+
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -22,6 +26,7 @@ from slider import config
 from slider import interface
 from slider import sim
 from slider import slider_logs as sl
+from slider import targets
 from slider.models.apem import GRAPHS
 
 SETS = {
@@ -95,3 +100,28 @@ def simulate_design(design, preset, R=1, seed=None, **apem):
             runs.append(sim.to_run(o["events"], meta, logger, log_rng))
             roles.append(row.role)
     return runs, sim.table(runs, roles)
+
+
+def check_job(job):
+    """One batch for check_replicates: (d3, preset, R, seed, first replicate number, apem) -> check_stats rows."""
+    d3, preset, R, seed, first, apem = job
+    runs, table = simulate_design(d3, preset, R=R, seed=seed, **apem)
+    keep5 = ~d3["whole_second"].to_numpy()                     # L5 = L3 without the whole-second rounds
+    out = []
+    for r in range(R):                                          # copy r of every round: runs[r::R]
+        runs3, table3 = runs[r::R], table.iloc[r::R].reset_index(drop=True)
+        runs5 = [run for run, keep in zip(runs3, keep5) if keep]
+        out.append(targets.check_stats(runs3, table3, runs5).assign(replicate=first + r))
+    return pd.concat(out, ignore_index=True)
+
+
+def check_replicates(d3, preset, n_rep, seed=None, workers=2, batch=4, **apem):
+    """targets.check_stats of n_rep simulated replicates of the L3 design d3 (targets 8-10 on each replicate's L5
+    rounds), in `workers` processes, `batch` replicates per job (simulated together, one call per round).
+    Batch b uses seed [seed, b]. Returns (stats with a replicate column, wall seconds per replicate)."""
+    jobs = [(d3, preset, min(batch, n_rep - first), [seed or 0, b], first, apem)
+            for b, first in enumerate(range(0, n_rep, batch))]
+    start = time.time()
+    with ProcessPoolExecutor(workers) as pool:
+        parts = list(pool.map(check_job, jobs))
+    return pd.concat(parts, ignore_index=True), (time.time() - start) / n_rep

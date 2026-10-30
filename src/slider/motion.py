@@ -17,10 +17,12 @@ first step against the direction until hazard.resolve_times (to the round end if
 Time of a seat, from t = 0 to round_end:
     pre        before the first move (the start delay; all of it for a seat that never moves)
     mid        steps and halts inside a mid-event span
-    wall       halts at |s| = 1 (not mid-event)
+    wall       halts at |s| = 1, and steps that land on |s| = 1 (not mid-event)
     halted     halts mid-slider after the first move, not mid-event  (resume at-risk time)
     moving     the other steps, k*dt each                            (stop at-risk time)
     residual   the rest: gaps g with 0 < g - k*dt <= dt/2 (no halt) and g < k*dt (steps faster than dt)
+A step that lands on the wall is wall time, not stop exposure: a halt after it is at the wall and is never a stop
+(F1b, Oct 29 2026, per the locked spec "stop exposure excludes time at the wall"; old rates: p17_rates_v1.csv).
 """
 import numpy as np
 import pandas as pd
@@ -115,8 +117,10 @@ def motion_spells(run, iface, m=2):
                 out["nbr_side"] = neighbor_side(run["A"][j], s[i - 1])
             else:
                 halt(i, rows[n - 1], g - ks * dt, moving_before)
-            moving_before = not np.any((starts <= i) & (i <= ends))
-            out["moving_s" if moving_before else "mid_s"] += ks * dt
+            mid = bool(np.any((starts <= i) & (i <= ends)))
+            on_wall = np.isclose(abs(s[i, j]), 1)                 # a step that lands on the wall: wall time (F1b)
+            moving_before = not mid and not on_wall
+            out["mid_s" if mid else "wall_s" if on_wall else "moving_s"] += ks * dt
         if len(rows) == 0:
             out["pre_s"] = t_end
         else:
