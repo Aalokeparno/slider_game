@@ -1,0 +1,12 @@
+L1: R = 200, 0 saved, 200 to run in 10 jobs, 2 processes -> /home/aalok/ELEC573/Tabor/results/tables/p24_reps_L1.parquet
+21:47:39  20/200 done, 45.2 s per replicate, about 136 min left
+21:47:43  40/200 done, 22.7 s per replicate, about 61 min left
+22:01:26  60/200 done, 28.9 s per replicate, about 67 min left
+22:01:28  80/200 done, 21.7 s per replicate, about 43 min left
+22:15:28  100/200 done, 25.7 s per replicate, about 43 min left
+22:15:53  120/200 done, 21.6 s per replicate, about 29 min left
+22:29:06  140/200 done, 24.2 s per replicate, about 24 min left
+22:29:42  160/200 done, 21.4 s per replicate, about 14 min left
+22:43:18  180/200 done, 23.6 s per replicate, about 8 min left
+22:43:46  200/200 done, 21.4 s per replicate, about 0 min left
+L1: 200 replicates in /home/aalok/ELEC573/Tabor/results/tables/p24_reps_L1.parquet
