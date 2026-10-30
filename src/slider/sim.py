@@ -37,6 +37,14 @@ F3  A reversal flips phi at once. With script=True the player is protected (reve
     on the detector. On the 0.1 grid the first step after the flip opens it, so a reversal is the 2-step script as
     before; on the old-CL 0.02 grid the steps before k changes are ordinary moving steps (they can stop or reverse
     again). With script=False (APEM) nothing is protected. A player reaching |s| = 1 is at_wall.
+P25 additions (pre-registered final model = L1 + L1b + L3; L1 itself is unchanged):
+L1b  motion "L1b": a mid-round halt (a stop) draws its type when it starts, fast with probability p; while halted
+     the player resumes per tick with q_f or q_s (halts.py, results/tables/p25_halts.csv, per interface). Stops and
+     the start delay keep the L1 rates. The reversal hazard still runs while halted. With p = 1 (or 0) no type is
+     drawn, so p = 1 and q_f = lam_resume dt is exactly L1.
+L3   offset: one value u per replicate added to logit h of every player (Logistic rules only). design.py draws
+     u_g ~ N(0, sigma_g^2) once per simulated group copy (frailty.py, results/tables/p25_sigma.csv) and passes it
+     to every round of that group; offset None or 0 is exactly the model without it.
 Not matched (measurement dating): on the 0.02 grid the estimator dates a reversal at its first step of k, up to
 4 ticks after the flip; in CC the cloud logger splits one tick's moves into rows 1-2 ms apart (after the
 simulation), so a lab tick that falls inside such a split sees part of the tick.
@@ -108,8 +116,11 @@ class Logistic:
         self.beta = {TERMS[term]: b for term, b in coefs(model).items()}
         self.trend = "trend" in self.beta
 
-    def h(self, f):
+    def h(self, f, u=None):
+        """h per bin; u: the L3 group offset of each row (None = no offset)."""
         z = self.beta["const"] + sum(b * f[name] for name, b in self.beta.items() if name != "const")
+        if u is not None:
+            z = z + u
         return 1 / (1 + np.exp(-z))
 
 
@@ -125,11 +136,15 @@ class APEM:
 
 
 def preset(name, **apem):
-    """{rule, motion, script} of a named model, to pass to simulate as **preset(name).
+    """{rule, motion, script} of a named model, to pass to simulate as **preset(name); "final" also has sigma_g
+    (design.py draws the group offsets from it and removes it before simulate).
     L1 = (M2', L1, script), L1_M3 = (M3, L1, script), L0 = (M2', none, script), APEM = (APEM, none, no script);
+    final = (M2', L1b, script) + L3 with sigma_g from p25_sigma.csv (sigma_g=... overrides it).
     APEM needs a, s_th and mu."""
     if name == "APEM":
         return {"rule": APEM(**apem), "motion": "none", "script": False}
+    if name == "final":
+        return {"rule": Logistic("M2'"), "motion": "L1b", "script": True, "sigma_g": apem.get("sigma_g", sigma_g())}
     model, motion = {"L1": ("M2'", "L1"), "L1_M3": ("M3", "L1"), "L0": ("M2'", "none")}[name]
     return {"rule": Logistic(model), "motion": motion, "script": True}
 
@@ -139,6 +154,18 @@ def rates(iface):
     r = pd.read_csv(config.P17_RATES)
     r = r[r["interface"] == iface]
     return dict(zip(r["rate"], r["estimate"]))
+
+
+def halt_params(iface):
+    """L1b: {p, q_f, q_s} (q per tick) of an interface in results/tables/p25_halts.csv."""
+    t = pd.read_csv(config.P25_HALTS)
+    t = t[t["interface"] == iface].set_index("parameter")["estimate"]
+    return {k: float(t[k]) for k in ["p", "q_f", "q_s"]}
+
+
+def sigma_g():
+    """L3: sigma_g in results/tables/p25_sigma.csv."""
+    return float(pd.read_csv(config.P25_SIGMA)["sigma_g"].iloc[0])
 
 
 # ------------------------------------------------------------------ the simulator
@@ -152,8 +179,9 @@ def consensus(s):
     return np.abs(s.sum(axis=-1)) >= CONSENSUS * s.shape[-1] - 1e-9
 
 
-def constants(A, iface, rule, motion="L1", script=True, speed=None):
-    """What every tick needs: adjacency, grid, dt, lab flag, motion probabilities (F1), and the estimator's rows (F2).
+def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None):
+    """What every tick needs: adjacency, grid, dt, lab flag, motion probabilities (F1), the L1b halt types
+    (halt: {p, q_f, q_s}, or None; halts overrides p25_halts.csv), and the estimator's rows (F2).
 
     tick_time[k]  logged time of the positions after tick k - 1 (lab: rounded to 0.01 s; CC: to 0.001 s)
     G[r]          time of the estimator's row r (lab: tick_time; CC: the 0.1 s lab clock, rounded to 0.01 s)
@@ -164,14 +192,17 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None):
     A_log = np.asarray(A, dtype=float) + np.eye(7)
     N = int(round(1 / f["d"]))
     dt = f["d"] / (speed or f["speed"])
-    if motion == "L1":
+    halt = None
+    if motion in ("L1", "L1b"):
         lam = rates(iface)
         x = {name: lam["lam_" + name] * dt for name in ["stop", "resume", "start"]}
         p = {"stop": x["stop"], "resume": x["resume"], "start": x["start"] / (1 + x["start"])}
+        if motion == "L1b":
+            halt = dict(halts) if halts is not None else halt_params(iface)
     elif motion == "none":
         p = {"stop": 0.0, "resume": 0.0, "start": 0.0}
     else:
-        raise ValueError(f"motion must be 'L1' or 'none', not {motion!r}")
+        raise ValueError(f"motion must be 'L1', 'L1b' or 'none', not {motion!r}")
     ks = np.arange(int(HORIZON / dt) + 2)
     if iface == "cc":
         tick_time = np.round(ks * dt, 3)
@@ -182,9 +213,9 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None):
         src = ks
     date = G[np.minimum(np.searchsorted(src, ks, side="left"), len(G) - 1)]
     row_dt = LAB_CLOCK if iface == "cc" else dt
-    return {"A_log": A_log, "deg": A_log.sum(axis=1), "N": N, "dt": dt, "lab": f["lab"], "p": p,
+    return {"A_log": A_log, "deg": A_log.sum(axis=1), "N": N, "dt": dt, "lab": f["lab"], "p": p, "halt": halt,
             "motion": motion, "script": script, "rule": rule, "per_bin": getattr(rule, "per_bin", False),
-            "G": G, "src": src, "date": date, "rows": int(np.ceil(1.6 / row_dt)) + 3, "trace": None}
+            "G": G, "src": src, "date": date, "rows": int(np.ceil(1.6 / row_dt)) + 3, "trace": None, "offset": None}
 
 
 def to_k(n, N):
@@ -200,7 +231,8 @@ def start(R, c, rng):
     Two detectors (reversals.detect_events, m = 2): "" on the ticks (the reversing script, per-tick rules) and
     "e_" on the estimator's rows (F2), with a ring buffer rb_* of the last rows' features."""
     z, nan = np.zeros((R, 7), dtype=int), np.full((R, 7), np.nan)
-    st = {"id": np.arange(R), "n": z.copy(), "mode": np.full((R, 7), NOT_STARTED), "phi": z.copy()}
+    st = {"id": np.arange(R), "n": z.copy(), "mode": np.full((R, 7), NOT_STARTED), "phi": z.copy(),
+          "fast": np.ones((R, 7), dtype=bool)}                    # L1b: type of the current halt
     for pre in ["", "e_"]:
         st.update({pre + "dir": z.copy(), pre + "open": np.zeros((R, 7), dtype=bool), pre + "open_t": np.zeros((R, 7)),
                    pre + "open_n": z.copy(), pre + "anchor": nan.copy(), pre + "first": nan.copy(),
@@ -284,7 +316,7 @@ def bin_hazard(st, j, c):
             row1 = np.maximum(np.searchsorted(G, tau - 1 - 1e-6, side="right") - 1, 0)
             A1 = np.where(row1 == 0, 0.0, st["rb_A"][reps, row1 % L, players])  # row 0: the all-zero round start
             f["trend"] = f["A"] - A1
-        h = c["rule"].h(f)
+        h = c["rule"].h(f, None if c["offset"] is None else c["offset"][st["id"][reps]])
         date = c["date"]
         lo = np.maximum(np.searchsorted(date, tau - 1e-6, side="left"), np.searchsorted(date, first[new] + 1e-6, side="right"))
         n = np.maximum(np.searchsorted(date, tau + BIN - 1e-6, side="left") - lo, 1)
@@ -326,9 +358,13 @@ def tick(st, j, c, rng):
     p = c["p"]
     rev = u < h
     begin = (mode == NOT_STARTED) & (u < p["start"])
-    resume = (mode == HALTED) & ~rev & (u < h + p["resume"])
+    halt = c["halt"]
+    q = p["resume"] if halt is None else np.where(st["fast"], halt["q_f"], halt["q_s"])    # L1b: by halt type
+    resume = (mode == HALTED) & ~rev & (u < h + q)
     stop = (mode == MOVING) & ~rev & (u < h + p["stop"])
     phi[begin] = np.where(rng.random(int(begin.sum())) < 0.5, 1, -1)     # coin flip
+    if halt is not None:                                        # L1b: a new halt draws its type
+        st["fast"][stop] = rng.random(int(stop.sum())) < halt["p"] if 0 < halt["p"] < 1 else halt["p"] == 1
     mode[begin | resume] = MOVING
     mode[stop] = HALTED
     phi[rev] = -phi[rev]                                        # F3: a reversal flips phi at once
@@ -357,20 +393,27 @@ def tick(st, j, c, rng):
     return during, step
 
 
-def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, speed=None, trace=None):
+def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, speed=None, trace=None, halts=None,
+             offset=None):
     """R replicates of one round on adjacency A (7 x 7, seat order, no self-loops) with time limit T (s).
 
     iface: "lab_v09", "old_cl" or "cc" (grid, speed, lab flag, motion rates); speed overrides the interface's.
-    rule: Logistic (per estimator bin, F2) or an object with prob(features, dt) (per tick); motion: "L1" or "none";
-    script: True = scripted reversals, False = a reversal flips phi at once. preset(name) gives the three.
+    rule: Logistic (per estimator bin, F2) or an object with prob(features, dt) (per tick); motion: "L1", "L1b"
+    or "none"; script: True = scripted reversals, False = a reversal flips phi at once. preset(name) gives the three.
+    halts: L1b {p, q_f, q_s} (default: p25_halts.csv). offset: L3, one value per replicate added to logit h
+    (Logistic rules), or None.
     Returns one dict per replicate: events (DataFrame time, seat, s; the round start first), end_time (s),
-    ticks, success (consensus before T), mode_ticks ((7, 5) ticks per seat in each of MODES), dt.
+    ticks, success (consensus before T), mode_ticks ((7, 5) ticks per seat in each of MODES), dt, u (the offset).
     trace: a list to collect, for checks, one DataFrame per tick with bins opened (rep, player, tau, n, h, risk and
     the features, time features raw) and one per tick with reversals fired (rep, player, fire = the step's date).
     """
     rng = np.random.default_rng(seed)
-    c = constants(A, iface, rule, motion, script, speed)
+    c = constants(A, iface, rule, motion, script, speed, halts)
     c["trace"] = trace
+    if offset is not None:
+        c["offset"] = np.asarray(offset, dtype=float)
+        if not c["per_bin"] or len(c["offset"]) != R:
+            raise ValueError("offset: one value per replicate, Logistic rules only")
     st = start(R, c, rng)
     ids = np.arange(R)                       # replicate of each row of st
     counts = np.zeros((R, 7, len(MODES)), dtype=int)
@@ -402,7 +445,8 @@ def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, spee
                                "seat": np.r_[np.arange(7), e[:, 2]],
                                "s": np.r_[np.zeros(7), e[:, 3] / c["N"]]})
         out.append({"events": events, "end_time": ends[r] * c["dt"], "ticks": int(ends[r]),
-                    "success": bool(success[r]), "mode_ticks": counts[r], "dt": c["dt"]})
+                    "success": bool(success[r]), "mode_ticks": counts[r], "dt": c["dt"],
+                    "u": 0.0 if c["offset"] is None else float(c["offset"][r])})
     return out
 
 
@@ -494,14 +538,19 @@ def table(runs, role="train"):
 def simulate_runs(A, topology, iface, model, R=100, seed=None, dataset=None, logger=None, role="train", **apem):
     """simulate + to_run: R simulated rounds as (runs, table), like slider_logs.load_runs.
 
-    model: a preset name (L1, L1_M3, L0, APEM; APEM takes a, s_th, mu). T = the session's time limit.
+    model: a preset name (L1, L1_M3, L0, final, APEM; APEM takes a, s_th, mu). T = the session's time limit.
+    final: each replicate is its own group, so it draws its own u ~ N(0, sigma_g^2).
     dataset: default CL for lab_v09 and old_cl, CC for cc. logger: default "lab" for lab interfaces, "cloud" for cc.
     Group (file) of replicate r: sim_<tag>_<topology>_<model>_<seed>_r<r>.txt, one round each (wave 1).
     """
     f = IFACES[iface]
     T = config.TIME_LIMIT[f["session"]]
-    sim_seed, log_seed = np.random.SeedSequence(seed).spawn(2)
-    out = simulate(A, T, iface, R=R, seed=sim_seed, **preset(model, **apem))
+    ss = np.random.SeedSequence(seed)
+    sim_seed, log_seed = ss.spawn(2)
+    m = preset(model, **apem)
+    sigma = m.pop("sigma_g", 0.0)
+    offset = np.random.default_rng(ss.spawn(1)[0]).normal(0, sigma, R) if sigma > 0 else None
+    out = simulate(A, T, iface, R=R, seed=sim_seed, offset=offset, **m)
     log_rng = np.random.default_rng(log_seed)
     dataset = dataset or ("CC" if iface == "cc" else "CL")
     logger = logger or ("cloud" if iface == "cc" else "lab")

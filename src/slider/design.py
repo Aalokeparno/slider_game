@@ -80,14 +80,25 @@ def design(run_set):
 def simulate_rounds(design, preset, R=1, seed=None, **apem):
     """sim.simulate of every round of a design, R copies at once (one call per round): a list, one
     (outputs, log_rng) per round. copy_runs turns copy r into runs. preset: sim.preset name (APEM takes a, s_th,
-    mu). Round i uses SeedSequence(seed).spawn(len(design))[i], split into a simulation and a logger stream."""
+    mu; final takes sigma_g). Round i uses SeedSequence(seed).spawn(len(design))[i], split into a simulation and a
+    logger stream.
+    L3 (preset final, sigma_g > 0): copy r of group g draws u ~ N(0, sigma_g^2) once, from the next spawned stream
+    (groups in sorted order, R values each), and every round of that group copy gets it as its offset; each
+    output's "u" holds it. sigma_g = 0: no draws, no offset."""
     model = sim.preset(preset, **apem)
-    streams = np.random.SeedSequence(seed).spawn(len(design))
+    sigma = model.pop("sigma_g", 0.0)
+    ss = np.random.SeedSequence(seed)
+    streams = ss.spawn(len(design))
+    u = None
+    if sigma > 0:
+        u_rng = np.random.default_rng(ss.spawn(1)[0])
+        u = {g: u_rng.normal(0, sigma, R) for g in sorted(design["group"].unique())}
     out = []
     for row, stream in zip(design.itertuples(), streams):
         sim_seed, log_seed = stream.spawn(2)
         A = row.graph[np.ix_(row.seat_node, row.seat_node)]
-        out.append((sim.simulate(A, row.T, row.interface, R=R, seed=sim_seed, speed=row.speed, **model),
+        out.append((sim.simulate(A, row.T, row.interface, R=R, seed=sim_seed, speed=row.speed,
+                                 offset=None if u is None else u[row.group], **model),
                     np.random.default_rng(log_seed)))
     return out
 

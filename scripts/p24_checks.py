@@ -1,6 +1,6 @@
 """Path A P24, Step 4 checks and triggers, evaluated once, as pre-registered.
 
-Reads results/tables/p24_reps_<preset>.parquet (L1, L1_M3, L0; a missing file is reported as missing), writes
+Reads results/tables/p24_reps_<preset>.parquet (L1, final, L1_M3, L0; a missing file is reported as missing), writes
 results/tables/p24_checks.csv and prints the report.
 
 Per preset and statistic (the 53 check statistics, in_check_list, and 10c pause_share_pct):
@@ -20,6 +20,8 @@ Zero-width human CIs (width < 1e-9; rule decided Oct 29, 2026, before any result
     crossing_time_median_s (10a)   pinned by the interface: value +/- 0.05 s (half the 0.1 s lab clock step)
     any other zero-width CI stops the script (no rule for it).
 
+final (P25, L1 + L1b + L3) is reported next to L1, with no triggers.
+
 Triggers (L1 decides; L0 is reported only, never used for a decision), see triggers:
     Rescue  L1 misses target 5 in >= 1 Full cell AND L1_M3 passes target 5 in both Full cells
     L1b     L1 misses 10a, 10c or 2 in >= 2 of the 6 cells, for any one of the three
@@ -38,7 +40,7 @@ from slider import design
 from slider import targets
 
 warnings.filterwarnings("ignore", message="Pandas requires version")
-PRESETS = ["L1", "L1_M3", "L0"]
+PRESETS = ["L1", "final", "L1_M3", "L0"]          # final: reported only, no triggers
 KEY = ["target", "stat", "topology", "dataset"]
 SD_STAT = "reversal_rate_between_group_sd"
 L1B = [(10, targets.CHECKS[10], "10a"), (10, targets.PAUSE_SHARE, "10c"), (2, targets.CHECKS[2], "2")]
@@ -182,7 +184,7 @@ def report(tables, R, changed, trig):
               f"(misses that are borderline {int(((c['verdict'] == 'miss') & c['borderline']).sum())}), "
               f"no value {int((c['verdict'] == 'no value').sum())}")
 
-    print("\nTriggers (L1 decides; L0 is reported only)")
+    print("\nTriggers (L1 decides; L0 and final are reported only)")
     if trig is None:
         print("  no L1 runs: no trigger evaluated")
         return

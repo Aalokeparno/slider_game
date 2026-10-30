@@ -98,6 +98,7 @@ def test_l3_fires_in_two_cells_and_not_in_one():
 def test_l0_never_decides():
     bad = reps(misses={("10a", c[0], c[1]) for c in CELLS} | {("5", "Full", "CC")}, low_sd=set(CELLS))
     assert run(L1=reps(), L1_M3=reps(), L0=bad) == run(L1=reps(), L1_M3=reps())
+    assert run(L1=reps(), L1_M3=reps(), final=bad) == run(L1=reps(), L1_M3=reps())          # nor does final
     assert pc.triggers(pc.build_tables({"L0": bad}, human(), sd_human())) is None             # no L1: nothing
 
 

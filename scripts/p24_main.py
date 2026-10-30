@@ -7,7 +7,7 @@ Resumable: replicates already in the file are skipped. Replicates go in batches 
 holds replicates 20 b ... 20 b + 19, and one job simulates the batch's missing replicates together with seed
 [seed, b, first missing replicate]. The file is rewritten (to a temporary file, then renamed) after every job.
 
-Pre-registered seeds: L1 1001, L1_M3 2001, L0 3001.
+Pre-registered seeds: L1 1001, L1_M3 2001, L0 3001, final 4001 (P25: L1 + L1b + L3).
 
     python scripts/p24_main.py --preset L1 --R 200 --seed 1001 --procs 2
 """
@@ -24,7 +24,7 @@ from slider import design
 from slider import targets
 
 warnings.filterwarnings("ignore", message="Pandas requires version")
-SEEDS = {"L1": 1001, "L1_M3": 2001, "L0": 3001}
+SEEDS = {"L1": 1001, "L1_M3": 2001, "L0": 3001, "final": 4001}
 
 
 def keep(stats):
