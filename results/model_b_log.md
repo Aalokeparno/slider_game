@@ -100,3 +100,45 @@ R = 200 main run (not yet run):
 
     python scripts/p24_main.py --preset B1 --R 200 --seed 6001 --procs 2
     python scripts/p24_checks.py | tee results/p24_report.txt
+
+### Build fix 1 (Oct 30, 2026): style fit per attempt (definition match, not a new version)
+
+**Spec (as given):**
+
+> B1 fixes (before any R = 200 run):
+> 1. pi: option (a). Refit pi, rho and q_sg on ALL crossing attempts (state C segments, completed or aborted) with a per-player mixture model: each attempt is smooth (stop chance 0) or stop-and-go (q_sg per step); the player's smooth propensity ~ Beta(pi, rho); likelihood of an attempt with n counted steps and k stops: smooth only if k = 0 (likelihood 1); stop-and-go: q_sg^k (1 - q_sg)^(n - k); attempts censored by the round end are included the same way. Maximum likelihood per interface, group-bootstrap 95% CIs (1,000, stratified, seed 573). Update pB1_params.csv (keep the old values as pB1_params_v1.csv).
+> 2. old CL rho: a known limitation (14 players, 2 groups); keep the estimate, add a parametric CI, and note it in the notebook and the log.
+> 3. Rerun the B1 recovery once with the new parameters (G6train, R = 2, seed 573): re-estimate pi, rho and q_sg with the NEW per-attempt code. Same pass rule. Report.
+> 4. Log this as a B1 build fix (definition match: fit per attempt), not a new version.
+
+**Choices** (`notebooks/path1/pB1_fix1.ipynb`, `model_b1.attempt_table` / `fit_attempts` / `boot_attempts`):
+- An attempt is the counted C steps of one outbound segment, any outcome. Players are all (group, seat) with >= 1 attempt.
+- The likelihood integrates over p exactly (a polynomial in p).
+- The bootstrap refits from the full-data estimate.
+- Old CL rho's parametric CI: 1,000 refits of data drawn from the fitted mixture with the human players' own attempt lengths (seed 573).
+- v1 is kept: `pB1_params_v1.csv` and `pB1_recovery_v1.csv`. `notebooks/path1/pB1_model.ipynb` now writes them and simulates with them (`sim.preset("B1", params=...)`); re-run, it reproduced both files byte for byte.
+- New tests: the exact likelihood equals a numerical integral, and the fit recovers known parameters on synthetic data.
+
+**New parameters** (`results/tables/pB1_params.csv`; q_E and lam_resume unchanged):
+
+| interface | pi (v1) | rho (v1) | q_sg (v1) |
+|---|---|---|---|
+| lab v09 | 0.340 [0.303, 0.379] (0.429) | 0.170 [0.107, 0.242] (0.182) | 0.477 [0.417, 0.531] (0.466) |
+| old CL | 0.162 [0.077, 0.304] (0.284) | 0.190, parametric CI [0.000, 1.000] (0.400) | 0.141 [0.121, 0.206] (0.139) |
+| CC | 0.320 [0.282, 0.358] (0.378) | 0.394 [0.348, 0.442] (0.416) | 0.501 [0.424, 0.567] (0.491) |
+
+Old CL rho: a known limitation (14 players, 178 attempts, 2 groups). The parametric CI spans [0, 1], so rho is not identified there.
+
+**Recovery, rerun once** (G6train, R = 2, seed 573; `results/tables/pB1_recovery.csv`): **PASS 14 of 15** (v1: 12 of 15).
+- pi and rho on lab v09 and CC are recovered, and all stop and resume chances pass.
+- Old CL rho passes, but only because its CI is [0, 1].
+- **Miss: old CL pi, 0.626 vs. [0.077, 0.304]. This is a numerical failure of the estimator, not of B1.** From the default start the optimizer walks rho to 1.6e-38, where `betaln(a + s, b + t) - betaln(a, b)` cancels and reports log-likelihood -19,093. The true value there is -20,381, below the interior optimum (-19,711).
+- On the same runs, other starts give pi 0.138. A stable form (log rising factorials) gives pi 0.136 from the default start.
+- The human fits are identical under both forms. The old CL parametric rho refits are affected (62 / 100 collapse to ~0, vs. 25 / 100 with the stable form); both span about [0, 1].
+
+**Proposal (not applied):** the stable likelihood form (or rho >= 1e-4) in `model_b1.mixture_loglik`, then recompute the old CL parametric CI and rerun the recovery. That would be a third recovery run, so it needs a go-ahead.
+
+R = 200 main run (not yet run; it uses the current `pB1_params.csv`, which the proposed fix would not change):
+
+    python scripts/p24_main.py --preset B1 --R 200 --seed 6001 --procs 2
+    python scripts/p24_checks.py | tee results/p24_report.txt

@@ -150,14 +150,15 @@ def preset(name, **apem):
     (design.py draws the group offsets from it and removes it before simulate).
     L1 = (M2', L1, script), L1_M3 = (M3, L1, script), L0 = (M2', none, script), APEM = (APEM, none, no script);
     final = (M2', L1b, script) + L3 with sigma_g from p25_sigma.csv (sigma_g=... overrides it).
-    B1 (EXPLORATORY) = (M2', B1, script) with a player trait (trait: True; design.py draws U per seat).
+    B1 (EXPLORATORY) = (M2', B1, script) with a player trait (trait: True; design.py draws U per seat);
+    params=path reads the B1 parameters from another file (default pB1_params.csv).
     APEM needs a, s_th and mu."""
     if name == "APEM":
         return {"rule": APEM(**apem), "motion": "none", "script": False}
     if name == "final":
         return {"rule": Logistic("M2'"), "motion": "L1b", "script": True, "sigma_g": apem.get("sigma_g", sigma_g())}
     if name == "B1":
-        return {"rule": Logistic("M2'"), "motion": "B1", "script": True, "trait": True}
+        return {"rule": Logistic("M2'"), "motion": "B1", "script": True, "trait": True, "b1": apem.get("params")}
     model, motion = {"L1": ("M2'", "L1"), "L1_M3": ("M3", "L1"), "L0": ("M2'", "none")}[name]
     return {"rule": Logistic(model), "motion": motion, "script": True}
 
@@ -176,9 +177,10 @@ def halt_params(iface):
     return {k: float(t[k]) for k in ["p", "q_f", "q_s"]}
 
 
-def b1_params(iface):
-    """B1: {pi, rho, q_sg, q_E} (and resume_C, resume_E if step 0 chose them) of an interface in pB1_params.csv."""
-    t = pd.read_csv(config.PB1_PARAMS)
+def b1_params(iface, path=None):
+    """B1: {pi, rho, q_sg, q_E} (and resume_C, resume_E if step 0 chose them) of an interface in pB1_params.csv
+    (path: another parameter file, e.g. config.PB1_PARAMS_V1)."""
+    t = pd.read_csv(path or config.PB1_PARAMS)
     t = t[t["interface"] == iface].set_index("parameter")["estimate"]
     return {k: float(t[k]) for k in ["pi", "rho", "q_sg", "q_E", "resume_C", "resume_E"] if k in t}
 
@@ -250,7 +252,7 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
     return {"A_log": A_log, "deg": A_log.sum(axis=1), "N": N, "dt": dt, "lab": f["lab"], "p": p, "halt": halt,
             "motion": motion, "script": script, "rule": rule, "per_bin": getattr(rule, "per_bin", False),
             "G": G, "src": src, "date": date, "rows": int(np.ceil(1.6 / row_dt)) + 3, "trace": None, "offset": None,
-            "b1": (dict(b1) if b1 is not None else b1_params(iface)) if motion == "B1" else None}
+            "b1": (dict(b1) if isinstance(b1, dict) else b1_params(iface, b1)) if motion == "B1" else None}
 
 
 def to_k(n, N):
@@ -453,8 +455,8 @@ def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, spee
     rule: Logistic (per estimator bin, F2) or an object with prob(features, dt) (per tick); motion: "L1", "L1b"
     or "none"; script: True = scripted reversals, False = a reversal flips phi at once. preset(name) gives the three.
     halts: L1b {p, q_f, q_s} (default: p25_halts.csv). offset: L3, one value per replicate added to logit h
-    (Logistic rules), or None. B1 (motion "B1"): b1 {pi, rho, q_sg, q_E[, resume_C, resume_E]} (default:
-    pB1_params.csv) and trait, the U of every seat, shape (R, 7) (required).
+    (Logistic rules), or None. B1 (motion "B1"): b1 {pi, rho, q_sg, q_E[, resume_C, resume_E]}, or a parameter
+    file (default: pB1_params.csv), and trait, the U of every seat, shape (R, 7) (required).
     Returns one dict per replicate: events (DataFrame time, seat, s; the round start first), end_time (s),
     ticks, success (consensus before T), mode_ticks ((7, 5) ticks per seat in each of MODES), dt, u (the offset).
     trace: a list to collect, for checks, one DataFrame per tick with bins opened (rep, player, tau, n, h, risk and

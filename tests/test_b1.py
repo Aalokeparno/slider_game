@@ -92,3 +92,28 @@ def test_simulated_states_are_the_data_states(iface):
     only_c = sim_steps(iface, np.zeros((8, 7)), {"pi": 0.5, "rho": 0.2, "q_sg": 0.4, "q_E": 0.0})
     assert only_c.loc[only_c["state"] == "E", "stop"].sum() == 0
     assert only_c.loc[only_c["state"] == "C", "stop"].sum() > 50
+
+
+# ------------------------------------------------------------------ build fix 1: style fit per attempt
+
+def test_mixture_likelihood_is_the_beta_integral():
+    """The exact polynomial integral equals a direct numerical integral over p, for players with mixed attempts."""
+    import pandas as pd
+    from scipy import integrate, stats
+    att = pd.DataFrame({"file": ["f1"] * 4 + ["f2"] * 3, "player": 0,
+                        "n": [3, 7, 1, 5, 2, 9, 4], "k": [0, 2, 0, 0, 1, 0, 0]})
+    pi, rho, q = 0.35, 0.2, 0.4
+    a, b = pi * (1 - rho) / rho, (1 - pi) * (1 - rho) / rho
+    direct = 0.0
+    for _, x in att.groupby("file"):
+        f = lambda p: np.prod(p * (x["k"] == 0) + (1 - p) * q ** x["k"] * (1 - q) ** (x["n"] - x["k"])) * stats.beta.pdf(p, a, b)
+        direct += np.log(integrate.quad(f, 0, 1, epsabs=1e-13, epsrel=1e-11)[0])
+    assert model_b1.mixture_loglik(pi, rho, q, model_b1.player_data(att)) == pytest.approx(direct, rel=1e-8)
+
+
+def test_mixture_fit_recovers_known_parameters():
+    rng = np.random.default_rng(5)
+    players_n = [rng.integers(1, 15, rng.integers(1, 15)) for _ in range(800)]
+    fit = model_b1.fit_attempts(model_b1.simulate_attempts(players_n, 0.4, 0.25, 0.45, rng))
+    assert fit[0] == pytest.approx(0.4, abs=0.03) and fit[1] == pytest.approx(0.25, abs=0.06)
+    assert fit[2] == pytest.approx(0.45, abs=0.01)

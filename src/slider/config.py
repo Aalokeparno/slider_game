@@ -66,8 +66,10 @@ P25_SIGMA = TABLES / "p25_sigma.csv"                 # L3: sigma_g of the group 
 P25_RECOVERY = TABLES / "p25_recovery.csv"           # build check: "final" on G6train, R = 2, seed 573
 PB1_HALTS = TABLES / "pB1_halts_by_state.csv"          # Model B, B1 (exploratory): resume chance by state C / E
 PB1_HALTS_FIGURE = FIGURES / "pB1_halts_by_state.png"
-PB1_PARAMS = TABLES / "pB1_params.csv"                 # B1 parameters per interface (G-train)
-PB1_RECOVERY = TABLES / "pB1_recovery.csv"             # build check: B1 on G6train, R = 2, seed 573
+PB1_PARAMS = TABLES / "pB1_params.csv"                 # B1 parameters per interface (G-train; build fix 1: style per attempt)
+PB1_PARAMS_V1 = TABLES / "pB1_params_v1.csv"           # B1 before build fix 1 (pi, rho, q_sg from completed crossings)
+PB1_RECOVERY = TABLES / "pB1_recovery.csv"             # build check: B1 on G6train, R = 2, seed 573 (after build fix 1)
+PB1_RECOVERY_V1 = TABLES / "pB1_recovery_v1.csv"       # the same with pB1_params_v1.csv
 PB0B_STYLE = TABLES / "pB0b_crossing_style.csv"        # B0b: pi, rho, q_sg
 MODEL_B_LOG = RESULTS / "model_b_log.md"
 
