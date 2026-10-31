@@ -117,3 +117,19 @@ def test_mixture_fit_recovers_known_parameters():
     fit = model_b1.fit_attempts(model_b1.simulate_attempts(players_n, 0.4, 0.25, 0.45, rng))
     assert fit[0] == pytest.approx(0.4, abs=0.03) and fit[1] == pytest.approx(0.25, abs=0.06)
     assert fit[2] == pytest.approx(0.45, abs=0.01)
+
+
+def test_mixture_likelihood_at_the_rho_limits():
+    """Build fix 2 regression: rho -> 0 (every player has p = pi) and rho -> 1 (p = 0 or 1) have closed forms.
+    The old betaln form cancelled at rho ~ 1e-38 and reported a too-high likelihood there."""
+    import pandas as pd
+    att = pd.DataFrame({"file": ["f1"] * 4 + ["f2"] * 3 + ["f3"] * 2, "player": 0,
+                        "n": [3, 7, 1, 5, 2, 9, 4, 6, 8], "k": [0, 2, 0, 0, 1, 0, 0, 3, 1]})
+    players = model_b1.player_data(att)
+    pi, q = 0.6, 0.15
+    each = lambda p, x: np.prod(p * (x["k"] == 0) + (1 - p) * q ** x["k"] * (1 - q) ** (x["n"] - x["k"]))
+    at_0 = sum(np.log(each(pi, x)) for _, x in att.groupby("file"))
+    at_1 = sum(np.log(pi * each(1, x) + (1 - pi) * each(0, x)) for _, x in att.groupby("file"))
+    for rho in [1e-12, 1e-20, 1e-38]:
+        assert model_b1.mixture_loglik(pi, rho, q, players) == pytest.approx(at_0, rel=1e-9)
+    assert model_b1.mixture_loglik(pi, 1 - 1e-12, q, players) == pytest.approx(at_1, rel=1e-9)

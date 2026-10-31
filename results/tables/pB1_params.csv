@@ -5,7 +5,7 @@ lab_v09,q_sg,0.47684977056171646,0.4172720664394607,0.531055866012968,per step,p
 lab_v09,q_E,0.4461799021452766,0.4063132525735367,0.4833982371444267,per step,B0 steps in state E,group bootstrap
 lab_v09,lam_resume,1.7680641164384632,1.4772621694173946,2.065079145838656,"per s (x the round's dt, as L1)",p17_rates.csv (L1),group bootstrap
 old_cl,pi,0.16178514826006396,0.07685700679347032,0.30436485325072077,share,per-attempt mixture (build fix 1),group bootstrap
-old_cl,rho,0.18982447552016632,1.8030190885418753e-55,0.9999999999999998,-,per-attempt mixture (build fix 1),"parametric (1,000 refits, seed 573); known limitation: 14 players, 2 groups"
+old_cl,rho,0.18982447552016632,5.56268464963904e-309,0.9999999999999998,-,per-attempt mixture (build fix 1),"parametric (1,000 refits, seed 573; build fix 2); known limitation: 14 players, 2 groups"
 old_cl,q_sg,0.14060445378767666,0.12071285578151525,0.2059318043520855,per step,per-attempt mixture (build fix 1),group bootstrap
 old_cl,q_E,0.2538192928852029,0.2522658610271903,0.2546976426375128,per step,B0 steps in state E,group bootstrap
 old_cl,lam_resume,1.735614902806628,1.5599748608367756,2.165747476043021,"per s (x the round's dt, as L1)",p17_rates.csv (L1),group bootstrap

@@ -13,7 +13,7 @@ ticks (one geometric: halts.py with p = 1).
 import numpy as np
 import pandas as pd
 from scipy import optimize
-from scipy.special import betaln, expit, logit, logsumexp
+from scipy.special import expit, logit, logsumexp
 
 from slider import halts as halts_mod
 from slider import config, interface, model_b, motion, stop_states
@@ -148,7 +148,9 @@ def mixture_loglik(pi, rho, q, players):
     the player's p, else stop-and-go (q^k (1 - q)^(n - k)); p ~ Beta(a, b), a = pi (1 - rho) / rho,
     b = (1 - pi)(1 - rho) / rho, integrated exactly: the product over a player's attempts with no stop,
     prod (p + (1 - p)(1 - q)^n), is a polynomial in p, written in the basis p^s (1 - p)^(M - s) (a padded attempt
-    has (1 - q)^n = 1: the factor 1); attempts with stops add (1 - p)^m1."""
+    has (1 - q)^n = 1: the factor 1); attempts with stops add (1 - p)^m1.
+    Build fix 2: B(a + s, b + t) / B(a, b) = (a)_s (b)_t / (a + b)_(s + t) (rising factorials, s and t integers),
+    summed as logs; the old betaln(a + s, b + t) - betaln(a, b) cancelled at rho near 0 (a, b ~ 1e38)."""
     if not (0 < pi < 1 and 0 < rho < 1 and 0 < q < 1):
         return -np.inf
     a, b = pi * (1 - rho) / rho, (1 - pi) * (1 - rho) / rho
@@ -160,8 +162,11 @@ def mixture_loglik(pi, rho, q, players):
         c[:, 1:] = c[:, 1:] * V[:, j:j + 1] + c[:, :-1]
         c[:, 0] *= V[:, j]
     s = np.arange(M + 1)
+    m1 = players["m1"].astype(int)[:, None]
+    i = np.arange(int(m1.max()) + M)
+    rise = lambda x: np.r_[0.0, np.cumsum(np.log(x + i))]      # rise(x)[n] = log of x (x + 1) ... (x + n - 1)
     with np.errstate(divide="ignore"):
-        terms = np.log(c) + betaln(a + s, b + players["m1"][:, None] + M - s) - betaln(a, b)
+        terms = np.log(c) + rise(a)[s] + rise(b)[m1 + M - s] - rise(a + b)[m1 + M]
     total = np.sum(players["k_sum"] * np.log(q) + players["nk_sum"] * np.log1p(-q) + logsumexp(terms, axis=1))
     return total if np.isfinite(total) else -np.inf
 

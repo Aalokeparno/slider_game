@@ -142,3 +142,26 @@ R = 200 main run (not yet run; it uses the current `pB1_params.csv`, which the p
 
     python scripts/p24_main.py --preset B1 --R 200 --seed 6001 --procs 2
     python scripts/p24_checks.py | tee results/p24_report.txt
+
+### Build fix 2 (Oct 30, 2026): a stable likelihood (numerics only, not a new version)
+
+**Spec (as given):**
+
+> Build fix 2, as approved: switch mixture_loglik to the stable form, add a regression test, recompute the old CL parametric CI, rerun the B1 recovery once (G6train, R = 2, seed 573), confirm pB1_params.csv is unchanged, log it under entry 1. Commit.
+
+**The fix** (`model_b1.mixture_loglik`, `notebooks/path1/pB1_fix2.ipynb`):
+- B(a + s, b + t) / B(a, b) is now (a)_s (b)_t / (a + b)_(s + t), with the rising factorials summed as logs. The old `betaln(a + s, b + t) - betaln(a, b)` cancelled near rho = 0. The likelihood is the same function.
+- Regression test `tests/test_b1.py::test_mixture_likelihood_at_the_rho_limits` uses the closed forms at rho -> 0 (every p = pi) and rho -> 1 (p = 0 or 1). The old form fails it: at rho = 1e-20 it gives -11.72 instead of -20.61. All 12 B1 tests pass.
+
+**pB1_params.csv is unchanged** except the old CL rho CI:
+- Every estimate refit with the stable form (same starts, same seed) is equal to the file's.
+- The group-bootstrap CIs differ by at most 1.7e-5 (old CL pi upper end, 0.30436 vs. 0.30435). The file keeps its values.
+- q_E and lam_resume are not touched.
+
+**Old CL rho, parametric CI again** (the same 1,000 simulated data sets, seed 573): [0.000, 1.000], as in fix 1. The median refit is 0.186, and 25.5% of refits have rho < 1e-3 (fix 1: 62 of 100 collapsed in the earlier check). rho is still not identified on old CL; this stays a known limitation.
+
+**Recovery, rerun once** (G6train, R = 2, seed 573; `results/tables/pB1_recovery.csv`, with the fix-1 re-estimates alongside): **PASS 15 of 15** (fix 1: 14 of 15; v1: 12 of 15).
+- The simulated runs are the same as in fix 1, since the parameters and seed are unchanged.
+- Old CL pi is now 0.136, inside [0.077, 0.304] (fix 1: 0.626). Old CL q_sg is 0.143 (fix 1: 0.145).
+- Every other re-estimate is identical to fix 1.
+- Old CL rho re-estimates as 0.000. It passes only because its CI is [0, 1].
