@@ -1,5 +1,6 @@
 """Fingerprints of the frozen presets (sha256 of simulated events, mode ticks, ends and offsets), for
-test_b1.py: the old presets must stay bit-identical. Made with the code before Model B, B1 (commit 4a0813c):
+test_b1.py and test_c1.py: the old presets must stay bit-identical. L1, final, L1_M3, L0, APEM: made with the code
+before Model B, B1 (commit 4a0813c); B1 added with the code before Model C, C1 (commit 7874a88):
 
     python tests/fingerprint_presets.py      (writes tests/data/preset_fingerprints.json)
 """
@@ -11,7 +12,7 @@ import numpy as np
 
 from slider import design
 
-PRESETS = {"L1": {}, "final": {}, "L1_M3": {}, "L0": {}, "APEM": {"a": 0.5, "s_th": 0.5, "mu": 0.1}}
+PRESETS = {"L1": {}, "final": {}, "L1_M3": {}, "L0": {}, "APEM": {"a": 0.5, "s_th": 0.5, "mu": 0.1}, "B1": {}}
 PATH = Path(__file__).parent / "data" / "preset_fingerprints.json"
 
 

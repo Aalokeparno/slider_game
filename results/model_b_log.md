@@ -165,3 +165,94 @@ R = 200 main run (not yet run; it uses the current `pB1_params.csv`, which the p
 - Old CL pi is now 0.136, inside [0.077, 0.304] (fix 1: 0.626). Old CL q_sg is 0.143 (fix 1: 0.145).
 - Every other re-estimate is identical to fix 1.
 - Old CL rho re-estimates as 0.000. It passes only because its CI is [0, 1].
+
+## Entry 2 — C1 (Oct 30, 2026): Model C, version C1 (EXPLORATORY)
+
+Declared before any C1 result: the spec, the yardstick and the implementation choices below. Code: `src/slider/model_c1.py` (data), `sim.py` motion "C1" / preset "C1", `tests/test_c1.py`; notebook `notebooks/path1/pC1_model.ipynb`.
+
+### Spec (as given)
+
+> TASK: Model C, version C1 (EXPLORATORY): "start late, cross in human time, sit at the wall,
+> switch by the frozen M2' hazard". Fits on G-train only; simulations on the usual L3/L5
+> designs. Never load Ring/CT. New code path only: all old presets (L1, final, L1_M3, L0,
+> APEM, B1) must stay bit-identical (fingerprint test).
+> Log C1 as a new entry in results/model_b_log.md, with its exact spec AND its yardstick,
+> declared now, before any C1 result:
+> - primary   = targets 1-4 (success, consensus time, % fraught, committed split);
+> - secondary = targets 5-7;
+> - descriptive only = targets 8-10 (10a matches by construction, so it is not a check).
+>
+> 0. DATA (G-train, per interface: lab v09, old CL, CC; human seats as in P17)
+>    (a) Wall-to-wall trips: from the moment a player leaves the wall (|s| = 1) to its first
+>        arrival at the OPPOSITE wall, without touching the starting wall again in between.
+>        Keep the full duration, pauses and wobbles included.
+>    (b) First trips: from the player's first move to its first arrival at any wall. Record
+>        the duration and which wall.
+>    (c) Descriptive (decision D2): the share of reversals (m = 2 detector) that start
+>        mid-slider (|s| < 0.9) vs. in the end band.
+>    Report counts, medians, quartiles, and the share of censored trips (round ended first;
+>    excluded). Save the durations to results/tables/pC_durations.parquet.
+>
+> 1. SIMULATOR, preset "C1" (per tick, as in sim.py):
+>    - Start: each player waits at s = 0 with p_start = lam_start*dt/(1 + lam_start*dt) per
+>      tick (P17 lam_start per interface). Then a FIRST TRIP to a coin-flip wall, with
+>      duration D drawn from (b) for that interface.
+>    - Trips and crossings move on the grid at a constant pace: the n steps are spread evenly
+>      over max(n, round(D/dt)) ticks. No stops, no reversals during a trip.
+>    - At the wall: the player sits. The frozen M2' switch hazard is drawn per 0.25 s bin
+>      exactly as in F2 (bins from the first move; features from the state before the bin;
+>      time features at the bin start; no hazard in bins that start during a trip; at most
+>      one switch per bin). The hazard is ON only while sitting at the wall.
+>    - Switch -> a committed CROSSING to the opposite wall, with duration drawn from (a).
+>      tau_r resets at the crossing's first step; tau_e follows the end-band rule as before.
+>    - Old CL: grid 0.02, same logic. Round end: the consensus rule (|sum s|/7 >= 0.99) or
+>      the time limit.
+>    - Draw durations with the simulator's own seeded streams.
+>
+> 2. BUILD CHECKS (G6train design, R = 2, seed 573)
+>    - Simulated trip and crossing durations reproduce (a) and (b): quantiles within the grid
+>      resolution.
+>    - lam_start re-estimated with the P17 code: within its CI.
+>    - Hazard calibration: on simulated at-wall bins, observed switches vs. the sum of the
+>      hazard (overall and by A decile) within +/-3%.
+>    - The round_end agreement test and the old-preset fingerprint test pass.
+>    - If anything fails: diagnose and propose; don't change numbers.
+>
+> 3. RUN SCRIPTS: register "C1" (seed 7001) in scripts/p24_main.py and p24_checks.py.
+>    Report C1 next to final, L1 and B1, labeled EXPLORATORY, with no triggers, plus a
+>    "C yardstick" summary: misses among primary / secondary separately; 10a marked "by
+>    construction". Smoke-test with R = 2, delete the outputs, restore p24_checks.csv.
+>
+> Commit. Report steps 0-3 and give me the R = 200 command. Then stop.
+
+### Yardstick (declared now, before any C1 result)
+
+- **Primary:** targets 1-4: success_rate_pct, consensus_time_km_median_s, fraught_pct_mean and committed_pct_mean, in every cell of the check list (21 statistics).
+- **Secondary:** targets 5-7: breaker_excess, end_sitting_pct and relapse_pct (14 statistics).
+- **Descriptive only:** targets 8-10: reversal_rate, f_rev_median and crossing_time_median_s (18 statistics). They are reported but are not checks. 10a (crossing time) matches by construction, since crossings are drawn from the human durations.
+- A miss is as in P24: the sim mean over replicates lies outside the human 95% CI, with the same zero-width rule. C1 is reported next to final, L1 and B1, and fires no triggers.
+
+### Implementation choices (made before any C1 number)
+
+- **Durations, data side (step 0).**
+  - Measured on the logged rows of the sign-corrected positions, for human seats only.
+  - (a) Every departure from a wall (a row where |s| goes from 1 to < 1) ends in one of three ways: a trip, if the player next touches the opposite wall; "returned", if it touches the starting wall first; or censored, if the round ends first (`fraught.round_end`).
+  - Duration = the time of the arrival row minus the time of the leave row. Pauses and wobbles are included.
+  - (b) First move = the player's first own step (the first row where its s changes). Duration = the first row with |s| = 1 minus that row; which wall is recorded. Censored if no wall is reached before the round end.
+  - Censored trips are counted and then excluded.
+- **Trip pace.**
+  - The logged leave time is the end of the first step's tick, so a trip of D seconds spans L = max(n, round(D / dt) + 1) ticks, counting the first step's tick. This is the spec's max(n, round(D / dt)) with D counted from the start of that tick.
+  - Step k (k = 0 ... n - 1) is taken in trip tick round(k (L - 1) / (n - 1)). The first step comes in the start or switch tick, and the simulated logs measure (L - 1) dt = round(D / dt) dt.
+  - n = N for a first trip and 2N for a crossing (N = 10, or 50 on old CL).
+  - Durations are pooled per interface, as the spec says. In lab v09, rounds run at 0.5, 1 or 2 units/s, so a D shorter than (n - 1) dt for its round is run at full pace (n ticks).
+  - In mode_ticks, trip ticks with a step count as moving and trip ticks without one as halted.
+- **At the wall and the hazard.**
+  - A bin is at risk only if the estimator's last row before the bin start shows |s| = 1 and no open reversal (the F2 rows and features, unchanged). The per-tick chance is also zero unless the player is at the wall in that tick.
+  - tau_r and tau_e come from the estimator's detector, as in F2. The crossing's first step of k opens a reversal that is confirmed at its second step of k, so tau_r resets at the crossing's first step (on old CL at its first change of k, hazard.py's rule). tau_e is the time since |k| >= 9 was entered.
+- **Draws** use the simulator's one seeded stream, and only in the new C1 path: the start uniform, the coin flip, then the duration indices (resampled with equal weight from the interface's uncensored durations).
+- **(c) D2.** A reversal starts at the position just before its first step. "In the end band" uses the project rule (|s| >= 0.9; old CL |k| >= 9, `stop_states.band_side`).
+- **Build checks.**
+  - Durations: the 10 / 25 / 50 / 75 / 90% quantiles of the step-0 code applied to the simulated G6train logs vs. the human ones, per interface. The tolerance is the interface's largest round dt (one tick).
+  - Hazard calibration: simulator trace of every at-risk bin that is complete (tau + 0.25 s + 0.1 s <= round end). Observed = switches dated in the bin; expected = the sum of h, overall and by decile of A, per interface and pooled. The binomial SE is shown with each.
+  - lam_start: `motion.motion_table` on the simulated runs, moved / pre_s per interface, against the p17_rates.csv CI.
+  - Round end: the existing L1 test, plus the same test on C1 rounds. Fingerprints: B1 has been added to `tests/data/preset_fingerprints.json`, made with the code before C1 (commit 7874a88).
