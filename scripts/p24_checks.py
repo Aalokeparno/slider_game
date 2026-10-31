@@ -1,6 +1,6 @@
 """Path A P24, Step 4 checks and triggers, evaluated once, as pre-registered.
 
-Reads results/tables/p24_reps_<preset>.parquet (L1, final, B1, C1, L1_M3, L0; a missing file is reported as missing), writes
+Reads results/tables/p24_reps_<preset>.parquet (L1, final, B1, C1, C2, L1_M3, L0; a missing file is reported as missing), writes
 results/tables/p24_checks.csv and prints the report.
 
 Per preset and statistic (the 53 check statistics, in_check_list, and 10c pause_share_pct):
@@ -25,6 +25,8 @@ B1 (Model B, EXPLORATORY; results/model_b_log.md entry 1) is reported next to fi
 C1 (Model C, EXPLORATORY; entry 2) is reported next to final, L1 and B1, with no triggers, plus the C yardstick
 declared in entry 2 (c_yardstick): misses among primary (targets 1-4) and secondary (5-7) statistics; 8-10 are
 descriptive only, and 10a (crossing time) matches by construction in C1, so it is not a check.
+C2 (Model C, EXPLORATORY; entry 3) is reported next to C1, final and L1, with no triggers, on the same C yardstick
+(primary 1-4, secondary 5-7, descriptive 8-10).
 
 Triggers (L1 decides; L0 is reported only, never used for a decision), see triggers:
     Rescue  L1 misses target 5 in >= 1 Full cell AND L1_M3 passes target 5 in both Full cells
@@ -44,8 +46,8 @@ from slider import design
 from slider import targets
 
 warnings.filterwarnings("ignore", message="Pandas requires version")
-PRESETS = ["L1", "final", "B1", "C1", "L1_M3", "L0"]    # final, B1 and C1 (EXPLORATORY): reported only, no triggers
-EXPLORATORY = ["B1", "C1"]
+PRESETS = ["L1", "final", "B1", "C1", "C2", "L1_M3", "L0"]   # final, B1, C1, C2 (EXPLORATORY): reported only, no triggers
+EXPLORATORY = ["B1", "C1", "C2"]
 C_YARDSTICK = {"primary": [1, 2, 3, 4], "secondary": [5, 6, 7], "descriptive only": [8, 9, 10]}   # entry 2
 KEY = ["target", "stat", "topology", "dataset"]
 SD_STAT = "reversal_rate_between_group_sd"
@@ -207,18 +209,20 @@ def report(tables, R, changed, trig):
               f"(misses that are borderline {int(((c['verdict'] == 'miss') & c['borderline']).sum())}), "
               f"no value {int((c['verdict'] == 'no value').sum())}")
 
-    print("\nC yardstick (declared in results/model_b_log.md entry 2, for C1; the other presets on the same scale)")
+    print("\nC yardstick (declared in results/model_b_log.md entries 2 and 3, for C1 and C2; the other presets on the"
+          " same scale)")
     print("  primary = targets 1-4, secondary = 5-7, descriptive only = 8-10 (not checks; 10a crossing_time_median_s"
           " matches by construction in C1)")
     for p, classes in c_yardstick(tables).items():
         label = p + (" (EXPLORATORY)" if p in EXPLORATORY else "")
         print(f"  {label:<17} " + ", ".join(f"{name} misses {m} of {n}" for name, (m, n, _) in classes.items()))
-        if p == "C1":
+        if p in ("C1", "C2"):
             for name in ["primary", "secondary"]:
-                print(f"      C1 {name} missed: " + ("; ".join(classes[name][2]) or "none"))
+                print(f"      {p} {name} missed: " + ("; ".join(classes[name][2]) or "none"))
+        if p == "C1":
             print("      C1 10a: by construction (crossings drawn from the human durations), not a check")
 
-    print("\nTriggers (L1 decides; L0, final, B1 and C1 are reported only)")
+    print("\nTriggers (L1 decides; L0, final, B1, C1 and C2 are reported only)")
     if trig is None:
         print("  no L1 runs: no trigger evaluated")
         return

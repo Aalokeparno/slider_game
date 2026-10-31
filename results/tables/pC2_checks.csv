@@ -1,0 +1,173 @@
+check,interface,cell,stat,value,ci_lo,ci_hi,n
+a,cc,mid,gap q10,0.03199999999992542,,,18008.0
+a,cc,mid,gap q25,0.08299999999996999,,,18008.0
+a,cc,mid,gap q50,0.20000000000004547,,,18008.0
+a,cc,mid,gap q75,0.32325000000005844,,,18008.0
+a,cc,mid,gap q90,0.5180000000000291,,,18008.0
+a,cc,wall,gap q10,0.24700000000000982,,,2018.0
+a,cc,wall,gap q25,0.4679999999999893,,,2018.0
+a,cc,wall,gap q50,0.5,,,2018.0
+a,cc,wall,gap q75,0.5130000000000052,,,2018.0
+a,cc,wall,gap q90,0.5892999999999687,,,2018.0
+a,lab_v09,mid,gap q10,0.09999999999999964,,,12920.0
+a,lab_v09,mid,gap q25,0.1999999999999993,,,12920.0
+a,lab_v09,mid,gap q50,0.3000000000000007,,,12920.0
+a,lab_v09,mid,gap q75,0.5,,,12920.0
+a,lab_v09,mid,gap q90,0.7000000000000002,,,12920.0
+a,lab_v09,wall,gap q10,0.20000000000000284,,,1771.0
+a,lab_v09,wall,gap q25,0.3999999999999986,,,1771.0
+a,lab_v09,wall,gap q50,0.5,,,1771.0
+a,lab_v09,wall,gap q75,0.5,,,1771.0
+a,lab_v09,wall,gap q90,0.6000000000000014,,,1771.0
+a,lab_v09,all,own best d,0.25,,,14691.0
+a,lab_v09,all,own best share,0.32897692464774353,,,14691.0
+a,cc,all,own best d,0.05,,,20026.0
+a,cc,all,own best share,0.2855787476280835,,,20026.0
+a,lab_v09+cc,all,d* (best common),0.25,,,
+a,lab_v09+cc,all,min share at d*,0.22036352741436133,,,
+a,lab_v09+cc,all,d_ar (rule),0.0,,,
+b,all,T0,beta const,-1.6645328996200497,-1.7561624310643489,-1.5729033681757505,251661.0
+b,all,T0,beta lab,0.23976653680528345,0.18245648559684222,0.2970765880137247,251661.0
+b,all,T0,beta A,-2.12948308002199,-2.220364384384125,-2.038601775659855,251661.0
+b,all,T0,beta time_at_end_log1p,-0.27139567086605293,-0.35050787459008825,-0.19228346714201758,251661.0
+b,all,T0,beta time_since_rev_log1p,-0.19923632263809016,-0.29298691291621604,-0.1054857323599643,251661.0
+b,all,T1,beta const,-1.6718427518919303,-1.7632270234897731,-1.5804584802940875,251661.0
+b,all,T1,beta lab,0.2572742652719498,0.19971594972194562,0.314832580821954,251661.0
+b,all,T1,beta A,-2.2217150107750365,-2.316637536221468,-2.126792485328605,251661.0
+b,all,T1,beta time_at_end_log1p,-0.26807144990368026,-0.3472588951853891,-0.18888400462197139,251661.0
+b,all,T1,beta time_since_rev_log1p,-0.21583632210987175,-0.3098315613495416,-0.12184108287020193,251661.0
+b,all,T1,beta g,0.08790086941507556,0.06039963356297811,0.11540210526717301,251661.0
+b,all,T1 vs T0,LR,37.78917883695976,,,251661.0
+b,all,T1 vs T0,p,7.881776584890143e-10,,,251661.0
+b,all,rule,include g,1.0,,,
+c,lab_v09,all,q_w,0.2321672473867596,0.1957901465827749,0.28476524961593325,8329.0
+c,old_cl,all,q_w,0.45041565752438306,0.4487971996723021,0.46216216216216216,6881.0
+c,cc,all,q_w,0.08622773912017927,0.07040267046002625,0.10648780742726922,5849.0
+d,lab_v09,all,keep_pos,0.8622837370242215,0.8107732708903801,0.9049750168662506,1445.0
+d,lab_v09,all,keep_zero,0.8110047846889952,0.7152161619168093,0.8971349734289642,418.0
+d,lab_v09,all,keep_neg,0.7369014084507042,0.6955777993292345,0.7807882506626078,1775.0
+d,old_cl,all,keep_pos,0.8943661971830986,0.8899082568807339,0.9090909090909092,142.0
+d,old_cl,all,keep_zero,0.7857142857142857,0.75,0.7916666666666666,56.0
+d,old_cl,all,keep_neg,0.7441860465116279,0.7107843137254902,0.8703703703703703,258.0
+d,cc,all,keep_pos,0.886168100595632,0.8702043629221239,0.9013977889073572,1511.0
+d,cc,all,keep_zero,0.8191126279863481,0.7638638316151203,0.8737040299493504,293.0
+d,cc,all,keep_neg,0.7098901098901099,0.6715309516026533,0.751838035971258,1820.0
+d,pooled,all,keep_pos,0.8754034861200775,0.8502906617315003,0.8953644650482511,3098.0
+d,pooled,all,keep_zero,0.8122555410691004,0.7597127571697772,0.8611585806047586,767.0
+d,pooled,all,keep_neg,0.7246301583181937,0.6993139891181769,0.7518420837876407,3853.0
+e,cc,speed 2.94,v_median,3.008849557522136,,,137.0
+e,cc,speed 2.94,f_median,1.023418216844264,,,137.0
+e,cc,speed 2.94,f_q25,0.4724111866968941,,,137.0
+e,cc,speed 2.94,f_q75,1.0952502646854299,,,137.0
+e,cc,speed 3.03,v_median,2.956521739130786,,,1091.0
+e,cc,speed 3.03,f_median,0.9757497488880481,,,1091.0
+e,cc,speed 3.03,f_q25,0.3452947173220702,,,1091.0
+e,cc,speed 3.03,f_q75,1.0018859028759979,,,1091.0
+e,cc,speed 3.23,v_median,2.9876977152901927,,,97.0
+e,cc,speed 3.23,f_median,0.9249838127833414,,,97.0
+e,cc,speed 3.23,f_q25,0.3358747858798225,,,97.0
+e,cc,speed 3.23,f_q75,1.0299721907508013,,,97.0
+e,cc,speed 3.33,v_median,3.0035335689050333,,,299.0
+e,cc,speed 3.33,f_median,0.9019620327042143,,,299.0
+e,cc,speed 3.33,f_q25,0.2597701733629728,,,299.0
+e,cc,speed 3.33,f_q75,0.9884046252180965,,,299.0
+e,lab_v09,speed 0.50,v_median,0.5666666666666668,,,67.0
+e,lab_v09,speed 0.50,f_median,1.1333333333333335,,,67.0
+e,lab_v09,speed 0.50,f_q25,0.7632653061224481,,,67.0
+e,lab_v09,speed 0.50,f_q75,1.9941520467836154,,,67.0
+e,lab_v09,speed 1.00,v_median,0.9439203354297654,,,1104.0
+e,lab_v09,speed 1.00,f_median,0.9439203354297654,,,1104.0
+e,lab_v09,speed 1.00,f_q25,0.48571428571428577,,,1104.0
+e,lab_v09,speed 1.00,f_q75,0.9999999999999998,,,1104.0
+e,lab_v09,speed 2.00,v_median,1.9101123595505616,,,24.0
+e,lab_v09,speed 2.00,f_median,0.9550561797752808,,,24.0
+e,lab_v09,speed 2.00,f_q25,0.5000000000000006,,,24.0
+e,lab_v09,speed 2.00,f_q75,0.9659090909090907,,,24.0
+e,old_cl,speed 0.20,v_median,0.1954022988505748,,,87.0
+e,old_cl,speed 0.20,f_median,0.9770114942528741,,,87.0
+e,old_cl,speed 0.20,f_q25,0.8095972423802611,,,87.0
+e,old_cl,speed 0.20,f_q75,1.0,,,87.0
+f,human,Full CC,rounds,31.0,,,
+f,C1,Full CC,rounds,180.0,,,
+f,human,Full CC,all_wall_share,0.12049839083766332,,,
+f,C1,Full CC,all_wall_share,0.198687663944998,,,
+f,human,Full CC,standoffs_6-1_per_round,1.5483870967741935,,,
+f,C1,Full CC,standoffs_6-1_per_round,2.2111111111111112,,,
+f,human,Full CC,standoffs_5-2_per_round,0.6129032258064516,,,
+f,C1,Full CC,standoffs_5-2_per_round,3.9944444444444445,,,
+f,human,Full CC,median_duration_6-1,2.6399999999999864,,,
+f,C1,Full CC,median_duration_6-1,2.6075000000000017,,,
+f,human,Full CC,median_duration_5-2,1.302000000000021,,,
+f,C1,Full CC,median_duration_5-2,1.5180000000000007,,,
+f,human,Full CC,median_duration_all,1.9120000000000346,,,
+f,C1,Full CC,median_duration_all,1.8710000000000093,,,
+f,human,Full CL,rounds,33.0,,,
+f,C1,Full CL,rounds,270.0,,,
+f,human,Full CL,all_wall_share,0.03888557621833814,,,
+f,C1,Full CL,all_wall_share,0.04885882497061169,,,
+f,human,Full CL,standoffs_6-1_per_round,0.6666666666666666,,,
+f,C1,Full CL,standoffs_6-1_per_round,1.2222222222222223,,,
+f,human,Full CL,standoffs_5-2_per_round,0.18181818181818182,,,
+f,C1,Full CL,standoffs_5-2_per_round,1.637037037037037,,,
+f,human,Full CL,median_duration_6-1,2.3000000000000007,,,
+f,C1,Full CL,median_duration_6-1,2.799999999999983,,,
+f,human,Full CL,median_duration_5-2,0.7500000000000107,,,
+f,C1,Full CL,median_duration_5-2,1.599999999999996,,,
+f,human,Full CL,median_duration_all,2.249999999999993,,,
+f,C1,Full CL,median_duration_all,2.0,,,
+f,human,Hierarchy CC,rounds,34.0,,,
+f,C1,Hierarchy CC,rounds,200.0,,,
+f,human,Hierarchy CC,all_wall_share,0.22392100560323175,,,
+f,C1,Hierarchy CC,all_wall_share,0.29066798513043735,,,
+f,human,Hierarchy CC,standoffs_6-1_per_round,0.9117647058823529,,,
+f,C1,Hierarchy CC,standoffs_6-1_per_round,1.53,,,
+f,human,Hierarchy CC,standoffs_5-2_per_round,0.9117647058823529,,,
+f,C1,Hierarchy CC,standoffs_5-2_per_round,2.23,,,
+f,human,Hierarchy CC,median_duration_6-1,3.6280000000000427,,,
+f,C1,Hierarchy CC,median_duration_6-1,2.276999999999994,,,
+f,human,Hierarchy CC,median_duration_5-2,0.9189999999999827,,,
+f,C1,Hierarchy CC,median_duration_5-2,1.418999999999997,,,
+f,human,Hierarchy CC,median_duration_all,1.5349999999999824,,,
+f,C1,Hierarchy CC,median_duration_all,1.681999999999995,,,
+f,human,Hierarchy CL,rounds,33.0,,,
+f,C1,Hierarchy CL,rounds,265.0,,,
+f,human,Hierarchy CL,all_wall_share,0.04759661706455412,,,
+f,C1,Hierarchy CL,all_wall_share,0.0998245600424691,,,
+f,human,Hierarchy CL,standoffs_6-1_per_round,0.3939393939393939,,,
+f,C1,Hierarchy CL,standoffs_6-1_per_round,1.1547169811320754,,,
+f,human,Hierarchy CL,standoffs_5-2_per_round,0.2727272727272727,,,
+f,C1,Hierarchy CL,standoffs_5-2_per_round,1.539622641509434,,,
+f,human,Hierarchy CL,median_duration_6-1,0.8999999999999986,,,
+f,C1,Hierarchy CL,median_duration_6-1,2.200000000000001,,,
+f,human,Hierarchy CL,median_duration_5-2,0.7000000000000028,,,
+f,C1,Hierarchy CL,median_duration_5-2,1.4000000000000057,,,
+f,human,Hierarchy CL,median_duration_all,0.7999999999999989,,,
+f,C1,Hierarchy CL,median_duration_all,1.7000000000000028,,,
+f,human,Hierarchy EL,rounds,33.0,,,
+f,C1,Hierarchy EL,rounds,255.0,,,
+f,human,Hierarchy EL,all_wall_share,0.11328335126412051,,,
+f,C1,Hierarchy EL,all_wall_share,0.1548420814514934,,,
+f,human,Hierarchy EL,standoffs_6-1_per_round,0.42424242424242425,,,
+f,C1,Hierarchy EL,standoffs_6-1_per_round,1.2588235294117647,,,
+f,human,Hierarchy EL,standoffs_5-2_per_round,0.5454545454545454,,,
+f,C1,Hierarchy EL,standoffs_5-2_per_round,1.6509803921568627,,,
+f,human,Hierarchy EL,median_duration_6-1,1.799999999999999,,,
+f,C1,Hierarchy EL,median_duration_6-1,2.6000000000000014,,,
+f,human,Hierarchy EL,median_duration_5-2,0.70000000000001,,,
+f,C1,Hierarchy EL,median_duration_5-2,1.5,,,
+f,human,Hierarchy EL,median_duration_all,0.9000000000000021,,,
+f,C1,Hierarchy EL,median_duration_all,1.7999999999999972,,,
+f,human,Star CC,rounds,33.0,,,
+f,C1,Star CC,rounds,195.0,,,
+f,human,Star CC,all_wall_share,0.0649150629547986,,,
+f,C1,Star CC,all_wall_share,0.16823727665231988,,,
+f,human,Star CC,standoffs_6-1_per_round,0.5151515151515151,,,
+f,C1,Star CC,standoffs_6-1_per_round,1.0769230769230769,,,
+f,human,Star CC,standoffs_5-2_per_round,0.15151515151515152,,,
+f,C1,Star CC,standoffs_5-2_per_round,1.2256410256410257,,,
+f,human,Star CC,median_duration_6-1,2.1920000000000073,,,
+f,C1,Star CC,median_duration_6-1,2.541499999999999,,,
+f,human,Star CC,median_duration_5-2,2.5289999999999964,,,
+f,C1,Star CC,median_duration_5-2,1.716000000000001,,,
+f,human,Star CC,median_duration_all,2.360500000000002,,,
+f,C1,Star CC,median_duration_all,2.0789999999999935,,,

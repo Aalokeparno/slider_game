@@ -63,6 +63,17 @@ C1   motion "C1", its own tick (tick_c1): start late (L1's p_start, coin-flip wa
      (ticks with a step are moving, the others halted), so the logs measure round(D / dt) dt. No stops or
      reversals in a trip. The M2' hazard runs as in F2, at risk only in bins whose estimator row before the bin
      start shows |s| = 1 (and no open reversal), and only while at_wall; a switch flips phi and starts a crossing.
+Model C, C2 (EXPLORATORY, results/model_b_log.md entry 3; every other preset unchanged, bit-identical):
+C2   motion "C2", its own tick (tick_c2). Start and first trip as C1. At the wall the player sits; the try hazard
+     (TryLogistic: T0 or T1 of pC2_try_hazard.csv, per pC2_params.csv use_g) runs per F2 bin, at risk as in C1;
+     T1's g = log(1 + tau - the last estimator row strictly before tau on which a neighbor's s changed). A try is
+     one step off the wall. After every own step (a try or a walk step) in tick j the player waits for its decision
+     point, tick j + D (D = max(1, round(d_ar / dt))), and looks: dA = A at the start of tick j + D - A at the start
+     of tick j. It keeps with probability keep(sign(dA)) (pC2_params.csv, per interface): it moves on in the
+     direction of that step to the wall, n steps at pace f (pC2_pace.parquet, the same interface and round speed;
+     min(f, 1) steps per tick) over max(n, round((n - 1) / f) + 1) ticks (trip_steps), the first in tick j + D.
+     Otherwise it walks: from tick j + D, a step with chance q_w per tick, up or down 50/50, then the next look.
+     Reaching |s| = 1 ends a walk or a kept movement: the player sits. M2' is not used.
 Not matched (measurement dating): on the 0.02 grid the estimator dates a reversal at its first step of k, up to
 4 ticks after the flip; in CC the cloud logger splits one tick's moves into rows 1-2 ms apart (after the
 simulation), so a lab tick that falls inside such a split sees part of the tick.
@@ -144,6 +155,21 @@ class Logistic:
         return 1 / (1 + np.exp(-z))
 
 
+class TryLogistic(Logistic):
+    """C2: the try hazard T0 or T1 (results/tables/pC2_try_hazard.csv), h per 0.25 s bin, drawn per estimator bin.
+    model None: the one pC2_params.csv chose (use_g: T1, else T0)."""
+
+    def __init__(self, model=None, params=None):
+        if model is None:
+            p = pd.read_csv(params or config.PC2_PARAMS).set_index("parameter")["estimate"]
+            model = "T1" if p["use_g"] == 1 else "T0"
+        c = pd.read_csv(config.PC2_TRY)
+        c = c[c["model"] == model]
+        self.model = model
+        self.beta = {{"g": "g"}.get(term, TERMS.get(term)): b for term, b in zip(c["term"], c["beta"])}
+        self.trend = False
+
+
 class APEM:
     """Per tick: prob = 1 - exp(-dt / mu) if A <= a and abs_s >= s_th, else 0."""
     per_bin = False
@@ -163,6 +189,8 @@ def preset(name, **apem):
     B1 (EXPLORATORY) = (M2', B1, script) with a player trait (trait: True; design.py draws U per seat);
     params=path reads the B1 parameters from another file (default pB1_params.csv).
     C1 (EXPLORATORY) = (M2', C1, no script): durations=path reads another duration file (default pC_durations.parquet).
+    C2 (EXPLORATORY) = (TryLogistic, C2, no script): params=path reads another pC2_params.csv, model="T0" / "T1"
+    overrides its choice.
     APEM needs a, s_th and mu."""
     if name == "APEM":
         return {"rule": APEM(**apem), "motion": "none", "script": False}
@@ -172,6 +200,9 @@ def preset(name, **apem):
         return {"rule": Logistic("M2'"), "motion": "B1", "script": True, "trait": True, "b1": apem.get("params")}
     if name == "C1":
         return {"rule": Logistic("M2'"), "motion": "C1", "script": False, "c1": apem.get("durations")}
+    if name == "C2":
+        return {"rule": TryLogistic(apem.get("model"), apem.get("params")), "motion": "C2", "script": False,
+                "c2": apem.get("params")}
     model, motion = {"L1": ("M2'", "L1"), "L1_M3": ("M3", "L1"), "L0": ("M2'", "none")}[name]
     return {"rule": Logistic(model), "motion": motion, "script": True}
 
@@ -212,6 +243,21 @@ def draw_style(p, rng):
     return rng.random(len(p)) < p
 
 
+def c2_params(iface, speed, path=None, pace=None):
+    """C2: {d_ar, q_w, keep_pos, keep_zero, keep_neg, pace} of an interface: pC2_params.csv (path: another file);
+    pace = the f of the human crossings of the same interface and round speed (rounded to 0.01) in pC2_pace.parquet
+    (pace: another file), the interface's pool if that speed has none, capped at 1."""
+    t = pd.read_csv(path or config.PC2_PARAMS)
+    p = dict(zip(t.loc[t["interface"] == "all", "parameter"], t.loc[t["interface"] == "all", "estimate"]))
+    p.update(dict(zip(t.loc[t["interface"] == iface, "parameter"], t.loc[t["interface"] == iface, "estimate"])))
+    f = pd.read_parquet(pace or config.PC2_PACE)
+    f = f[f["interface"] == iface]
+    same = f[np.isclose(f["round_speed"], round(speed, 2))]
+    out = {k: float(p[k]) for k in ["d_ar", "q_w", "keep_pos", "keep_zero", "keep_neg"]}
+    out["pace"] = np.minimum((same if len(same) else f)["f"].to_numpy(float), 1.0)
+    return out
+
+
 def sigma_g():
     """L3: sigma_g in results/tables/p25_sigma.csv."""
     return float(pd.read_csv(config.P25_SIGMA)["sigma_g"].iloc[0])
@@ -228,7 +274,7 @@ def consensus(s):
     return np.abs(s.sum(axis=-1)) >= CONSENSUS * s.shape[-1] - 1e-9
 
 
-def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, b1=None, c1=None):
+def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, b1=None, c1=None, c2=None):
     """What every tick needs: adjacency, grid, dt, lab flag, motion probabilities (F1), the L1b halt types
     (halt: {p, q_f, q_s}, or None; halts overrides p25_halts.csv), and the estimator's rows (F2).
 
@@ -242,7 +288,7 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
     N = int(round(1 / f["d"]))
     dt = f["d"] / (speed or f["speed"])
     halt = None
-    if motion in ("L1", "L1b", "B1", "C1"):
+    if motion in ("L1", "L1b", "B1", "C1", "C2"):
         lam = rates(iface)
         x = {name: lam["lam_" + name] * dt for name in ["stop", "resume", "start"]}
         p = {"stop": x["stop"], "resume": x["resume"], "start": x["start"] / (1 + x["start"])}
@@ -251,9 +297,9 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
     elif motion == "none":
         p = {"stop": 0.0, "resume": 0.0, "start": 0.0}
     else:
-        raise ValueError(f"motion must be 'L1', 'L1b', 'B1', 'C1' or 'none', not {motion!r}")
-    if motion == "C1" and not getattr(rule, "per_bin", False):
-        raise ValueError("C1: the switch hazard must be a per-bin rule (Logistic)")
+        raise ValueError(f"motion must be 'L1', 'L1b', 'B1', 'C1', 'C2' or 'none', not {motion!r}")
+    if motion in ("C1", "C2") and not getattr(rule, "per_bin", False):
+        raise ValueError(f"{motion}: the hazard must be a per-bin rule (Logistic)")
     ks = np.arange(int(HORIZON / dt) + 2)
     if iface == "cc":
         tick_time = np.round(ks * dt, 3)
@@ -268,7 +314,8 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
             "motion": motion, "script": script, "rule": rule, "per_bin": getattr(rule, "per_bin", False),
             "G": G, "src": src, "date": date, "rows": int(np.ceil(1.6 / row_dt)) + 3, "trace": None, "offset": None,
             "b1": (dict(b1) if isinstance(b1, dict) else b1_params(iface, b1)) if motion == "B1" else None,
-            "c1": (dict(c1) if isinstance(c1, dict) else model_c1.durations(iface, c1)) if motion == "C1" else None}
+            "c1": (dict(c1) if isinstance(c1, dict) else model_c1.durations(iface, c1)) if motion in ("C1", "C2") else None,
+            "c2": (dict(c2) if isinstance(c2, dict) else c2_params(iface, f["d"] / dt, c2)) if motion == "C2" else None}
 
 
 def to_k(n, N):
@@ -300,8 +347,12 @@ def start(R, c, rng):
         st.update({"c_on": np.zeros((R, 7), dtype=bool), "c_start": np.zeros((R, 7)),
                    "smooth": np.zeros((R, 7), dtype=bool), "halt_C": np.zeros((R, 7), dtype=bool),
                    "p_smooth": trait_p(c["trait"], c["b1"]["pi"], c["b1"]["rho"])})
-    if c["motion"] == "C1":                                     # C1: the current trip (tick i of L, n steps; -1 = none)
+    if c["motion"] in ("C1", "C2"):                             # C1: the current trip (tick i of L, n steps; -1 = none)
         st.update({"c1_i": np.full((R, 7), -1), "c1_L": z.copy(), "c1_n": z.copy()})
+    if c["motion"] == "C2":                                     # C2: the look (decision tick, A before the step, its
+        st.update({"c2_wait": np.full((R, 7), -1), "c2_A0": np.zeros((R, 7)), "c2_dir": z.copy(),   # direction),
+                   "c2_walk": np.zeros((R, 7), dtype=bool), "e_s": np.zeros((R, 7)),               # walking; the
+                   "e_nb": np.zeros((R, 7)), "rb_nb": np.zeros((R, L, 7))})                         # neighbor steps
     if c["motion"] == "none":
         st["mode"][:] = MOVING
         st["phi"] = np.where(rng.random((R, 7)) < 0.5, 1, -1)
@@ -344,6 +395,11 @@ def record_rows(st, k, c):
         detect(st, "e_", kk - st["e_k"], kk, c["G"][row])
         st["e_k"] = kk
         slot = row % L
+        if c["motion"] == "C2":                                 # C2: time of a neighbor's last step on these rows
+            moved = (np.abs(s - st["e_s"]) > 1e-9).astype(float)
+            st["e_nb"] = np.where(moved @ (c["A_log"] - np.eye(7)).T > 0, c["G"][row], st["e_nb"])
+            st["e_s"] = s.copy()
+            st["rb_nb"][:, slot] = st["e_nb"]
         st["rb_A"][:, slot] = np.abs(s @ c["A_log"].T) / c["deg"]
         st["rb_abs"][:, slot] = np.abs(s)
         for name in ["band", "entered", "anchor", "open"]:
@@ -371,6 +427,8 @@ def bin_hazard(st, j, c):
         f = {"A": st["rb_A"][reps, slot, players], "abs_s": st["rb_abs"][reps, slot, players],
              "at_end": at_end.astype(float), "e": np.where(at_end, np.log1p(tau - entered), 0.0),
              "r": np.log1p(tau - anchor), "lab": float(c["lab"])}
+        if c["motion"] == "C2":
+            f["g"] = np.log1p(tau - st["rb_nb"][reps, slot, players])
         if c["rule"].trend:
             row1 = np.maximum(np.searchsorted(G, tau - 1 - 1e-6, side="right") - 1, 0)
             A1 = np.where(row1 == 0, 0.0, st["rb_A"][reps, row1 % L, players])  # row 0: the all-zero round start
@@ -380,14 +438,15 @@ def bin_hazard(st, j, c):
         lo = np.maximum(np.searchsorted(date, tau - 1e-6, side="left"), np.searchsorted(date, first[new] + 1e-6, side="right"))
         n = np.maximum(np.searchsorted(date, tau + BIN - 1e-6, side="left") - lo, 1)
         risk = ~st["rb_open"][reps, slot, players]
-        if c["motion"] == "C1":                                 # C1: at risk only when sitting at the wall
+        if c["motion"] in ("C1", "C2"):                         # C1, C2: at risk only when sitting at the wall
             risk &= st["rb_abs"][reps, slot, players] >= 1 - 1e-9
         st["b_m"][new], st["b_q"][new], st["b_risk"][new], st["b_fired"][new] = m[new], 1 - (1 - h) ** (1 / n), risk, False
         if c["trace"] is not None:
             c["trace"].append(pd.DataFrame({"rep": st["id"][reps], "player": players, "tau": tau, "n": n, "h": h,
                                             "risk": risk, "A": f["A"], "abs_s": f["abs_s"], "at_end": at_end.astype(int),
                                             "time_at_end": np.where(at_end, tau - entered, 0.0),
-                                            "time_since_rev": tau - anchor, **({"trend": f["trend"]} if "trend" in f else {})}))
+                                            "time_since_rev": tau - anchor, **({"trend": f["trend"]} if "trend" in f else {}),
+                                            **({"g": f["g"]} if "g" in f else {})}))
     return np.where(on & st["b_risk"] & ~st["b_fired"], st["b_q"], 0.0)
 
 
@@ -507,8 +566,80 @@ def tick_c1(st, j, c, rng):
     return during, step
 
 
+def look_dA(A_now, A0):
+    """C2: dA = A at the start of the decision tick - A at the start of the step's tick, and its sign (tol 1e-9)."""
+    dA = A_now - A0
+    return dA, np.where(dA > 1e-9, 1, np.where(dA < -1e-9, -1, 0))
+
+
+def tick_c2(st, j, c, rng):
+    """C2: tick j of every replicate in st (changed in place); see the module doc. Returns (mode during the tick,
+    step) per player. Draws, in order: one uniform per player (start / try), the start coin flips, the first-trip
+    durations, the keep uniforms (players at a decision point), the paces of new kept movements, the walk uniforms,
+    the walk directions."""
+    n, phi, N, mode, p2 = st["n"], st["phi"], c["N"], st["mode"], c["c2"]
+    A_now = np.abs((n / N) @ c["A_log"].T) / c["deg"]           # positions at the start of tick j
+    sit = mode == AT_WALL
+    h = np.where(sit, bin_hazard(st, j, c), 0.0)
+    u = rng.random(n.shape)
+    begin = (mode == NOT_STARTED) & (u < c["p"]["start"])
+    tries = sit & (u < h)
+    phi[begin] = np.where(rng.random(int(begin.sum())) < 0.5, 1, -1)     # coin flip
+    st["b_fired"] |= tries
+    if c["trace"] is not None and tries.any():
+        reps, players = np.nonzero(tries)
+        c["trace"].append(pd.DataFrame({"rep": st["id"][reps], "player": players, "fire": c["date"][j + 1]}))
+    D = c["c1"]["first"][rng.integers(0, len(c["c1"]["first"]), int(begin.sum()))]
+    st["c1_L"][begin] = np.maximum(N, np.round(D / c["dt"]).astype(int) + 1)
+    st["c1_n"][begin], st["c1_i"][begin] = N, 0
+
+    # the look at a decision point: keep (a straight run to the wall at pace f) or walk
+    decide = st["c2_wait"] == j
+    dA, sign = look_dA(A_now, st["c2_A0"])
+    kp = np.where(sign > 0, p2["keep_pos"], np.where(sign < 0, p2["keep_neg"], p2["keep_zero"]))
+    keep = np.zeros_like(decide)
+    keep[decide] = rng.random(int(decide.sum())) < kp[decide]
+    if c["trace"] is not None and decide.any():
+        reps, players = np.nonzero(decide)
+        c["trace"].append(pd.DataFrame({"rep": st["id"][reps], "player": players, "look": j, "dA": dA[decide],
+                                        "kept": keep[decide]}))
+    f = p2["pace"][rng.integers(0, len(p2["pace"]), int(keep.sum()))]
+    phi[keep] = st["c2_dir"][keep]
+    left = N - phi[keep] * n[keep]                              # steps to the wall ahead
+    st["c1_n"][keep], st["c1_i"][keep] = left, 0
+    st["c1_L"][keep] = np.maximum(left, np.round((left - 1) / f).astype(int) + 1)
+    st["c2_walk"][decide & ~keep] = True
+    st["c2_wait"][decide] = -1
+
+    # walk steps
+    walk = st["c2_walk"]
+    go = np.zeros_like(walk)
+    go[walk] = rng.random(int(walk.sum())) < p2["q_w"]
+    wdir = np.zeros_like(n)
+    wdir[go] = np.where(rng.random(int(go.sum())) < 0.5, 1, -1)
+
+    # move: trips and kept runs (trip_steps), tries (one step off the wall), walk steps
+    i, L, m = st["c1_i"], st["c1_L"], st["c1_n"]
+    trip = i >= 0
+    moves = trip & (trip_steps(i, L, m) > trip_steps(i - 1, L, m))
+    step = np.where(moves, phi, 0) + np.where(tries, -np.sign(n), 0) + wdir
+    looked = tries | go                                         # these steps get a look
+    st["c2_A0"][looked], st["c2_dir"][looked] = A_now[looked], step[looked]
+    st["c2_wait"][looked] = j + max(1, int(round(p2["d_ar"] / c["dt"])))
+    st["c2_walk"][go] = False
+    mode[~sit & (mode != NOT_STARTED) | tries | begin] = HALTED
+    mode[step != 0] = MOVING
+    during = mode.copy()
+    n += step
+    i[trip] += 1
+    arrived = (step != 0) & (np.abs(n) == N)
+    mode[arrived], i[arrived], st["c2_wait"][arrived], st["c2_walk"][arrived] = AT_WALL, -1, -1, False
+    record_rows(st, j + 1, c)
+    return during, step
+
+
 def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, speed=None, trace=None, halts=None,
-             offset=None, b1=None, trait=None, c1=None):
+             offset=None, b1=None, trait=None, c1=None, c2=None):
     """R replicates of one round on adjacency A (7 x 7, seat order, no self-loops) with time limit T (s).
 
     iface: "lab_v09", "old_cl" or "cc" (grid, speed, lab flag, motion rates); speed overrides the interface's.
@@ -517,15 +648,16 @@ def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, spee
     halts: L1b {p, q_f, q_s} (default: p25_halts.csv). offset: L3, one value per replicate added to logit h
     (Logistic rules), or None. B1 (motion "B1"): b1 {pi, rho, q_sg, q_E[, resume_C, resume_E]}, or a parameter
     file (default: pB1_params.csv), and trait, the U of every seat, shape (R, 7) (required). C1 (motion "C1"):
-    c1 {"first": durations, "cross": durations} (s), or a duration file (default: pC_durations.parquet).
+    c1 {"first": durations, "cross": durations} (s), or a duration file (default: pC_durations.parquet). C2 (motion
+    "C2"): c2 {d_ar, q_w, keep_pos, keep_zero, keep_neg, pace}, or a parameter file (default: pC2_params.csv).
     Returns one dict per replicate: events (DataFrame time, seat, s; the round start first), end_time (s),
     ticks, success (consensus before T), mode_ticks ((7, 5) ticks per seat in each of MODES), dt, u (the offset).
     trace: a list to collect, for checks, one DataFrame per tick with bins opened (rep, player, tau, n, h, risk and
     the features, time features raw) and one per tick with reversals fired (rep, player, fire = the step's date).
     """
     rng = np.random.default_rng(seed)
-    c = constants(A, iface, rule, motion, script, speed, halts, b1, c1)
-    step_tick = tick_c1 if motion == "C1" else tick
+    c = constants(A, iface, rule, motion, script, speed, halts, b1, c1, c2)
+    step_tick = {"C1": tick_c1, "C2": tick_c2}.get(motion, tick)
     c["trace"] = trace
     if motion == "B1":
         if trait is None or np.shape(trait) != (R, 7):

@@ -8,7 +8,8 @@ holds replicates 20 b ... 20 b + 19, and one job simulates the batch's missing r
 [seed, b, first missing replicate]. The file is rewritten (to a temporary file, then renamed) after every job.
 
 Pre-registered seeds: L1 1001, L1_M3 2001, L0 3001, final 4001 (P25: L1 + L1b + L3).
-Registered seeds of the EXPLORATORY presets: B1 6001 (results/model_b_log.md, entry 1), C1 7001 (entry 2).
+Registered seeds of the EXPLORATORY presets: B1 6001 (results/model_b_log.md, entry 1), C1 7001 (entry 2),
+C2 8001 (entry 3).
 
     python scripts/p24_main.py --preset L1 --R 200 --seed 1001 --procs 2
 """
@@ -25,7 +26,7 @@ from slider import design
 from slider import targets
 
 warnings.filterwarnings("ignore", message="Pandas requires version")
-SEEDS = {"L1": 1001, "L1_M3": 2001, "L0": 3001, "final": 4001, "B1": 6001, "C1": 7001}      # B1, C1: EXPLORATORY
+SEEDS = {"L1": 1001, "L1_M3": 2001, "L0": 3001, "final": 4001, "B1": 6001, "C1": 7001, "C2": 8001}   # B1, C1, C2: EXPLORATORY
 
 
 def keep(stats):

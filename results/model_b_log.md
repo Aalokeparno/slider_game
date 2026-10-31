@@ -483,3 +483,70 @@ Declared before any C2 number: the spec, its decision rules, the yardstick and t
 - **Round end:** the L1 test plus the C2 test.
 
 **Run scripts (step 3).** C2 (seed 8001) is added to `p24_main.py` and to `p24_checks.py` (EXPLORATORY with C1 and B1, no triggers). The C yardstick summary covers C2, with no "by construction" note. The smoke test runs at R = 2; then its outputs are deleted and `p24_checks.csv` restored.
+
+### Results (Oct 31, 2026; `notebooks/path1/pC2_model.ipynb`)
+
+**Step 0, checks** (G-train, human seats; every table is in `results/tables/pC2_checks.csv`).
+
+- **(a) Auto-repeat. Verdict: d_ar = 0.**
+  - Apparatus: there is no game code in the repo or the OSF archive, only the Matlab model code. The logs' instructions say to move the slider with "the arrow keys on the keyboard", in both the lab and the cloud. The lab settings set `IncValue`, the arrow-key increment. Both apparatus are keyboard-driven; the auto-repeat delay is an OS setting and is not logged.
+  - First-step gaps of movements from rest (median [q25, q75], s):
+
+    | interface | from the wall | after a mid-slider halt | pooled |
+    |---|---|---|---|
+    | lab v09 | 0.50 [0.40, 0.50] (n 1,771) | 0.30 [0.20, 0.50] (12,920) | 0.30 |
+    | CC | 0.50 [0.47, 0.51] (n 2,018) | 0.20 [0.08, 0.32] (18,008) | 0.22 |
+
+  - Rule: the best common d* is 0.25 s, where the smaller of the two shares is 0.22 (it needs >= 0.40). Each interface's own best: lab v09 0.25 s (33%), CC 0.05 s (29%). Lab v09's 0.25 s is an artifact of its 0.1 s clock: a ±0.05 s window around 0.25 catches both the 0.2 and 0.3 bins (`pC2_first_gaps.png`).
+  - **Not part of the rule but decisive for reading it:** from the wall alone, 55% (lab v09) and 63% (CC) of the gaps are within ±0.05 s of 0.5 s. The rule pools these with mid-slider starts after any halt longer than dt / 2 (motion.py's halt rule; CC dt = 0.033 s). The many short mid-slider pauses dilute the 0.5 s spike.
+- **(b) Try hazard. Verdict: include g, so C2 uses T1.**
+  - Data: 251,661 G-train bins at the wall, with 5,244 tries.
+  - T1: const -1.672, lab 0.257, A -2.222, e -0.268, r -0.216, **g +0.088 [0.060, 0.115]**.
+  - T0: const -1.665, lab 0.240, A -2.130, e -0.271, r -0.199.
+  - LR = 37.8 on 1 df, p = 8e-10. A seat at the wall tries more often the longer its neighbors have been still.
+- **(c) q_w per tick** [95% CI]: lab v09 0.232 [0.196, 0.285] (8,329 gaps, 20 files); old CL 0.450 [0.449, 0.462] (6,881 gaps, 2 files); CC 0.086 [0.070, 0.107] (5,849 gaps, 17 files).
+- **(d) Keep** (pB2, set (i)), dA > 0 / = 0 / < 0: lab v09 0.862 / 0.811 / 0.737; old CL 0.894 / 0.786 / 0.744; CC 0.886 / 0.819 / 0.710.
+- **(e) Pace** of the 10a crossings: median f (v / round speed) is 0.90-1.02 at the main speeds (lab v09 1.0: 0.94; CC 3.03: 0.98; old CL: 0.98). The q25 is 0.26-0.81, so a minority of crossings are much slower. In 4-63% of crossings per speed, f > 1 (capped at 1 in C2). Values are in `pC2_pace.parquet`.
+- **(f) Descriptive, humans vs. C1** (R = 5, L5 design):
+  - C1 spends more time with all 7 seats at a wall: Full CC 0.20 vs. 0.12; Star CC 0.17 vs. 0.07.
+  - C1 has 1.4-3x as many 6-1 standoffs per round and 2.4-9x as many 5-2 standoffs (e.g. Full CC 5-2: 3.99 vs. 0.61 per round).
+  - Median standoff durations are similar in Full CC (1.87 vs. 1.91 s) and about 2x human in the CL / EL Hierarchy cells.
+
+**Step 1:** `sim.py` motion "C2" (`tick_c2`, `look_dA`), `TryLogistic` (T1), `c2_params`, preset "C2". `tests/test_c2.py` has 12 tests:
+- the old presets are bit-identical (C1 added to the fingerprints with the code at d111a1e);
+- keep = 1 commits every try (3 interfaces);
+- a walk that reaches its wall sits and is at risk again;
+- the look uses the positions at the start of the decision tick (checked against the logs, 3 interfaces);
+- round end and time accounting.
+
+The full suite passes: 152 tests.
+
+**Step 2, build checks** (G6train, R = 2, seed 573; 488 rounds; the traced rounds are asserted equal to `design.simulate_rounds`):
+- **Try-hazard calibration, overall: PASS.** Observed / expected tries: lab v09 14,284 / 14,461 (-1.2%), old CL 2,041 / 2,010 (+1.6%), CC 11,296 / 11,243 (+0.5%), pooled 27,621 / 27,714 (-0.3%).
+- **By A decile: 7 of 10 within ±3%.** Decile 7 is -6.0% (z -2.2), 9 is -7.9% (z -2.2) and 10 is +3.6% (z 0.9). The chi-square over 10 deciles is 13.7 (p = 0.19), consistent with calibration. In deciles 8-10, the SE alone exceeds 3%.
+- **Keep by sign(dA): FAIL as specified (0 of 9).** B2's code on the simulated logs gives P(kept) too high everywhere: lab v09 0.905 / 0.936 / 0.873, CC 0.920 / 0.902 / 0.881, old CL 1.00 / 0.99 / 1.00, against the human 0.71-0.89.
+  - The implementation check matches in all 9 cells. The simulator's own looks keep at keep(sign), |z| <= 2.1 (8 of 9 within 2 SE), e.g. lab v09 0.867 / 0.822 / 0.732 vs. 0.862 / 0.811 / 0.737.
+  - **Diagnosis: a definition mismatch.** B2's "kept" is the detector's 2-step reversal. After a try that is not kept, C2's next walk step goes away from the wall half the time, which the detector reads as kept. So the B2 measure is about keep + (1 - keep) / 2: lab v09 dA < 0 gives 0.868 predicted vs. 0.873 simulated.
+  - On old CL, a 0.02 try does not change k = round(10 s), so the detector sees almost only kept runs.
+- **q_w: lab v09 and CC PASS** (0.252 in [0.196, 0.285]; 0.097 in [0.070, 0.107]); **old CL FAIL** (0.475 vs. [0.449, 0.462]).
+  - Diagnosis: the (c) estimator counts every gap in an excursion that returns to its wall as a walk gap. In C2, such an excursion can end with a kept run back to the wall, at 1-tick steps, which pushes the re-estimate up: +9% (lab v09), +12% (CC), +5% (old CL).
+  - 1-tick gaps make up 30% / 51% / 17% of the simulated gaps (lab v09 / old CL / CC), against the 23% / 45% / 9% a pure walk would give (q_w).
+  - Human gaps are not geometric either: 40% / 72% / 31% are 1-tick gaps, plus a long tail.
+  - Old CL's CI comes from 2 groups and is nearly a point, so the 5% bias falls outside it.
+- **d_ar:** 0, so there is nothing to recover. **Round end: PASS** (488 of 488 within one tick; consensus at the last row exactly when the round succeeded).
+
+**Proposals (not applied; each needs a go-ahead):**
+1. **(a) rule:** keep the verdict, which is fixed. But note that the from-the-wall gaps alone pass the 40% test at 0.5 s in both interfaces. A follow-up rule could define "from rest" as from the wall, or as a halt of at least 0.5 s. That would set d_ar = 0.5 and also add a 0.5 s wait to every look, so it is a new version (C3), not a fix.
+2. **Keep, definition match** (a C2 fix): measure keep on C2's own terms in both the data and the simulator. For example, P(an excursion that starts with this try reaches the opposite wall before touching its start wall | sign dA), or keep' = 2 P_B2 - 1 by the approximation above (lab v09 0.72 / 0.62 / 0.47).
+   - Old CL needs the 0.02 grid for tries in B2's table.
+3. **q_w, estimator match:** re-estimate q_w on simulated walk gaps only (from the trace) as the implementation check, and fit q_w by matching the (c) statistic of simulated logs to the human value (indirect inference).
+   - Old CL's 2-group CI should be read as no CI.
+
+**Step 3:** C2 is registered in `scripts/p24_main.py` (seed 8001) and `scripts/p24_checks.py` (EXPLORATORY, no triggers, C yardstick). 
+- The smoke test ran at R = 2 (148 s per replicate on 2 processes). Seen: C2 missed 26 of 53, primary 9 of 21, secondary 9 of 14, descriptive 8 of 18. 20 statistics were borderline, so this is noise-level at R = 2.
+- The outputs were deleted and `p24_checks.csv` restored.
+
+R = 200 main run (not yet run):
+
+    python scripts/p24_main.py --preset C2 --R 200 --seed 8001 --procs 2
+    python scripts/p24_checks.py | tee results/p24_report.txt
