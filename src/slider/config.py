@@ -57,13 +57,19 @@ P17_SURVIVAL = FIGURES / "p17_survival.png"
 P23_RECOVERY = TABLES / "p23_recovery.csv"
 P23_RECOVERY_V1 = TABLES / "p23_recovery_v1.csv"    # first run, simulator at commit 59b7e68 (before F1-F3, F1b)
 P24_PILOT = TABLES / "p24_pilot.csv"                 # pilot: SD over 10 L1 replicates, human CI half-width, R needed
-P24_REPS = {preset: TABLES / f"p24_reps_{preset}.parquet" for preset in ["L1", "L1_M3", "L0", "final"]}   # main runs
+P24_REPS = {preset: TABLES / f"p24_reps_{preset}.parquet" for preset in ["L1", "L1_M3", "L0", "final", "B1"]}   # main runs (B1: exploratory)
 P24_CHECKS = TABLES / "p24_checks.csv"
 P24_DIRECTIONS = TABLES / "p24_directions.csv"       # descriptive: L1 sim mean vs human, direction, gap in half-widths
 P25_HALTS = TABLES / "p25_halts.csv"                 # L1b: two-type halt mixture per interface (G-train)
 P25_HALTS_FIGURE = FIGURES / "p25_halts.png"
 P25_SIGMA = TABLES / "p25_sigma.csv"                 # L3: sigma_g of the group effect on the M2' hazard (G-train)
 P25_RECOVERY = TABLES / "p25_recovery.csv"           # build check: "final" on G6train, R = 2, seed 573
+PB1_HALTS = TABLES / "pB1_halts_by_state.csv"          # Model B, B1 (exploratory): resume chance by state C / E
+PB1_HALTS_FIGURE = FIGURES / "pB1_halts_by_state.png"
+PB1_PARAMS = TABLES / "pB1_params.csv"                 # B1 parameters per interface (G-train)
+PB1_RECOVERY = TABLES / "pB1_recovery.csv"             # build check: B1 on G6train, R = 2, seed 573
+PB0B_STYLE = TABLES / "pB0b_crossing_style.csv"        # B0b: pi, rho, q_sg
+MODEL_B_LOG = RESULTS / "model_b_log.md"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}

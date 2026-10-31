@@ -84,21 +84,29 @@ def simulate_rounds(design, preset, R=1, seed=None, **apem):
     logger stream.
     L3 (preset final, sigma_g > 0): copy r of group g draws u ~ N(0, sigma_g^2) once, from the next spawned stream
     (groups in sorted order, R values each), and every round of that group copy gets it as its offset; each
-    output's "u" holds it. sigma_g = 0: no draws, no offset."""
+    output's "u" holds it. sigma_g = 0: no draws, no offset.
+    B1 (EXPLORATORY, trait): copy r of group g draws U ~ Uniform(0, 1) once per seat (R x 7 values per group, groups
+    in sorted order) from the next spawned stream; every round of that group copy gets them as its trait."""
     model = sim.preset(preset, **apem)
     sigma = model.pop("sigma_g", 0.0)
+    trait = model.pop("trait", False)
     ss = np.random.SeedSequence(seed)
     streams = ss.spawn(len(design))
     u = None
     if sigma > 0:
         u_rng = np.random.default_rng(ss.spawn(1)[0])
         u = {g: u_rng.normal(0, sigma, R) for g in sorted(design["group"].unique())}
+    U = None
+    if trait:
+        t_rng = np.random.default_rng(ss.spawn(1)[0])
+        U = {g: t_rng.random((R, 7)) for g in sorted(design["group"].unique())}
     out = []
     for row, stream in zip(design.itertuples(), streams):
         sim_seed, log_seed = stream.spawn(2)
         A = row.graph[np.ix_(row.seat_node, row.seat_node)]
         out.append((sim.simulate(A, row.T, row.interface, R=R, seed=sim_seed, speed=row.speed,
-                                 offset=None if u is None else u[row.group], **model),
+                                 offset=None if u is None else u[row.group],
+                                 **({} if U is None else {"trait": U[row.group]}), **model),
                     np.random.default_rng(log_seed)))
     return out
 
