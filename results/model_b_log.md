@@ -242,7 +242,7 @@ Declared before any C1 result: the spec, the yardstick and the implementation ch
   - Censored trips are counted and then excluded.
 - **Trip pace.**
   - The logged leave time is the end of the first step's tick, so a trip of D seconds spans L = max(n, round(D / dt) + 1) ticks, counting the first step's tick. This is the spec's max(n, round(D / dt)) with D counted from the start of that tick.
-  - Step k (k = 0 ... n - 1) is taken in trip tick round(k (L - 1) / (n - 1)). The first step comes in the start or switch tick, and the simulated logs measure (L - 1) dt = round(D / dt) dt.
+  - By the end of trip tick i (i = 0 ... L - 1) the player has taken i (n - 1) // (L - 1) + 1 steps: at most one per tick, the first in the start or switch tick, the last in tick L - 1. The simulated logs measure (L - 1) dt = round(D / dt) dt. (This replaces "step k in tick round(k (L - 1) / (n - 1))", corrected to match the code before any result.)
   - n = N for a first trip and 2N for a crossing (N = 10, or 50 on old CL).
   - Durations are pooled per interface, as the spec says. In lab v09, rounds run at 0.5, 1 or 2 units/s, so a D shorter than (n - 1) dt for its round is run at full pace (n ticks).
   - In mode_ticks, trip ticks with a step count as moving and trip ticks without one as halted.
@@ -256,3 +256,54 @@ Declared before any C1 result: the spec, the yardstick and the implementation ch
   - Hazard calibration: simulator trace of every at-risk bin that is complete (tau + 0.25 s + 0.1 s <= round end). Observed = switches dated in the bin; expected = the sum of h, overall and by decile of A, per interface and pooled. The binomial SE is shown with each.
   - lam_start: `motion.motion_table` on the simulated runs, moved / pre_s per interface, against the p17_rates.csv CI.
   - Round end: the existing L1 test, plus the same test on C1 rounds. Fingerprints: B1 has been added to `tests/data/preset_fingerprints.json`, made with the code before C1 (commit 7874a88).
+
+### Results (Oct 31, 2026; `notebooks/path1/pC1_model.ipynb`)
+
+**Step 0, data** (G-train, human seats; `results/tables/pC_durations.parquet` holds every trip and departure with its outcome). Durations of arrived trips, in s:
+
+| interface | kind | n | arrived | returned | censored (share) | q10 | q25 | median | q75 | q90 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| lab v09 | first | 609 | 609 | - | 0 (0.000) | 0.90 | 0.94 | 1.46 | 3.45 | 7.51 |
+| old CL | first | 84 | 79 | - | 5 (0.060) | 4.40 | 5.27 | 7.79 | 16.53 | 29.72 |
+| CC | first | 930 | 930 | - | 0 (0.000) | 0.76 | 0.77 | 1.20 | 3.47 | 7.55 |
+| lab v09 | wall to wall | 2344 | 1218 | 1123 | 3 (0.001) | 2.20 | 2.20 | 2.40 | 4.60 | 9.70 |
+| old CL | wall to wall | 383 | 72 | 301 | 10 (0.026) | 10.20 | 10.30 | 10.60 | 16.95 | 25.89 |
+| CC | wall to wall | 2614 | 1640 | 961 | 13 (0.005) | 1.06 | 1.09 | 1.12 | 2.39 | 4.81 |
+
+- First trips reach the +1 wall 52-53% of the time.
+- "returned" = the player stepped off the wall and came back to it before reaching the other side (these are not trips).
+- **D2:** reversals that start in the end band vs. mid-slider: lab v09 64.4% / 35.6% (2,893); old CL 51.8% / 48.2% (363); CC 72.4% / 27.6% (2,871). C1 has no mid-slider reversals.
+
+**Step 1:** `sim.py` motion "C1" (`tick_c1`), preset "C1". `tests/test_c1.py` (15 tests) covers:
+- the old presets, B1 included, are bit-identical;
+- trip pace;
+- the simulated logs measure the drawn durations;
+- the hazard runs only at the wall;
+- round ends and time accounting;
+- the data-side trips on a synthetic path.
+
+**Step 2, build checks** (G6train, R = 2, seed 573; 488 rounds; the traced rounds are asserted equal to `design.simulate_rounds`):
+- **Durations: FAIL as specified (1 of 6 pass).** Only lab v09 wall-to-wall trips pass. Largest quantile miss vs. the tolerance (one tick):
+  - first trips: lab v09 0.24 vs. 0.20 (median); old CL 3.39 vs. 0.10 (q90); CC 0.28 vs. 0.034 (q90);
+  - wall to wall: old CL 1.71 vs. 0.10 (q90); CC 0.057 vs. 0.034 (q90).
+- **Diagnosis** (no number changed):
+  - Every miss is inside the 95% resampling range (n_sim draws from n_human values; 1,000 draws) widened by the full-pace shift. The one exception is CC wall to wall at q25, by about 1e-4 s, where the pace shift is only approximate for crossings.
+  - A tolerance of one tick is below the Monte Carlo noise at the tails and for the small old CL pools (79 and 72 human trips).
+  - The pace floor is a real, small bias in first trips. 9.5% (lab v09) and 19% (old CL) of the pooled durations are shorter than the full-pace time of the round they are drawn into. That gives old CL first trips q10 +0.50 s (expected +0.50) and lab v09 median +0.24 (expected +0.14, noise +/-0.16).
+- **lam_start: PASS 3 of 3.** lab v09 0.301 [0.268, 0.371]; old CL 0.080 [0.056, 0.138]; CC 0.206 [0.183, 0.228].
+- **Hazard calibration, overall: PASS.** Observed / expected switches: lab v09 11,387 / 11,369 (+0.2%), old CL 1,467 / 1,476 (-0.6%), CC 11,995 / 11,961 (+0.3%), pooled 24,849 / 24,806 (+0.2%).
+- **By A decile: 7 of 10 within +/-3%.** Decile 4 is -3.5% (z = -1.9), 7 is +3.9% (z = 1.4) and 9 is -5.1% (z = -1.2). The chi-square over the 10 deciles is 12.2 on 10 df (p = 0.27), consistent with exact calibration. In 3 deciles the binomial SE alone exceeds 3%.
+- **Round-end agreement and fingerprints: PASS.** The L1 round-end test and its C1 version (3 interfaces) pass, as does the fingerprint test (L1, final, L1_M3, L0, APEM, B1).
+
+**Proposals (not applied; each needs a go-ahead):**
+1. A noise-aware duration check: one tick plus the resampling 95% range, or a larger R for the check. This changes the build-check rule, not C1.
+2. Remove the pace floor: draw a trip's duration from human trips of the same round speed, or in ticks (D / dt of the human trip's round, times the simulated round's dt). This would be a C1 fix (the duration definition), changing only first-trip quantiles by up to about 0.5 s.
+
+**Step 3:** C1 is registered: `scripts/p24_main.py` (seed 7001) and `scripts/p24_checks.py` (EXPLORATORY, no triggers, C yardstick summary).
+- The smoke test ran at R = 2 (about 140 s per replicate on 1 process, with the build check running beside it). Seen: C1 missed 33 of 53, primary 12 of 21, secondary 9 of 14, descriptive 12 of 18. 14 statistics were borderline, so this is noise-level at R = 2.
+- The outputs were deleted and `p24_checks.csv` restored.
+
+R = 200 main run (not yet run):
+
+    python scripts/p24_main.py --preset C1 --R 200 --seed 7001 --procs 2
+    python scripts/p24_checks.py | tee results/p24_report.txt

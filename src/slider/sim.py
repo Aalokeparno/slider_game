@@ -54,6 +54,15 @@ B1   motion "B1" = L1 (lam_start, coin flip, L1's resume chance lam_resume dt) w
      quantile at the player's U_i (trait, one per seat; design.py draws it once per group copy), a = pi (1 - rho)
      / rho, b = (1 - pi)(1 - rho) / rho. If the parameters hold resume_C / resume_E, a halt resumes per tick with
      the one of its state at the start (not used by B1: step 0's rule chose L1's single chance).
+Model C, C1 (EXPLORATORY, results/model_b_log.md entry 2; every other preset unchanged, bit-identical):
+C1   motion "C1", its own tick (tick_c1): start late (L1's p_start, coin-flip wall), cross in human time, sit at the
+     wall, switch by the frozen M2' hazard. A trip (the first trip: N steps from 0; a crossing: 2N steps to the
+     opposite wall) draws its duration D from the human durations of the interface (model_c1.durations,
+     pC_durations.parquet: first trips / wall-to-wall trips) and takes L = max(n, round(D / dt) + 1) ticks, its
+     first step in the start / switch tick: by the end of trip tick i it has taken i (n - 1) // (L - 1) + 1 steps
+     (ticks with a step are moving, the others halted), so the logs measure round(D / dt) dt. No stops or
+     reversals in a trip. The M2' hazard runs as in F2, at risk only in bins whose estimator row before the bin
+     start shows |s| = 1 (and no open reversal), and only while at_wall; a switch flips phi and starts a crossing.
 Not matched (measurement dating): on the 0.02 grid the estimator dates a reversal at its first step of k, up to
 4 ticks after the flip; in CC the cloud logger splits one tick's moves into rows 1-2 ms apart (after the
 simulation), so a lab tick that falls inside such a split sees part of the tick.
@@ -78,6 +87,7 @@ import pandas as pd
 from scipy import stats
 
 from slider import config
+from slider import model_c1
 from slider import slider_logs as sl
 from slider.crossings import BAND
 
@@ -152,6 +162,7 @@ def preset(name, **apem):
     final = (M2', L1b, script) + L3 with sigma_g from p25_sigma.csv (sigma_g=... overrides it).
     B1 (EXPLORATORY) = (M2', B1, script) with a player trait (trait: True; design.py draws U per seat);
     params=path reads the B1 parameters from another file (default pB1_params.csv).
+    C1 (EXPLORATORY) = (M2', C1, no script): durations=path reads another duration file (default pC_durations.parquet).
     APEM needs a, s_th and mu."""
     if name == "APEM":
         return {"rule": APEM(**apem), "motion": "none", "script": False}
@@ -159,6 +170,8 @@ def preset(name, **apem):
         return {"rule": Logistic("M2'"), "motion": "L1b", "script": True, "sigma_g": apem.get("sigma_g", sigma_g())}
     if name == "B1":
         return {"rule": Logistic("M2'"), "motion": "B1", "script": True, "trait": True, "b1": apem.get("params")}
+    if name == "C1":
+        return {"rule": Logistic("M2'"), "motion": "C1", "script": False, "c1": apem.get("durations")}
     model, motion = {"L1": ("M2'", "L1"), "L1_M3": ("M3", "L1"), "L0": ("M2'", "none")}[name]
     return {"rule": Logistic(model), "motion": motion, "script": True}
 
@@ -215,7 +228,7 @@ def consensus(s):
     return np.abs(s.sum(axis=-1)) >= CONSENSUS * s.shape[-1] - 1e-9
 
 
-def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, b1=None):
+def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, b1=None, c1=None):
     """What every tick needs: adjacency, grid, dt, lab flag, motion probabilities (F1), the L1b halt types
     (halt: {p, q_f, q_s}, or None; halts overrides p25_halts.csv), and the estimator's rows (F2).
 
@@ -229,7 +242,7 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
     N = int(round(1 / f["d"]))
     dt = f["d"] / (speed or f["speed"])
     halt = None
-    if motion in ("L1", "L1b", "B1"):
+    if motion in ("L1", "L1b", "B1", "C1"):
         lam = rates(iface)
         x = {name: lam["lam_" + name] * dt for name in ["stop", "resume", "start"]}
         p = {"stop": x["stop"], "resume": x["resume"], "start": x["start"] / (1 + x["start"])}
@@ -238,7 +251,9 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
     elif motion == "none":
         p = {"stop": 0.0, "resume": 0.0, "start": 0.0}
     else:
-        raise ValueError(f"motion must be 'L1', 'L1b', 'B1' or 'none', not {motion!r}")
+        raise ValueError(f"motion must be 'L1', 'L1b', 'B1', 'C1' or 'none', not {motion!r}")
+    if motion == "C1" and not getattr(rule, "per_bin", False):
+        raise ValueError("C1: the switch hazard must be a per-bin rule (Logistic)")
     ks = np.arange(int(HORIZON / dt) + 2)
     if iface == "cc":
         tick_time = np.round(ks * dt, 3)
@@ -252,7 +267,8 @@ def constants(A, iface, rule, motion="L1", script=True, speed=None, halts=None, 
     return {"A_log": A_log, "deg": A_log.sum(axis=1), "N": N, "dt": dt, "lab": f["lab"], "p": p, "halt": halt,
             "motion": motion, "script": script, "rule": rule, "per_bin": getattr(rule, "per_bin", False),
             "G": G, "src": src, "date": date, "rows": int(np.ceil(1.6 / row_dt)) + 3, "trace": None, "offset": None,
-            "b1": (dict(b1) if isinstance(b1, dict) else b1_params(iface, b1)) if motion == "B1" else None}
+            "b1": (dict(b1) if isinstance(b1, dict) else b1_params(iface, b1)) if motion == "B1" else None,
+            "c1": (dict(c1) if isinstance(c1, dict) else model_c1.durations(iface, c1)) if motion == "C1" else None}
 
 
 def to_k(n, N):
@@ -284,6 +300,8 @@ def start(R, c, rng):
         st.update({"c_on": np.zeros((R, 7), dtype=bool), "c_start": np.zeros((R, 7)),
                    "smooth": np.zeros((R, 7), dtype=bool), "halt_C": np.zeros((R, 7), dtype=bool),
                    "p_smooth": trait_p(c["trait"], c["b1"]["pi"], c["b1"]["rho"])})
+    if c["motion"] == "C1":                                     # C1: the current trip (tick i of L, n steps; -1 = none)
+        st.update({"c1_i": np.full((R, 7), -1), "c1_L": z.copy(), "c1_n": z.copy()})
     if c["motion"] == "none":
         st["mode"][:] = MOVING
         st["phi"] = np.where(rng.random((R, 7)) < 0.5, 1, -1)
@@ -362,6 +380,8 @@ def bin_hazard(st, j, c):
         lo = np.maximum(np.searchsorted(date, tau - 1e-6, side="left"), np.searchsorted(date, first[new] + 1e-6, side="right"))
         n = np.maximum(np.searchsorted(date, tau + BIN - 1e-6, side="left") - lo, 1)
         risk = ~st["rb_open"][reps, slot, players]
+        if c["motion"] == "C1":                                 # C1: at risk only when sitting at the wall
+            risk &= st["rb_abs"][reps, slot, players] >= 1 - 1e-9
         st["b_m"][new], st["b_q"][new], st["b_risk"][new], st["b_fired"][new] = m[new], 1 - (1 - h) ** (1 / n), risk, False
         if c["trace"] is not None:
             c["trace"].append(pd.DataFrame({"rep": st["id"][reps], "player": players, "tau": tau, "n": n, "h": h,
@@ -447,8 +467,48 @@ def tick(st, j, c, rng):
     return during, step
 
 
+def trip_steps(i, L, n):
+    """C1: steps a trip of n steps over L ticks has taken by the end of its tick i (0 before tick 0): the first step
+    in tick 0, the last in tick L - 1, at most one per tick (L >= n)."""
+    return np.where(i >= 0, i * (n - 1) // np.maximum(L - 1, 1) + 1, 0)
+
+
+def tick_c1(st, j, c, rng):
+    """C1: tick j of every replicate in st (changed in place); see the module doc. Returns (mode during the tick,
+    step) per player. Draws, in order: one uniform per player, the coin flips, the first-trip durations, the
+    crossing durations."""
+    n, phi, N, mode = st["n"], st["phi"], c["N"], st["mode"]
+    sit = mode == AT_WALL
+    h = np.where(sit, bin_hazard(st, j, c), 0.0)
+    u = rng.random(n.shape)
+    begin = (mode == NOT_STARTED) & (u < c["p"]["start"])
+    switch = sit & (u < h)
+    phi[begin] = np.where(rng.random(int(begin.sum())) < 0.5, 1, -1)     # coin flip
+    phi[switch] = -phi[switch]
+    st["b_fired"] |= switch
+    if c["trace"] is not None and switch.any():
+        reps, players = np.nonzero(switch)
+        c["trace"].append(pd.DataFrame({"rep": st["id"][reps], "player": players, "fire": c["date"][j + 1]}))
+    for go, steps, pool in [(begin, N, c["c1"]["first"]), (switch, 2 * N, c["c1"]["cross"])]:
+        D = pool[rng.integers(0, len(pool), int(go.sum()))]
+        st["c1_L"][go] = np.maximum(steps, np.round(D / c["dt"]).astype(int) + 1)
+        st["c1_n"][go], st["c1_i"][go] = steps, 0
+    i, L, m = st["c1_i"], st["c1_L"], st["c1_n"]
+    trip = i >= 0
+    moves = trip & (trip_steps(i, L, m) > trip_steps(i - 1, L, m))
+    mode[trip] = np.where(moves[trip], MOVING, HALTED)
+    during = mode.copy()
+    step = np.where(moves, phi, 0)
+    n += step
+    i[trip] += 1
+    arrived = trip & (np.abs(n) == N)
+    mode[arrived], i[arrived] = AT_WALL, -1
+    record_rows(st, j + 1, c)
+    return during, step
+
+
 def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, speed=None, trace=None, halts=None,
-             offset=None, b1=None, trait=None):
+             offset=None, b1=None, trait=None, c1=None):
     """R replicates of one round on adjacency A (7 x 7, seat order, no self-loops) with time limit T (s).
 
     iface: "lab_v09", "old_cl" or "cc" (grid, speed, lab flag, motion rates); speed overrides the interface's.
@@ -456,14 +516,16 @@ def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, spee
     or "none"; script: True = scripted reversals, False = a reversal flips phi at once. preset(name) gives the three.
     halts: L1b {p, q_f, q_s} (default: p25_halts.csv). offset: L3, one value per replicate added to logit h
     (Logistic rules), or None. B1 (motion "B1"): b1 {pi, rho, q_sg, q_E[, resume_C, resume_E]}, or a parameter
-    file (default: pB1_params.csv), and trait, the U of every seat, shape (R, 7) (required).
+    file (default: pB1_params.csv), and trait, the U of every seat, shape (R, 7) (required). C1 (motion "C1"):
+    c1 {"first": durations, "cross": durations} (s), or a duration file (default: pC_durations.parquet).
     Returns one dict per replicate: events (DataFrame time, seat, s; the round start first), end_time (s),
     ticks, success (consensus before T), mode_ticks ((7, 5) ticks per seat in each of MODES), dt, u (the offset).
     trace: a list to collect, for checks, one DataFrame per tick with bins opened (rep, player, tau, n, h, risk and
     the features, time features raw) and one per tick with reversals fired (rep, player, fire = the step's date).
     """
     rng = np.random.default_rng(seed)
-    c = constants(A, iface, rule, motion, script, speed, halts, b1)
+    c = constants(A, iface, rule, motion, script, speed, halts, b1, c1)
+    step_tick = tick_c1 if motion == "C1" else tick
     c["trace"] = trace
     if motion == "B1":
         if trait is None or np.shape(trait) != (R, 7):
@@ -481,7 +543,7 @@ def simulate(A, T, iface, rule, motion="L1", script=True, R=100, seed=None, spee
     ev = []                                  # (replicate, tick, seat, n) of each position change
     n_ticks = int(np.floor(T / c["dt"] + 1e-9))
     for j in range(n_ticks):
-        during, step = tick(st, j, c, rng)
+        during, step = step_tick(st, j, c, rng)
         counts[ids] += during[:, :, None] == np.arange(len(MODES))
         rows, seats = np.nonzero(step)
         ev.append(np.column_stack([ids[rows], np.full(len(rows), j + 1), seats, st["n"][rows, seats]]))
@@ -597,7 +659,7 @@ def table(runs, role="train"):
 def simulate_runs(A, topology, iface, model, R=100, seed=None, dataset=None, logger=None, role="train", **apem):
     """simulate + to_run: R simulated rounds as (runs, table), like slider_logs.load_runs.
 
-    model: a preset name (L1, L1_M3, L0, final, B1, APEM; APEM takes a, s_th, mu). T = the session's time limit.
+    model: a preset name (L1, L1_M3, L0, final, B1, C1, APEM; APEM takes a, s_th, mu). T = the session's time limit.
     final: each replicate is its own group, so it draws its own u ~ N(0, sigma_g^2); B1: its own seats' U.
     dataset: default CL for lab_v09 and old_cl, CC for cc. logger: default "lab" for lab interfaces, "cloud" for cc.
     Group (file) of replicate r: sim_<tag>_<topology>_<model>_<seed>_r<r>.txt, one round each (wave 1).
