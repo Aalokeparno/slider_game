@@ -307,3 +307,179 @@ R = 200 main run (not yet run):
 
     python scripts/p24_main.py --preset C1 --R 200 --seed 7001 --procs 2
     python scripts/p24_checks.py | tee results/p24_report.txt
+
+## Entry 3 — C2 (Oct 31, 2026): Model C, version C2 (EXPLORATORY)
+
+Declared before any C2 number: the spec, its decision rules, the yardstick and the implementation choices below. Code (to come): `src/slider/model_c2.py` (data side), `sim.py` motion / preset "C2", `tests/test_c2.py`; notebook `notebooks/path1/pC2_model.ipynb`. Inputs from earlier work: `pB2_try_keep.csv` (B2), `pC_durations.parquet` (C1's start and first trips), `data/processed/hazard_table.parquet` (P8).
+
+### Spec (as given)
+
+> TASK: Model C, version C2 (EXPLORATORY). Fits on G-train only. Never load Ring/CT.
+> New code path only: all old presets (L1, final, L1_M3, L0, APEM, B1, C1) stay
+> bit-identical (fingerprint test). G-val stays untouched.
+>
+> FIRST: write log entry 3 (results/model_b_log.md) with this spec, its decision rules and
+> the C yardstick (primary 1-4, secondary 5-7, descriptive 8-10). Commit it before
+> computing anything.
+>
+> STEP 0 - CHECKS (G-train, human seats; each rule is fixed now)
+> (a) Auto-repeat. Is the game keyboard-driven? Check the game code or docs in the repo /
+>     OSF archive and report what you find. Then, per interface (lab v09, CC): the gap
+>     between the FIRST own step of a movement that starts from rest (from the wall, or
+>     after a mid-slider halt) and the next own step in the same direction. Histogram plus
+>     quantiles.
+>     RULE: if >= 40% of gaps lie within +/-0.05 s of a single value d in both interfaces,
+>     it is apparatus: d_ar = d. Otherwise d_ar = 0.
+> (b) Try hazard. Use 0.25 s bins at the wall, built exactly like the hazard table
+>     (hazard.py bin rules). y = 1 if a try starts in the bin, where a try = the first step
+>     off the wall of any excursion (reversal, probe or aborted excursion).
+>     Fit two logistic models:
+>       T0: A, e, r, lab;
+>       T1: T0 + g = log(1 + time since any neighbor's last step).
+>     RULE: include g iff its coefficient > 0, its 95% CI excludes 0, and the
+>     likelihood-ratio test of T1 vs T0 gives p < 0.01. Report both fits and the verdict.
+> (c) Walk timing. Per interface: q_w = per-tick chance that a player who is off the wall
+>     and not committed takes its next step (geometric fit to the gaps between own steps
+>     within probes and aborted excursions).
+> (d) Keep rates per interface: P(kept | dA > 0, = 0, < 0) from pB2_try_keep.csv, set (i).
+> (e) Pace. Per interface x round speed: the human band-to-band crossing pace (steps per
+>     second, the 10a crossings).
+> (f) Descriptive, humans vs C1 (5 C1 replicates, seed 7001, L5 design), per cell:
+>     - share of round time with all 7 players at a wall;
+>     - number of 6-1 and 5-2 standoffs per round;
+>     - median standoff duration.
+> Save the tables to results/tables/pC2_checks.csv. Report the verdicts of (a) and (b).
+>
+> STEP 1 - SIMULATOR, preset "C2" (per tick; same start and first trip as C1)
+> - At the wall the player sits. The try hazard (T0 or T1 per the rule) is drawn per 0.25 s
+>   bin, as in F2. A try = one step off the wall. M2' is NOT used.
+> - After every own step (the try or a walk step), the player LOOKS:
+>   dA = A just before its next decision point - A just before the step. The decision point
+>   is the next tick; if d_ar > 0, it is after d_ar seconds.
+>   KEEP with probability keep(sign(dA)) per interface. Keep = move continuously in the
+>   direction of that last step, at a pace drawn per movement from (e), until reaching a
+>   wall. Then sit there.
+>   NOT KEPT = stay walking: the next step comes with chance q_w per tick, in a random
+>   direction (50/50; toward the wall is blocked at the wall). Look again after each step.
+> - Reaching any wall ends the walk, and the player sits.
+> - Round end: the consensus rule or the time limit.
+> - Tests:
+>   - fingerprints;
+>   - keep = 1 makes every try commit immediately;
+>   - a walk that reaches the wall returns to sitting;
+>   - the A look uses positions from before the decision point.
+>
+> STEP 2 - BUILD CHECKS (G6train design, R = 2, seed 573)
+> - Try-hazard calibration: overall and by A decile (as C1).
+> - Keep shares by sign(dA): recovered within their CIs.
+> - q_w, and d_ar if > 0: recovered.
+> - round_end agreement.
+> If anything fails: diagnose and propose; don't change numbers.
+>
+> STEP 3 - RUN SCRIPTS
+> - Register C2 (seed 8001) in p24_main.py and p24_checks.py: reported as EXPLORATORY with
+>   the C yardstick, next to C1, L1 and final; no triggers.
+> - Smoke-test with R = 2, delete the outputs, restore p24_checks.csv.
+> - Commit. Report steps 0-3 and give the R = 200 command. Then stop.
+
+### Decision rules (fixed now)
+
+- **(a) Auto-repeat:** d_ar = d if one value d has >= 40% of the first-step gaps within +/-0.05 s of it in BOTH lab v09 and CC; else d_ar = 0. The search is over d = 0.00, 0.01, ..., 2.00 s. d* = the d with the largest min(share lab v09, share CC), the smallest d on a tie. Apparatus iff that min is >= 0.40. Each interface's own best d and share are reported too.
+- **(b) Try hazard:** g is included (the simulator uses T1) iff all three hold: beta_g > 0; its Wald 95% CI excludes 0; and the likelihood-ratio test of T1 vs T0 (chi-square, 1 df) gives p < 0.01. Otherwise the simulator uses T0.
+- **Build checks (step 2):**
+  - Try-hazard calibration within +/-3%, overall and by A decile (as C1).
+  - Keep shares by sign(dA) within the pB2 95% CIs.
+  - q_w within the human 95% CI; d_ar (if > 0) recovered within 0.01 s.
+  - The round_end agreement test passes.
+  - A failure is diagnosed and a fix proposed. No number is changed.
+
+### Yardstick (declared now, before any C2 result)
+
+- **Primary:** targets 1-4: success_rate_pct, consensus_time_km_median_s, fraught_pct_mean and committed_pct_mean (21 statistics).
+- **Secondary:** targets 5-7: breaker_excess, end_sitting_pct and relapse_pct (14 statistics).
+- **Descriptive only:** targets 8-10: reversal_rate, f_rev_median and crossing_time_median_s (18 statistics). They are reported but are not checks.
+- A miss is as in P24: the sim mean over replicates lies outside the human 95% CI, with the same zero-width rule. C2 is reported next to C1, L1 and final, and fires no triggers.
+
+### Implementation choices (made before any C2 number)
+
+**Data (step 0).** Human seats only; never G-val, Ring or CT.
+- Run set for (a), (c) and (e): G-train `load_runs("behavior")`, the G6train set C1 used (bot runs and incomplete runs kept, bot seats skipped).
+- Positions: sign-corrected s on the raw logged rows, with the t = 0, s = 0 row first. dt and the grid step come from `motion.round_iface`.
+- An own-step row is a row where the seat's s changes. It holds k = max(1, round(|ds| / step)) grid steps.
+
+**(a) Auto-repeat.**
+- Search `data/raw` (the OSF archives) and the repo for game code or docs (keys, mouse, auto-repeat) and report what is there.
+- Gap rule:
+  - A movement starts from rest at a 1-step own row i whose gap from the previous own row is a halt by motion.py's rule (t_i - t_prev - dt > dt / 2). For the seat's first move, the previous row is the t = 0 row.
+  - This covers both cases: a step off the wall (the time at the wall is the halt) and a step after a mid-slider halt. The two origins are reported separately.
+  - Gap = time to the next own row, if that row moves in the same direction. If it reverses, or the round ends first, the movement is counted and left out.
+- Lab v09 and CC only, as the spec says. Old CL is not used for (a).
+
+**(b) Try hazard.**
+- Bins: `hazard_table.parquet`, G-train rows (split == "train"), training topologies, all rows (bot runs and incomplete runs kept), exactly as M2' was fit (P11). These are the hazard-table bin rules: 0.25 s from the first move, mid-event bins dropped, features from the last estimator row strictly before the bin start.
+- At the wall: rows with abs_s == 1.
+- y = 1 if the seat's first estimator row with |s| < 1 after a row with |s| = 1 falls in [t, t + 0.25). Estimator rows: the logged rows on lab, and the 0.1 s lab clock on CC, as in the table. The try is the first step off the wall, whatever event follows. On old CL that is the first 0.02 step, not the first change of k.
+- Features: A, e = time_at_end_log1p, r = time_since_rev_log1p, lab (EL / CL = 1).
+- g = log(1 + t - the time of the last estimator row strictly before t on which some neighbor's s differs from the row before it), or log(1 + t) if there is none. Neighbors: the off-diagonal of A_log, bots included.
+- Fit: unpenalized `statsmodels` Logit, with plain MLE SEs, Wald CIs and LR = 2 (ll_T1 - ll_T0).
+
+**(c) Walk timing q_w** (lab v09, old CL, CC).
+- Excursions: departures from a wall that return to the same wall before reaching the other (`model_c1.seat_trips` outcome "returned"). These are the probes and aborted excursions.
+- The gaps are those between consecutive own-step rows from the departure row to the return row. A row with k grid steps adds its gap g to the previous own row, then k - 1 one-tick gaps. Ticks: n = round(g / dt).
+- The simulated gap is D + G ticks. D = max(1, round(d_ar / dt)) is the wait to the decision point. G ~ geometric from 0, so the step can come in the decision tick itself, with chance q_w.
+- So q_w = gaps / (gaps + sum of max(n - D, 0)). 95% CI: group bootstrap (1,000 resamples of files within dataset, seed 573).
+
+**(d) Keep.** `pB2_try_keep.csv`, topology "all", section "(i) all tries", cells P(kept | dA > 0 / = 0 / < 0) per interface (lab v09, old CL, CC). The estimates and CIs are used as stored.
+
+**(e) Pace.**
+- Crossings: the 10a crossings (`crossings.crossing_events`: complete, no jump) of human seats on the raw rows. CC is not put on the lab clock, so the times are finer.
+- v = |s at the end row - s at the start row| / duration (units/s). f = v / round speed (round speed = step / dt), which is the steps per tick.
+- Reported per interface x round speed (rounded to 0.01): n, quartiles of v and of f.
+- The simulator draws f per kept movement from the crossings of the same interface and round speed, or from the interface's pool if that speed has no crossings. It caps f at 1. Per-crossing values are saved in `results/tables/pC2_pace.parquet`.
+
+**(f) Descriptive.**
+- Humans: G-train `load_runs("behavior", keep_bot=False, keep_incomplete=False)`. C1: `design.design("L5")`, `simulate_design("C1", R = 5, seed = 7001)`, as in pC_checks.
+- Per cell (topology x dataset):
+  - All-at-wall share: time with all 7 seats at |k| = 10, over the time to `fraught.round_end`, summed over rounds.
+  - Standoffs per round: `standoffs.round_standoffs` in every topology, by split (6-1, 5-2).
+  - Median standoff duration: from the start to the break or the round end.
+
+**Output:** every step-0 table goes into `results/tables/pC2_checks.csv` (long: check, interface, cell, stat, value, ci_lo, ci_hi, n). The simulator's inputs go into `results/tables/pC2_params.csv`, plus the T0 / T1 coefficients and `pC2_pace.parquet`.
+
+**Simulator (step 1).** sim.py motion "C2", with its own tick `tick_c2`. preset("C2") = the chosen try rule (T0 or T1) with motion "C2".
+- **Start and first trip** as C1: p_start, a coin-flip wall, and a duration drawn from the C1 first-trip pool, run at the C1 trip pace.
+- **Sitting at a wall.** The try hazard runs per F2 bin, at risk only if the estimator row before the bin start shows |s| = 1 with no open reversal, and only while the player sits (C1's rule). g in the simulator comes from the estimator rows, as in the data, with a C2-only ring buffer. A try is one grid step away from the wall.
+- **Decision point.** After an own step made in tick j (a try or a walk step), the player waits until tick j + D, with D = max(1, round(d_ar / dt)).
+  - dA = A from the positions at the start of tick j + D (every move made before the decision point) minus A from the positions at the start of tick j. A = |sum of s over i and its neighbors| / their number.
+  - With probability keep(sign(dA)) (sign with tolerance 1e-9; the interface's three values) the player KEEPS. It moves in the direction of its last step to the wall, n = the remaining steps, at pace f, over L = max(n, round((n - 1) / f) + 1) ticks. The first step is in tick j + D, spread as C1's trip_steps.
+  - Otherwise it WALKS. From tick j + D on, each tick brings a step with chance q_w, up (+1) or down (-1) at 50/50. After that step it waits for the next decision point. A walker is never at a wall: a step that reaches |s| = 1 ends the walk, so "blocked at the wall" never applies.
+- **Reaching |s| = 1** in any way ends the walk or the kept movement, and the player sits. It is at risk again from the next bin that the rules allow.
+- **Draws, in this order per tick:**
+  1. one uniform per player, for the start or the try;
+  2. the start coin flips;
+  3. the first-trip durations;
+  4. one uniform per player at a decision point, for keep;
+  5. the paces of new kept movements;
+  6. one uniform per walking player, for the step;
+  7. the walk-step directions.
+- **mode_ticks:** sitting = at_wall; trip, kept, waiting and walking ticks count as moving if the player steps and halted if not; nothing is "reversing".
+- **Round end:** the consensus rule or the time limit, as before.
+- **Old CL:** the 0.02 grid, with one grid step per try and per walk step.
+
+**Tests (`tests/test_c2.py`).**
+- Fingerprints: C1 is added to `tests/data/preset_fingerprints.json`, made with the code before C2 (commit d111a1e).
+- With keep = 1, every try is followed by a straight run to the opposite wall: no walk steps and no turning back.
+- A walk that reaches the wall returns to sitting, and the hazard is back on.
+- The A look uses the positions at the start of the decision tick, before that tick's moves.
+- Round end and time accounting, as in C1.
+
+**Build checks (step 2).** G6train design, R = 2, seed 573, with traced rounds asserted equal to `design.simulate_rounds` (as C1).
+- **Try hazard:** the trace of every complete at-risk bin. Observed tries dated in the bin vs. the sum of h, overall and by decile of A, per interface and pooled (within +/-3%, with the binomial SE and the chi-square shown).
+- **Keep:**
+  - The check: `model_b.try_table` (the B2 code) on the simulated runs, set (i), P(kept | sign dA) per interface, against the pB2 95% CIs.
+  - The implementation check, also shown: the kept share among the simulator's decision points, by sign(dA), against keep(sign).
+- **q_w:** the step-0 (c) code on the simulated runs, against the human 95% CI.
+- **d_ar** (if > 0): the step-0 (a) code on the simulated runs gives d* within 0.01 s.
+- **Round end:** the L1 test plus the C2 test.
+
+**Run scripts (step 3).** C2 (seed 8001) is added to `p24_main.py` and to `p24_checks.py` (EXPLORATORY with C1 and B1, no triggers). The C yardstick summary covers C2, with no "by construction" note. The smoke test runs at R = 2; then its outputs are deleted and `p24_checks.csv` restored.
