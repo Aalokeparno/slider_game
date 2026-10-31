@@ -1,76 +1,78 @@
 P24 checks, Step 4 main runs
-R (replicates): L1 200, final 200, L1_M3 200, L0 200
+EXPLORATORY (reported only, never used for a decision): B1
+R (replicates): L1 200, final 200, B1 200, L1_M3 200, L0 200
 human CIs replaced by the zero-width rule: target 1 success_rate_pct Star CC: Clopper-Pearson [90.97, 100]; target 10 crossing_time_median_s Full CC: lab clock +/- 0.05 s [0.55, 0.65]; target 10 crossing_time_median_s Star CC: lab clock +/- 0.05 s [0.55, 0.65]
 
 Pass / miss (sim mean inside the human 95% CI); * = borderline (within 2 SE_mc of a CI edge)
-target  stat                         cell          L1      final   L1_M3   L0     
-     1  success_rate_pct             Full CC       MISS    MISS    MISS    MISS   
-     1  success_rate_pct             Full CL       MISS    MISS    MISS    MISS   
-     1  success_rate_pct             Hierarchy CC  MISS*   MISS    MISS    pass   
-     1  success_rate_pct             Hierarchy CL  MISS    MISS    MISS    MISS   
-     1  success_rate_pct             Hierarchy EL  MISS    MISS    MISS    pass   
-     1  success_rate_pct             Star CC       pass    pass    pass    pass     [CI: Clopper-Pearson]
-     2  consensus_time_km_median_s   Full CC       MISS    MISS    MISS    MISS   
-     2  consensus_time_km_median_s   Full CL       MISS    MISS    MISS    MISS   
-     2  consensus_time_km_median_s   Hierarchy CC  MISS    MISS    MISS    MISS   
-     2  consensus_time_km_median_s   Hierarchy CL  MISS    MISS    MISS    MISS   
-     2  consensus_time_km_median_s   Hierarchy EL  MISS    MISS    MISS    pass   
-     2  consensus_time_km_median_s   Star CC       MISS    MISS    MISS    MISS   
-     3  fraught_pct_mean             Hierarchy CC  pass    pass    pass    pass*  
-     3  fraught_pct_mean             Hierarchy CL  pass    pass    pass    pass   
-     3  fraught_pct_mean             Hierarchy EL  pass    pass    pass    pass   
-     4  committed_pct_mean           Full CC       pass    pass    pass    MISS   
-     4  committed_pct_mean           Full CL       pass    pass    pass    MISS   
-     4  committed_pct_mean           Hierarchy CC  pass    pass    pass    MISS   
-     4  committed_pct_mean           Hierarchy CL  pass    pass    pass    MISS   
-     4  committed_pct_mean           Hierarchy EL  pass    pass*   pass    MISS   
-     4  committed_pct_mean           Star CC       pass    pass    pass    MISS   
-     5  breaker_excess               Full CC       MISS    MISS    MISS    MISS   
-     5  breaker_excess               Full CL       MISS    MISS    MISS    MISS   
-     6  end_sitting_pct              Full CC       pass    pass    pass    MISS   
-     6  end_sitting_pct              Full CL       MISS    MISS    MISS    pass*  
-     6  end_sitting_pct              Hierarchy CC  pass    pass    pass    MISS   
-     6  end_sitting_pct              Hierarchy CL  MISS    MISS    MISS    MISS   
-     6  end_sitting_pct              Hierarchy EL  pass    pass    pass    MISS   
-     6  end_sitting_pct              Star CC       MISS    MISS    MISS    MISS   
-     7  relapse_pct                  Full CC       MISS    MISS    MISS    MISS   
-     7  relapse_pct                  Full CL       MISS    MISS    MISS    MISS   
-     7  relapse_pct                  Hierarchy CC  MISS    MISS    MISS    MISS   
-     7  relapse_pct                  Hierarchy CL  MISS    MISS    MISS    MISS   
-     7  relapse_pct                  Hierarchy EL  pass    pass    pass    pass   
-     7  relapse_pct                  Star CC       MISS    MISS    MISS    pass   
-     8  reversal_rate                Hierarchy EL  pass    MISS    pass    MISS   
-     8  reversal_rate                Hierarchy CL  MISS    MISS    MISS    MISS   
-     8  reversal_rate                Hierarchy CC  pass    pass    pass    MISS*  
-     8  reversal_rate                Full CL       MISS    MISS    MISS    MISS   
-     8  reversal_rate                Full CC       MISS    MISS    MISS    MISS   
-     8  reversal_rate                Star CC       MISS    MISS    MISS    MISS   
-     9  f_rev_median                 Hierarchy EL  MISS    MISS    MISS    MISS   
-     9  f_rev_median                 Hierarchy CL  MISS    MISS    MISS    MISS   
-     9  f_rev_median                 Hierarchy CC  MISS    MISS    MISS    MISS   
-     9  f_rev_median                 Full CL       MISS    MISS    MISS    MISS   
-     9  f_rev_median                 Full CC       MISS    MISS    MISS    MISS   
-     9  f_rev_median                 Star CC       MISS    MISS    MISS    MISS   
-    10  crossing_time_median_s       Hierarchy EL  MISS    MISS    MISS    MISS   
-    10  crossing_time_median_s       Hierarchy CL  MISS    MISS    MISS    MISS   
-    10  crossing_time_median_s       Hierarchy CC  MISS    MISS    MISS    MISS   
-    10  crossing_time_median_s       Full CL       pass    pass    pass    MISS   
-    10  crossing_time_median_s       Full CC       MISS    MISS    MISS    pass     [CI: lab clock +/- 0.05 s]
-    10  crossing_time_median_s       Star CC       MISS    MISS    MISS    pass     [CI: lab clock +/- 0.05 s]
-   10c  pause_share_pct              Hierarchy EL  MISS    MISS    MISS    MISS     (L1b only)
-   10c  pause_share_pct              Hierarchy CL  MISS    pass*   MISS    pass     (L1b only)
-   10c  pause_share_pct              Hierarchy CC  MISS    MISS    MISS    MISS     (L1b only)
-   10c  pause_share_pct              Full CL       pass    pass    pass    MISS     (L1b only)
-   10c  pause_share_pct              Full CC       MISS    MISS    MISS    MISS     (L1b only)
-   10c  pause_share_pct              Star CC       MISS    MISS    MISS    MISS     (L1b only)
+target  stat                         cell          L1      final   B1      L1_M3   L0     
+     1  success_rate_pct             Full CC       MISS    MISS    MISS    MISS    MISS   
+     1  success_rate_pct             Full CL       MISS    MISS    MISS    MISS    MISS   
+     1  success_rate_pct             Hierarchy CC  MISS*   MISS    MISS    MISS    pass   
+     1  success_rate_pct             Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+     1  success_rate_pct             Hierarchy EL  MISS    MISS    MISS    MISS    pass   
+     1  success_rate_pct             Star CC       pass    pass    pass    pass    pass     [CI: Clopper-Pearson]
+     2  consensus_time_km_median_s   Full CC       MISS    MISS    MISS    MISS    MISS   
+     2  consensus_time_km_median_s   Full CL       MISS    MISS    MISS    MISS    MISS   
+     2  consensus_time_km_median_s   Hierarchy CC  MISS    MISS    MISS    MISS    MISS   
+     2  consensus_time_km_median_s   Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+     2  consensus_time_km_median_s   Hierarchy EL  MISS    MISS    MISS    MISS    pass   
+     2  consensus_time_km_median_s   Star CC       MISS    MISS    MISS    MISS    MISS   
+     3  fraught_pct_mean             Hierarchy CC  pass    pass    pass    pass    pass*  
+     3  fraught_pct_mean             Hierarchy CL  pass    pass    pass    pass    pass   
+     3  fraught_pct_mean             Hierarchy EL  pass    pass    pass    pass    pass   
+     4  committed_pct_mean           Full CC       pass    pass    pass    pass    MISS   
+     4  committed_pct_mean           Full CL       pass    pass    pass    pass    MISS   
+     4  committed_pct_mean           Hierarchy CC  pass    pass    pass    pass    MISS   
+     4  committed_pct_mean           Hierarchy CL  pass    pass    pass    pass    MISS   
+     4  committed_pct_mean           Hierarchy EL  pass    pass*   pass    pass    MISS   
+     4  committed_pct_mean           Star CC       pass    pass    pass    pass    MISS   
+     5  breaker_excess               Full CC       MISS    MISS    MISS    MISS    MISS   
+     5  breaker_excess               Full CL       MISS    MISS    MISS    MISS    MISS   
+     6  end_sitting_pct              Full CC       pass    pass    pass    pass    MISS   
+     6  end_sitting_pct              Full CL       MISS    MISS    MISS    MISS    pass*  
+     6  end_sitting_pct              Hierarchy CC  pass    pass    pass    pass    MISS   
+     6  end_sitting_pct              Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+     6  end_sitting_pct              Hierarchy EL  pass    pass    pass    pass    MISS   
+     6  end_sitting_pct              Star CC       MISS    MISS    MISS    MISS    MISS   
+     7  relapse_pct                  Full CC       MISS    MISS    MISS    MISS    MISS   
+     7  relapse_pct                  Full CL       MISS    MISS    MISS    MISS    MISS   
+     7  relapse_pct                  Hierarchy CC  MISS    MISS    MISS    MISS    MISS   
+     7  relapse_pct                  Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+     7  relapse_pct                  Hierarchy EL  pass    pass    pass    pass    pass   
+     7  relapse_pct                  Star CC       MISS    MISS    MISS    MISS    pass   
+     8  reversal_rate                Hierarchy EL  pass    MISS    pass    pass    MISS   
+     8  reversal_rate                Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+     8  reversal_rate                Hierarchy CC  pass    pass    pass    pass    MISS*  
+     8  reversal_rate                Full CL       MISS    MISS    MISS    MISS    MISS   
+     8  reversal_rate                Full CC       MISS    MISS    MISS    MISS    MISS   
+     8  reversal_rate                Star CC       MISS    MISS    MISS    MISS    MISS   
+     9  f_rev_median                 Hierarchy EL  MISS    MISS    MISS    MISS    MISS   
+     9  f_rev_median                 Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+     9  f_rev_median                 Hierarchy CC  MISS    MISS    MISS    MISS    MISS   
+     9  f_rev_median                 Full CL       MISS    MISS    MISS    MISS    MISS   
+     9  f_rev_median                 Full CC       MISS    MISS    MISS    MISS    MISS   
+     9  f_rev_median                 Star CC       MISS    MISS    MISS    MISS    MISS   
+    10  crossing_time_median_s       Hierarchy EL  MISS    MISS    MISS    MISS    MISS   
+    10  crossing_time_median_s       Hierarchy CL  MISS    MISS    MISS    MISS    MISS   
+    10  crossing_time_median_s       Hierarchy CC  MISS    MISS    MISS    MISS    MISS   
+    10  crossing_time_median_s       Full CL       pass    pass    pass    pass    MISS   
+    10  crossing_time_median_s       Full CC       MISS    MISS    MISS    MISS    pass     [CI: lab clock +/- 0.05 s]
+    10  crossing_time_median_s       Star CC       MISS    MISS    MISS    MISS    pass     [CI: lab clock +/- 0.05 s]
+   10c  pause_share_pct              Hierarchy EL  MISS    MISS    MISS    MISS    MISS     (L1b only)
+   10c  pause_share_pct              Hierarchy CL  MISS    pass*   MISS    MISS    pass     (L1b only)
+   10c  pause_share_pct              Hierarchy CC  MISS    MISS    MISS    MISS    MISS     (L1b only)
+   10c  pause_share_pct              Full CL       pass    pass    pass    pass    MISS     (L1b only)
+   10c  pause_share_pct              Full CC       MISS    MISS    MISS    MISS    MISS     (L1b only)
+   10c  pause_share_pct              Star CC       MISS    MISS    MISS    MISS    MISS     (L1b only)
 
 Of the 53 check statistics:
   L1     misses 36, borderline 1 (misses that are borderline 1), no value 0
   final  misses 37, borderline 1 (misses that are borderline 0), no value 0
+  B1 (EXPLORATORY) misses 36, borderline 0 (misses that are borderline 0), no value 0
   L1_M3  misses 36, borderline 0 (misses that are borderline 0), no value 0
   L0     misses 41, borderline 3 (misses that are borderline 1), no value 0
 
-Triggers (L1 decides; L0 and final are reported only)
+Triggers (L1 decides; L0, final and B1 are reported only)
   Rescue: L1 target 5: Full CC miss (sim 0.02844, CI [0.04539, 0.1923]); Full CL miss (sim 0.03275, CI [0.05526, 0.2275])
           L1_M3 target 5: Full CC miss (sim 0.02274, CI [0.04539, 0.1923]); Full CL miss (sim 0.03647, CI [0.05526, 0.2275])
           L1 misses in 2 of 2 Full cells, L1_M3 passes 0 of 2 -> not triggered
