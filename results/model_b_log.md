@@ -550,3 +550,54 @@ R = 200 main run (not yet run):
 
     python scripts/p24_main.py --preset C2 --R 200 --seed 8001 --procs 2
     python scripts/p24_checks.py | tee results/p24_report.txt
+
+### Build fixes (Oct 31, 2026; approved; `notebooks/path1/pC2_model.ipynb` rerun once)
+
+**Spec (as given):**
+
+> C2 build fixes (log under entry 3 as "build fixes", with reasons):
+> 1. KEEP: set the simulator's keep(sign dA) per interface to the decision-level values
+>    2P - 1, where P = the human B2 rates (set (i)). Then VERIFY: apply the B2 measure to
+>    simulated logs (G6train, R = 2, seed 573); it must reproduce the human P within its
+>    CIs. If it doesn't, report the gaps; don't iterate the values.
+> 2. d_ar stays 0, as the pre-written rule decided. Record the 10a mismatch as an
+>    explained apparatus effect (keyboard auto-repeat, ~0.5 s after a step off the wall);
+>    10a is descriptive in the C yardstick.
+> 3. Old CL q_w: known limitation (2 groups); no change.
+> Rerun the build check once. Commit. Report, give me the R = 200 command, then stop.
+
+**Fix 1, keep: decision level.**
+- **Reason.** B2's "kept" is the detector's 2-step reversal. A C2 try that is not kept still reads as kept when its next walk step (50/50) goes away from the wall. So the B2 measure is about keep + (1 - keep) / 2, and keep = 2P - 1 inverts it.
+- **Change.** `pC2_params.csv` now holds keep_pos / keep_zero / keep_neg = 2P - 1, with CIs mapped the same way; the simulator uses these. The human rates are kept as P_B2_*. The step-0 notebook cell writes both.
+- **Values** (dA > 0 / = 0 / < 0): lab v09 0.725 / 0.622 / 0.474; old CL 0.789 / 0.571 / 0.488; CC 0.772 / 0.638 / 0.420. No other number changed, and no simulator code changed.
+
+**Fix 2, d_ar stays 0 (the pre-written rule).**
+- The 10a mismatch (C1, `notebooks/path1/pC_checks.ipynb`) is recorded as an explained apparatus effect: keyboard auto-repeat.
+  - Both apparatus are arrow-key driven (step 0 (a)).
+  - After the first step off the wall, the next step comes at 0.5 s ± 0.05 in 55% (lab v09) and 63% (CC) of movements.
+  - Human wall-to-wall trips hold that pause inside the end band, where 10a does not count it; a simulator that spreads the trip's time evenly moves it into the band-to-band part.
+- 10a is descriptive in the C yardstick, so this decides nothing.
+
+**Fix 3, old CL q_w:** a known limitation. Its human CI comes from 2 groups; no change.
+
+**Build check, rerun once** (G6train, R = 2, seed 573, 488 rounds):
+- **Keep verification, the B2 measure on the simulated logs vs. the human P: 5 of 9 within the CI.**
+
+  | interface | dA > 0 | dA = 0 | dA < 0 |
+  |---|---|---|---|
+  | lab v09 | 0.834 in [0.811, 0.905] | 0.838 in [0.715, 0.897] | 0.738 in [0.696, 0.781] |
+  | CC | **0.850 vs. [0.870, 0.901]** (-2.3 half-widths) | 0.772 in [0.764, 0.874] | 0.732 in [0.672, 0.752] |
+  | old CL | **0.997 vs. [0.890, 0.909]** | **0.992 vs. [0.750, 0.792]** | **0.976 vs. [0.711, 0.870]** |
+
+- **Gaps, reported and not iterated:**
+  - CC dA > 0 comes out low. Under the approximation the B2 measure would be 0.886, but later looks also keep runs back to the wall, which read as probes, so the measure falls below it.
+  - Old CL stays near 1. A 0.02 try does not change k = round(10 s), so the detector first sees an excursion when it is mostly a kept run. The inversion does not reach this grid.
+- **Implementation check:** the simulator's own looks keep at 2P - 1 in 8 of 9 cells within 2 SE. Lab v09 dA > 0 is 0.741 vs. 0.725 (z = 2.8; 5,434 looks).
+- **Try-hazard calibration: PASS overall.** Lab v09 -1.7%, old CL +2.7%, CC +0.6%, pooled -0.4%. Deciles 8 of 10 within ±3% (4: -3.1%, 5: +3.2%); chi-square 7.7 on 10 df, p = 0.66.
+- **q_w:** lab v09 0.257 in [0.196, 0.285], CC 0.101 in [0.070, 0.107]: PASS. Old CL 0.476 vs. [0.449, 0.462]: the known limitation (fix 3).
+- **Round end: PASS** (488 of 488).
+
+R = 200 main run (not yet run):
+
+    python scripts/p24_main.py --preset C2 --R 200 --seed 8001 --procs 2
+    python scripts/p24_checks.py | tee results/p24_report.txt
