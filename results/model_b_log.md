@@ -601,3 +601,101 @@ R = 200 main run (not yet run):
 
     python scripts/p24_main.py --preset C2 --R 200 --seed 8001 --procs 2
     python scripts/p24_checks.py | tee results/p24_report.txt
+
+## Entry 4 — Track C scope and the stuck-episode check (Oct 31, 2026; descriptive, no model change)
+
+Declared before any number of this entry: the scope, the reading rule and the implementation choices below. Code (to come): `scripts/p24_noOldCL.py` (simulation), `src/slider/stuck.py` (episodes); notebook `notebooks/path1/pC2_stuck.ipynb`. No existing src file or model changes.
+
+### Spec (as given)
+
+> TASK: Track C scope + stuck-episode check. Descriptive only; NO model change. Never load
+> Ring/CT.
+>
+> 0. FIRST, log entry 4 (results/model_b_log.md), committed before computing anything:
+>    - Scope (declared Oct 31, before Ring/CT): Track C is evaluated on v09 and cloud rounds
+>      only; old-CL rounds (0.02 step) are out of scope. All model comparisons (humans,
+>      L1, final, C2, later APEM) use the same rounds.
+>    - Reading rule for the check below (fixed now):
+>      (i)  C2's median time to first try exceeds 1.5x the human value, and lies outside
+>           the human CI, in >= 2 episode types -> candidate fix: a stuck feature in the
+>           try hazard;
+>      (ii) else, if C2's tries-until-break exceed 1.5x the human value in Full standoffs
+>           only -> candidate fix: standoff-specific keep values;
+>      (iii) else -> freeze C2.
+>
+> 1. RECOMPUTE WITHOUT OLD CL
+>    - Human targets 1-10 and their CIs for Full CL and Hierarchy CL on v09 rounds only
+>      (same code and bootstrap as the target tables). The other cells are unchanged.
+>    - Simulate L1, final and C2 on only those v09 rounds, R = 200 (seeds 1101, 4101, 8101;
+>      register them).
+>    - Rebuild the pass/miss and gap tables with these two cells replaced, and print
+>      before/after for those cells. Save as results/tables/p24_checks_noOldCL.csv.
+>
+> 2. STUCK EPISODES (G-train humans vs C2 on the G6train design minus old-CL rounds;
+>    10 C2 replicates, seed 8001; per interface: v09, CC)
+>    - Episode = all 7 players at a wall (|s| = 1), not consensus, lasting >= 0.5 s.
+>      It ends when any player reaches the opposite wall, or at round end.
+>    - Types: Full/Star split k-(7-k) (6-1, 5-2, 4-3); Hierarchy fraught (the fraught
+>      test at the corner); Hierarchy non-fraught.
+>    - Per type, report:
+>        episodes per round; median duration; median time to first try;
+>        median tries until the episode ends;
+>        P(kept) per try (B2 detector measure, the same on both);
+>        for Full: share of episodes broken by the minority.
+>    - Human values with group-bootstrap 95% CIs (1,000, stratified, seed 573).
+>    - Print one table: human vs C2 side by side, and the reading rule's verdict.
+>
+> Notebook notebooks/path1/pC2_stuck.ipynb (spec cell first, short cells). Execute, add a
+> README line, commit, report. Then stop.
+
+### Scope (declared Oct 31, 2026, before Ring/CT)
+
+Track C is evaluated on v09 and cloud (CC) rounds only. Old-CL rounds (0.02 step) are out of scope. All model comparisons (humans, L1, final, C2, later APEM) use the same rounds.
+
+### Reading rule (fixed now)
+
+- **(i)** C2's median time to first try exceeds 1.5 x the human value, and lies outside the human CI, in >= 2 episode types -> candidate fix: a stuck feature in the try hazard.
+- **(ii)** Else, if C2's tries-until-break exceed 1.5 x the human value in Full standoffs only -> candidate fix: standoff-specific keep values.
+- **(iii)** Else -> freeze C2.
+
+How the rule is applied (fixed now, before any number):
+- A **cell** is interface (v09, CC) x topology x episode type, one row of the printed table. The **episode types** are the five named in the spec: split 6-1, 5-2, 4-3 (Full and Star), Hierarchy fraught and Hierarchy non-fraught.
+- **(i)** A type counts if, in at least one of its cells, C2's median time to first try is > 1.5 x the human median AND outside the human 95% CI. (i) fires if >= 2 of the 5 types count. A cell with no human episode, or with no CI, cannot count.
+- **(ii)** "Tries-until-break" = the median tries until the episode ends. (ii) fires if C2's value is > 1.5 x the human value in at least one Full split cell and in no other cell (no Star split cell, no Hierarchy cell). No CI condition (none is stated).
+- **(iii)** Otherwise, freeze C2.
+
+### Implementation choices (made before any number)
+
+**Part 1, without old CL.**
+- **v09 rounds.** `interface.version_tag(file) == "v09"` (the design's `lab_v09`). Cells Full CL and Hierarchy CL: the L3 rounds (targets 1-7) and L5 rounds (targets 8-10) with dataset CL and v09. The other cells keep their rounds and values.
+- **Human targets.** The code of the saved target tables, on the v09 CL runs only:
+  - `targets.train_targets` (L3 runs, "train+val" rows, 10,000 resamples, seed 573) for targets 1-7.
+  - `reversal_rate_table` (target 8, as set b_target8), `agreement_at_reversal_table` (target 9, f_rev median) and `crossing_time_table` (10a, 10c), on the L5 runs, with default arguments.
+  - Then `p24_checks.zero_width_rule` with the new round counts. The between-group SD rows (L3 trigger) are recomputed the same way (`p24_checks.human_sd` code on the L5 v09 CL runs).
+- **Simulation.** New script `scripts/p24_noOldCL.py`, with the seeds registered there: L1 1101, final 4101, C2 8101.
+  - Design: `design.design("L3")` restricted to the CL v09 rounds.
+  - Batches and job seeds as in `p24_main.py` ([seed, batch, first replicate]; targets 8-10 on the L5 part), R = 200.
+  - Output: `results/tables/p24_reps_noOldCL_<preset>.parquet`.
+  - The other cells' replicates come from the main runs (`p24_reps_<preset>.parquet`): each round is simulated on its own stream, so those cells do not depend on the CL rounds.
+- **Tables.** `p24_checks.summarize` / `build_tables` on the merged replicates and the merged human table.
+  - `p24_checks_noOldCL.csv`: presets L1, final and C2, the same rows and columns as `p24_checks.csv`, plus `half_width` and `gap` = (sim mean - human) / CI half-width.
+  - Printed: before / after for the two cells, and passes and median |gap| over the 53 check statistics, before and after.
+  - B1, C1, L1_M3 and L0 are not rebuilt (not simulated on these rounds).
+
+**Part 2, stuck episodes.**
+- **Humans.** G-train `load_runs("behavior")` (the G6train run set), minus old-CL rounds, minus runs with a bot seat (bot seats are not human players). Incomplete runs are kept, as in G6train.
+- **C2.** `design.design("G6train")` minus old-CL rounds, `design.simulate_design(..., "C2", R=10, seed=8001)`, all seats human.
+- **Positions.** k = round(10 s), sign-corrected, with a t = 0, k = 0 row first (as `standoffs.py`). At a wall: |k| = 10; side = sign(k).
+- **Episode start.** A row where all 7 seats are at a wall with mixed sides, and the row before is not the same configuration. The all-at-wall stretch from it (to the first row with a seat off its wall, or the round end) must last >= 0.5 s.
+- **Episode end.** The first later row on which any seat is at the wall opposite its side at the start, or the round end (`fraught.round_end`). The next episode is searched from the end row.
+- **Types.** Full and Star: k_min = min(seats +, seats -) gives 6-1, 5-2 or 4-3. Hierarchy: `fraught.is_fraught(A, side)` on the start row (A in seat order) gives fraught or non-fraught.
+- **Try.** An m = 2 event of `reversals.detect_events` by a seat whose previous row is at its start wall, with the event row in (start, end]. Kept = reversal, not kept = probe; unresolved tries are left out of P(kept).
+- **Statistics, per cell.**
+  - Episodes per round = episodes / rounds of the run set in the cell (topology x interface).
+  - Median duration = end - start (all episodes).
+  - Median time to first try = the first try's row time - start, over the episodes with a try. Episodes without a try are counted and left out.
+  - Median tries until the end, over all episodes.
+  - P(kept) = kept / (kept + probe), pooled over the cell's tries.
+  - Full only: the share broken by the minority, over the episodes that end at the opposite wall. The breaker is the seat(s) on the end row; minority = the k_min side; ambiguous if seats of both sides arrive on that row (left out).
+  - C2 pools the 10 replicates' episodes.
+- **Human CIs.** 1,000 resamples of the log files, drawn with replacement within dataset (EL, CL, CC), rng(573) per cell, 95% percentile intervals (as `standoffs.boot_cells`). A statistic with no value in a resample is left out of that resample.
