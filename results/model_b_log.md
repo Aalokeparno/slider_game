@@ -699,3 +699,16 @@ How the rule is applied (fixed now, before any number):
   - Full only: the share broken by the minority, over the episodes that end at the opposite wall. The breaker is the seat(s) on the end row; minority = the k_min side; ambiguous if seats of both sides arrive on that row (left out).
   - C2 pools the 10 replicates' episodes.
 - **Human CIs.** 1,000 resamples of the log files, drawn with replacement within dataset (EL, CL, CC), rng(573) per cell, 95% percentile intervals (as `standoffs.boot_cells`). A statistic with no value in a resample is left out of that resample.
+
+### Results (Nov 1, 2026; `notebooks/path1/pC2_stuck.ipynb`)
+
+**Part 1, without old CL** (`p24_checks_noOldCL.csv`; v09 CL rounds: 39 Full, 39 Hierarchy; L1 / final / C2 R = 200, seeds 1101 / 4101 / 8101):
+- Passes over the 53 check statistics: L1 17 -> 17, final 16 -> 16, C2 31 -> 30 (the two CL cells: 4 -> 4, 4 -> 4, 8 -> 7).
+- Median |gap|: L1 1.80 -> 1.60, final 1.86 -> 1.69, C2 0.74 -> 0.86.
+- C2 on v09: success Full CL 77.7% vs. human 89.7% (miss), Hierarchy CL 97.5% vs. 97.4% (pass). KM median still too slow (150 vs. 72 s; 63 vs. 37 s). Committed % now too high (11.5 vs. 5.1; 14.1 vs. 9.6).
+
+**Part 2, stuck episodes** (humans: G-train, bot-free, no old CL; C2: G6train minus old CL, R = 10, seed 8001):
+- (i) C2's median time to first try is > 1.5 x human and outside the CI in no cell; the largest ratio is 1.49 x (v09 Hierarchy fraught, 1.80 vs. 1.21 s [1.00, 1.70]). Does not fire.
+- (ii) C2's median tries until the end is > 1.5 x human in no cell (C2 1-3, humans 1-4). Does not fire.
+- **Verdict: (iii) freeze C2.**
+- Not part of the rule: C2 starts about 2-4 x as many episodes per round as the humans in most cells.
