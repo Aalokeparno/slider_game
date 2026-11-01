@@ -1,9 +1,9 @@
 """Track C scope (results/model_b_log.md entry 4): the P24 check statistics of R simulated replicates of the L3 design
 restricted to the CL v09 rounds (Full CL and Hierarchy CL without old CL; targets 8-10 on their L5 part), for
-L1, final or C2, saved per replicate to results/tables/p24_reps_noOldCL_<preset>.parquet.
+L1, final, C1 or C2, saved per replicate to results/tables/p24_reps_noOldCL_<preset>.parquet.
 
 Same batches, job seeds and saved rows as p24_main.py ([seed, batch, first missing replicate]; resumable).
-Registered seeds (entry 4): L1 1101, final 4101, C2 8101.
+Registered seeds (entry 4): L1 1101, final 4101, C2 8101; C1 7101 (supervisor comparison, Nov 1, 2026).
 
     python scripts/p24_noOldCL.py --preset C2 --R 200 --seed 8101 --procs 2
 """
@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from p24_main import keep                                   # noqa: E402  the rows saved per replicate
 
 warnings.filterwarnings("ignore", message="Pandas requires version")
-SEEDS = {"L1": 1101, "final": 4101, "C2": 8101}             # entry 4
+SEEDS = {"L1": 1101, "final": 4101, "C2": 8101, "C1": 7101}  # entry 4; C1: scripts/sup_runs.py
 
 
 def path(preset):
