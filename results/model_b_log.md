@@ -817,3 +817,7 @@ Note: the human targets pool train + val, so G-val outcomes tune this baseline (
 **Output and resuming.**
 - `p26_apem_search.csv` gets one row per part run of stages 1-3: stage, part, a_th, s_th, mu, R, seed, L (the part loss), n_stats, n_missing (statistics with no value), seconds.
 - A finished part run is skipped on restart. A stage refuses to start until the stage before it is complete. Stage 3 and stage 4 save their replicates per batch.
+
+### Amendment 1 (Nov 1, 2026; before any refit run)
+
+The missing-statistic rule changes. A statistic with no value in any replicate now adds z^2 = 100 to its part's loss. It no longer makes the part loss infinite, so such a mu stays eligible. Everything else in this entry is unchanged. n_missing in `p26_apem_search.csv` still counts these statistics.
