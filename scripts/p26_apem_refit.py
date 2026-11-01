@@ -7,7 +7,7 @@ rounds: Full, Hierarchy, Star CC; 26 statistics) with mu_cloud; a_th and s_th ar
 
 Loss of a part: sum of z^2 over its check statistics (targets.check_stats, the fast path), z = (sim - human) /
 sqrt(SE_h^2 + SE_mc^2), SE_h = (human CI width) / 3.92 (p24_checks_noOldCL.csv, final rows), SE_mc = SD over the
-replicates with a value / sqrt(n) (0 if n = 1). A statistic with no value in any replicate: the part loss is inf.
+replicates with a value / sqrt(n) (0 if n = 1). A statistic with no value in any replicate adds z^2 = MISSING_Z2 = 100 (entry 5, amendment 1).
 
 Common random numbers: batch b of part p (0 lab, 1 cloud) in stage k has job seed [SEEDS[k], p, b] for every
 setting; batch sizes are fixed per stage (BATCH).
@@ -54,6 +54,7 @@ A_STEP, S_STEP = 0.05, 0.1
 A_BOX, S_BOX = (0.3, 0.8), (0.3, 0.9)
 PARTS = {"lab": ("lab_v09", 0), "cloud": ("cc", 1)}
 N_STATS = {"lab": 27, "cloud": 26}
+MISSING_Z2 = 100.0          # z^2 of a statistic with no value in any replicate (amendment 1)
 RUN = ["part", "a_th", "s_th", "mu"]
 
 
@@ -97,7 +98,8 @@ def loss(reps, hum):
     x["se_mc"] = np.where(x["n"] > 1, x["sd"] / np.sqrt(x["n"]), 0.0)
     x["z"] = (x["sim"] - x["value"]) / np.sqrt(x["se_h"] ** 2 + x["se_mc"] ** 2)
     missing = int((x["n"] == 0).sum())
-    return (np.inf if missing else float((x["z"] ** 2).sum())), missing, x
+    z2 = np.where(x["n"] == 0, MISSING_Z2, x["z"] ** 2)
+    return float(z2.sum()), missing, x
 
 
 def batch_job(job):
