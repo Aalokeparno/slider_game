@@ -712,3 +712,108 @@ How the rule is applied (fixed now, before any number):
 - (ii) C2's median tries until the end is > 1.5 x human in no cell (C2 1-3, humans 1-4). Does not fire.
 - **Verdict: (iii) freeze C2.**
 - Not part of the rule: C2 starts about 2-4 x as many episodes per round as the humans in most cells.
+
+## Entry 5 — P26, APEM refit by a two-stage search (Nov 1, 2026; baseline refit, no other model change)
+
+Declared before any refit run: the deviations from the P20 recipe, the seeds and the implementation choices below. Code: `scripts/p26_apem_refit.py`. The simulator is unchanged: the APEM preset of `sim.py` (as used for published APEM in P25 visuals and the supervisor comparison), with a, s_th, mu set per run. Ring/CT are never loaded.
+
+### Spec (as given)
+
+> TASK: P26, APEM refit by a two-stage search. Never load Ring/CT. No other model changes.
+> Write the scripts; I run the long parts.
+>
+> 0. FIRST, log entry P26 (results/model_b_log.md), committed before any refit run:
+>    - The P20 recipe (A9.8) is unchanged, except:
+>      - search strategy: two-stage instead of the full grid (decided before any refit
+>        result, for runtime);
+>      - scope: v09 + cloud rounds, old CL out (log entry 4), the same design as
+>        p24_checks_noOldCL.csv;
+>      - the zero-width CI rule as in p24_checks.
+>    - Note: the targets pool train + val, so G-val outcomes tune the baseline (as P20
+>      says).
+>
+> 1. MODEL (P20): published APEM on our interface:
+>    - always moving unless pinned at a wall;
+>    - everyone starts at t = 0 in a random direction;
+>    - flip per tick with probability 1 - exp(-dt/mu) if A <= a_th and |s| >= s_th;
+>    - immediate flips; grid steps; synchronous update; per-round interface speed.
+>    Tuned: a_th, s_th (shared), mu_lab, mu_cloud.
+>
+> 2. LOSS: L = sum of z^2 over the 53 check statistics,
+>    z = (sim - human) / sqrt(SE_h^2 + SE_mc^2), SE_h = (human CI width) / 3.92,
+>    SE_mc = SD across replicates / sqrt(R).
+>    - If simulated success < 50%, target 2 = the time limit.
+>    - The loss splits: L_lab (lab cells) depends only on mu_lab; L_cloud (CC cells) only
+>      on mu_cloud. For each (a_th, s_th), pick mu_lab and mu_cloud separately.
+>    - Common random numbers: replicate r uses the same seed for every setting.
+>      Register seeds 5301 (stage 1), 5302 (stage 2), 5303 (stage 3), 5304 (final run).
+>
+> 3. SEARCH (scripts/p26_apem_refit.py, resumable, per-setting results appended to
+>    results/tables/p26_apem_search.csv):
+>    Stage 1, coarse: a_th in {0.3, 0.4, 0.5, 0.6, 0.7, 0.8};
+>      s_th in {0.3, 0.5, 0.7, 0.9}; mu in {0.05, 0.1, 0.2, 0.4, 0.8, 1.6} s
+>      (the same mu runs both lab and cloud cells). R = 2.
+>    Stage 2, refine: around the 2 best (a_th, s_th) of stage 1:
+>      a_th +/- 0.05 (3 values), s_th +/- 0.1 (3 values), and the best mu with its
+>      neighbours in the mu list (3 values), separately for lab and cloud. R = 3.
+>      Locked grid resolution; stay inside [0.3, 0.8] x [0.3, 0.9].
+>    Stage 3, confirm: the 3 best settings overall, R = 50. Lowest L wins.
+>    Stage 4: the winner at R = 200 (seed 5304) through the fast path, written like
+>      sup_checks (sim value, gap, pass per check) -> results/tables/p26_apem_refit_checks.csv.
+>    Save the winner and its loss parts to results/tables/p26_apem_refit.json.
+>
+> 4. Smoke-test each stage on a tiny design (scratchpad outputs), report the projected
+>    runtime per stage on 2 processes, give me the commands (one chained command,
+>    resumable), commit, and stop.
+
+### Deviations from the P20 recipe (A9.8), decided before any refit result
+
+The recipe is unchanged except:
+- **Search strategy:** two-stage search (coarse grid, local refinement, confirmation) instead of the full grid, for runtime.
+- **Scope:** v09 + cloud rounds, old CL out (entry 4). The design is `design.design("L3")` without its old-CL rounds (EL 51, CL v09 39 + 39, CC 36 + 40 + 39 = 244 rounds; targets 8-10 on the L5 part), the same design as `p24_checks_noOldCL.csv` and the supervisor comparison.
+- **Zero-width CIs:** the zero-width CI rule as in `p24_checks.py` (already applied to the human values of `p24_checks_noOldCL.csv`).
+
+Note: the human targets pool train + val, so G-val outcomes tune this baseline (as P20 says).
+
+### Seeds (registered now)
+
+5301 stage 1, 5302 stage 2, 5303 stage 3, 5304 stage 4 (final run).
+
+### Implementation choices (made before any refit run)
+
+**Human values.** The `final` rows of `p24_checks_noOldCL.csv`, the 53 statistics with in_check_list: value, ci_lo, ci_hi (zero-width rule applied). SE_h = (ci_hi - ci_lo) / 3.92.
+
+**Loss parts.**
+- Lab = the lab_v09 rounds (Hierarchy EL, Hierarchy CL v09, Full CL v09: 27 statistics). Cloud = the cc rounds (Full, Hierarchy, Star CC: 26 statistics). 27 + 26 = 53.
+- Each part is simulated as its own design: lab rounds with mu_lab, cc rounds with mu_cloud, a_th and s_th shared. Every cell lies in one part, so L = L_lab + L_cloud exactly.
+
+**Statistics.** `targets.check_stats` (the fast path) per replicate, as in the P24 runs. Target 2 is the cell's time limit when a replicate has no KM median (success < 50%; `median_or_limit`).
+- sim = the mean over the replicates with a value; SD with ddof 1; SE_mc = SD / sqrt(n), n = the replicates with a value; SE_mc = 0 when n = 1.
+- A statistic with no value in any replicate makes its part's loss infinite (that mu is not eligible for that (a_th, s_th)).
+
+**Common random numbers.**
+- Replicates run in batches (simulated together, one call per round). Batch b of part p in stage k uses the job seed [stage seed, p, b] (p = 0 lab, 1 cloud) for every setting, so every setting of a stage gets the same seeds.
+- Batch sizes are fixed per stage: stage 1 one batch of 2; stage 2 one batch of 3; stages 3 and 4 batches of 10 (5 and 20 batches).
+
+**Stage 1.**
+- 6 a_th x 4 s_th x 6 mu = 144 settings, each part at R = 2: 288 part runs.
+- For each (a_th, s_th): mu_lab = argmin L_lab over mu, mu_cloud = argmin L_cloud over mu, and L = their sum. Ties go to the first in grid order.
+- The 2 best (a_th, s_th) by L go to stage 2.
+
+**Stage 2.**
+- Around each of the 2 centers: a_th in {a - 0.05, a, a + 0.05} and s_th in {s - 0.1, s, s + 0.1}, rounded to the grid (0.05 and 0.1 steps). Values outside [0.3, 0.8] x [0.3, 0.9] are dropped (2 values at an edge, not shifted).
+- mu: the center's stage-1 mu_lab with its two neighbours in the mu list, for lab rounds; the same for mu_cloud, for cloud rounds. At an end of the list: the end value and the next two.
+- An (a_th, s_th) in both neighbourhoods runs the union of both centers' mu values. R = 3.
+
+**Stage 3.**
+- Every stage-2 combination (a_th, s_th, mu_lab, mu_cloud) is ranked by L_lab + L_cloud. The 3 best go to stage 3. They may share an (a_th, s_th); a part run shared by two of them is run once.
+- R = 50. The lowest L = L_lab + L_cloud wins (ties: the better stage-2 rank).
+
+**Stage 4.** The winner at R = 200, seed 5304.
+- Per-replicate rows (`p24_main.keep`) go to `results/tables/p26_reps_stage4.parquet`; stage 3's go to `p26_reps_stage3.parquet`.
+- `p26_apem_refit_checks.csv`: the rows and human columns of `sup_checks.csv` (53 + 10c), with sim, gap = (sim - human) / CI half-width, pass = sim inside [ci_lo, ci_hi] (`p24_checks.summarize`), plus SE_mc and z.
+- `p26_apem_refit.json`: the winner, L, L_lab and L_cloud at R = 50 (stage 3) and at R = 200, passes of 53, and the 3 stage-3 candidates with their losses.
+
+**Output and resuming.**
+- `p26_apem_search.csv` gets one row per part run of stages 1-3: stage, part, a_th, s_th, mu, R, seed, L (the part loss), n_stats, n_missing (statistics with no value), seconds.
+- A finished part run is skipped on restart. A stage refuses to start until the stage before it is complete. Stage 3 and stage 4 save their replicates per batch.
