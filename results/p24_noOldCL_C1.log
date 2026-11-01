@@ -1,0 +1,12 @@
+C1: 78 CL v09 rounds, R = 200, 0 saved, 200 to run in 10 jobs, 1 processes -> /home/aalok/ELEC573/Tabor/results/tables/p24_reps_noOldCL_C1.parquet
+08:37:21  20/200 done, 11.3 s per replicate, about 34 min left
+08:41:19  40/200 done, 11.6 s per replicate, about 31 min left
+08:45:20  60/200 done, 11.8 s per replicate, about 27 min left
+08:49:17  80/200 done, 11.8 s per replicate, about 24 min left
+08:53:29  100/200 done, 12.0 s per replicate, about 20 min left
+08:57:33  120/200 done, 12.0 s per replicate, about 16 min left
+09:01:31  140/200 done, 12.0 s per replicate, about 12 min left
+09:05:41  160/200 done, 12.0 s per replicate, about 8 min left
+09:09:45  180/200 done, 12.1 s per replicate, about 4 min left
+09:14:12  200/200 done, 12.2 s per replicate, about 0 min left
+C1: 200 replicates in /home/aalok/ELEC573/Tabor/results/tables/p24_reps_noOldCL_C1.parquet

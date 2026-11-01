@@ -1,0 +1,12 @@
+RW: 244 rounds, R = 20, 0 saved, 20 to run in 10 jobs, 1 processes -> /home/aalok/ELEC573/Tabor/results/tables/sup_reps_RW.parquet
+08:44:00  2/20 done, 322.3 s per replicate, about 97 min left
+08:55:04  4/20 done, 327.2 s per replicate, about 87 min left
+09:06:14  6/20 done, 329.7 s per replicate, about 77 min left
+09:17:35  8/20 done, 332.5 s per replicate, about 67 min left
+09:28:51  10/20 done, 333.6 s per replicate, about 56 min left
+09:40:23  12/20 done, 335.7 s per replicate, about 45 min left
+09:51:37  14/20 done, 335.9 s per replicate, about 34 min left
+10:02:49  16/20 done, 335.9 s per replicate, about 22 min left
+10:13:54  18/20 done, 335.5 s per replicate, about 11 min left
+10:25:29  20/20 done, 336.7 s per replicate, about 0 min left
+RW: 20 replicates in /home/aalok/ELEC573/Tabor/results/tables/sup_reps_RW.parquet

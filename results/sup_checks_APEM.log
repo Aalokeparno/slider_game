@@ -1,0 +1,7 @@
+APEM: 244 rounds, R = 100, 0 saved, 100 to run in 5 jobs, 1 processes -> /home/aalok/ELEC573/Tabor/results/tables/sup_reps_APEM.parquet
+09:23:36  20/100 done, 27.8 s per replicate, about 37 min left
+09:32:29  40/100 done, 27.2 s per replicate, about 27 min left
+09:41:58  60/100 done, 27.6 s per replicate, about 18 min left
+09:51:02  80/100 done, 27.5 s per replicate, about 9 min left
+10:00:04  100/100 done, 27.4 s per replicate, about 0 min left
+APEM: 100 replicates in /home/aalok/ELEC573/Tabor/results/tables/sup_reps_APEM.parquet
