@@ -1,6 +1,7 @@
 """Supervisor comparison (notebooks/path1/supervisor_compare.ipynb; descriptive, no model change): the simulations
 behind it. Models: RW (Agreement-blind baseline: the APEM preset with a = 1.0, s = 0, mu = 0.1), APEM (published
-a = s = 0.5, mu = 0.1), final, C1 and C2 (exploratory). Scope (results/model_b_log.md entry 4): v09 + cloud rounds,
+a = s = 0.5, mu = 0.1), APEMr (APEM refit, P26: a_th, s_th shared, mu per part lab / cloud,
+results/tables/p26_apem_refit.json), final, C1 and C2 (exploratory). Scope (results/model_b_log.md entry 4): v09 + cloud rounds,
 old CL excluded, for every model. Each step is resumable (finished parts are skipped).
 
     checks    RW, APEM: the P24 check statistics of R replicates of the L3 design without its old-CL rounds (EL,
@@ -11,10 +12,12 @@ old CL excluded, for every model. Each step is resumable (finished parts are ski
               C1 on the CL v09 rounds: scripts/p24_noOldCL.py --preset C1 --R 200 --seed 7101.
     traj      replicates 0-19 again with the stored streams: RW, APEM the batches of their checks run (RW 0-9 of 2,
               APEM 0 of 20) on the checks design; final, C1, C2 batch 0, [main seed, 0, 0] on the full L3 design (EL
-              and CC rounds kept) and [noOldCL seed, 0, 0] on its CL v09 rounds. Their check statistics must equal the saved rows exactly, else the step stops.
+              and CC rounds kept) and [noOldCL seed, 0, 0] on its CL v09 rounds. APEMr: the P26 stage-4 batches
+              0-1 of each part ([5304, part, b], 10 replicates each) on the P26 part designs, checked against
+              p26_reps_stage4.parquet. Their check statistics must equal the saved rows exactly, else the step stops.
               Saves what the figures need (collect) -> results/tables/sup_traj_<model>.pkl
     extended  20 replicates of the checks design with the time limit x 3 (900 s lab, 540 s cloud), registered seeds
-              9001-9005 (simulated one round at a time, with the streams the round gets in the whole design); one row
+              9001-9005, APEMr 9006 (per part: [9006, 0] lab, [9006, 1] cloud) (simulated one round at a time, with the streams the round gets in the whole design); one row
               per round copy: success and time to consensus (the simulator's end time). sim.HORIZON is raised to
               1000 s for this step (it sizes the time grids only).
               -> results/tables/sup_ext_<model>.parquet
@@ -22,8 +25,11 @@ old CL excluded, for every model. Each step is resumable (finished parts are ski
     python scripts/sup_runs.py checks --model RW --R 50 --seed 5201
     python scripts/sup_runs.py traj --model final
     python scripts/sup_runs.py extended --model C2
+    python scripts/sup_runs.py traj --model APEMr
+    python scripts/sup_runs.py extended --model APEMr --seed 9006
 """
 import argparse
+import json
 import os
 import pickle
 import sys
@@ -39,18 +45,25 @@ from slider import visuals as V
 
 sys.path.insert(0, os.path.dirname(__file__))
 import p24_noOldCL                                          # noqa: E402
+import p26_apem_refit as p26                                # noqa: E402
 from p24_main import SEEDS as MAIN_SEEDS, keep              # noqa: E402
 
 warnings.filterwarnings("ignore", message="Pandas requires version")
 MODELS = {"RW": ("APEM", {"a": 1.0, "s_th": 0.0, "mu": 0.1}), "APEM": ("APEM", V.APEM_PUBLISHED),
-          "final": ("final", {}), "C1": ("C1", {}), "C2": ("C2", {})}
+          "APEMr": ("APEM", None), "final": ("final", {}), "C1": ("C1", {}), "C2": ("C2", {})}   # APEMr: refit_kw()
 CHECK_SEEDS = {"RW": 5201, "APEM": 5101}
 CHECK_BATCH = {"RW": 2, "APEM": design.BATCH}
-EXT_SEEDS = {"RW": 9001, "APEM": 9002, "final": 9003, "C1": 9004, "C2": 9005}
+EXT_SEEDS = {"RW": 9001, "APEM": 9002, "final": 9003, "C1": 9004, "C2": 9005, "APEMr": 9006}
 N_TRAJ = 20
 EXT_HORIZON = 1000.0      # s: sim.HORIZON (400) only sizes the time grids; ticks before 400 s are unchanged
 CL_CELLS = [("Hierarchy", "CL"), ("Full", "CL")]
 KEYS = ["replicate", "target", "stat", "topology", "dataset", "group"]
+
+
+def refit_kw():
+    """{part: APEM keywords} of the P26 winner (mu per part)."""
+    w = json.loads((config.TABLES / "p26_apem_refit.json").read_text())["winner"]
+    return {p: {"a": w["a_th"], "s_th": w["s_th"], "mu": w[f"mu_{p}"]} for p in p26.PARTS}
 
 
 def reps_path(model):
@@ -165,11 +178,12 @@ def part_path(model, segment, r):
     return config.TABLES / "sup_traj_parts" / f"{model}_{segment}_r{r:02d}.pkl"
 
 
-def replay(model, segment, d, rows, batches):
+def replay(model, segment, d, rows, batches, kw=None):
     """Replay the stored batches [(seed, R, first replicate), ...] of design d, check every replicate's statistics
     against the saved rows (saved_rows) and save collect() of the rounds at positions `rows` of d per replicate
-    (part_path). A batch whose replicates are all saved is skipped."""
-    preset, kw = MODELS[model]
+    (part_path). A batch whose replicates are all saved is skipped. kw: APEM keywords (default: MODELS)."""
+    preset, kw0 = MODELS[model]
+    kw = kw0 if kw is None else kw
     saved = saved_rows(model, segment)
     roles, keep5 = list(d["role"]), ~d["whole_second"].to_numpy()
     i3 = sorted(rows)
@@ -204,6 +218,9 @@ def saved_rows(model, segment):
     """The saved statistics a replay is checked against."""
     if segment == "all":
         return pd.read_parquet(reps_path(model))
+    if model == "APEMr":                                        # segment = the P26 part
+        t = pd.read_parquet(config.TABLES / "p26_reps_stage4.parquet")
+        return t[t["part"] == segment]
     return pd.read_parquet(config.P24_REPS[model] if segment == "main" else p24_noOldCL.path(model))
 
 
@@ -217,6 +234,12 @@ def run_traj(model):
         d, B = scope(design.design("L3")), CHECK_BATCH[model]
         replay(model, "all", d, range(len(d)), [([CHECK_SEEDS[model], b, B * b], B, B * b) for b in range(N_TRAJ // B)])
         segments = ["all"]
+    elif model == "APEMr":                                      # the P26 stage-4 batches, per part
+        ds, kws, B = p26.designs(False), refit_kw(), p26.BATCH[4]
+        for p, (_, k) in p26.PARTS.items():
+            replay(model, p, ds[p], range(len(ds[p])), [([p26.SEEDS[4], k, b], B, B * b) for b in range(N_TRAJ // B)],
+                   kws[p])
+        segments = list(p26.PARTS)
     else:                                                       # final, C1, C2: the main run, then the noOldCL run
         d3 = design.design("L3")
         replay(model, "main", d3, np.flatnonzero((d3["dataset"] != "CL").to_numpy()),
@@ -247,19 +270,24 @@ def run_extended(model, seed):
         print(f"{model}: {out} exists, nothing to do")
         return
     preset, kw = MODELS[model]
-    d = scope(design.design("L3"))
-    d = d.assign(T=3 * d["T"])
+    if model == "APEMr":                                        # per part: its design, its mu, seed [seed, part]
+        ds, kws = p26.designs(False), refit_kw()
+        jobs = [(ds[p], kws[p], [seed, k]) for p, (_, k) in p26.PARTS.items()]
+    else:
+        jobs = [(scope(design.design("L3")), kw, seed)]
     sim.HORIZON = EXT_HORIZON                                   # the time grids must cover 900 s
     start = time.time()
     rows = []
-    for i in range(len(d)):                                     # one round at a time (memory), whole-design streams
-        sub, rounds = V.simulate_rows(d, [i], preset, N_TRAJ, seed, **kw)
-        row = sub.iloc[0]
-        rows += [{"topology": row["topology"], "dataset": row["dataset"], "interface": row["interface"],
-                  "group": row["group"], "wave": row["wave"], "T3": row["T"], "replicate": r, "success": o["success"],
-                  "end_time": o["end_time"]} for r, o in enumerate(rounds[0][0])]
-        if i % 25 == 0:
-            print(f"{time.strftime('%H:%M:%S')}  {model}: round {i + 1}/{len(d)}", flush=True)
+    for d, kw, s in jobs:
+        d = d.assign(T=3 * d["T"])
+        for i in range(len(d)):                                 # one round at a time (memory), whole-design streams
+            sub, rounds = V.simulate_rows(d, [i], preset, N_TRAJ, s, **kw)
+            row = sub.iloc[0]
+            rows += [{"topology": row["topology"], "dataset": row["dataset"], "interface": row["interface"],
+                      "group": row["group"], "wave": row["wave"], "T3": row["T"], "replicate": r,
+                      "success": o["success"], "end_time": o["end_time"]} for r, o in enumerate(rounds[0][0])]
+            if i % 25 == 0:
+                print(f"{time.strftime('%H:%M:%S')}  {model}: round {i + 1}/{len(d)}", flush=True)
     tab = pd.DataFrame(rows).assign(model=model, seed=seed)
     tab.to_parquet(out, index=False)
     print(f"{model}: {len(tab)} round copies -> {out} ({(time.time() - start) / 60:.1f} min)")
