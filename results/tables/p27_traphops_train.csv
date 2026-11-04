@@ -1,0 +1,13 @@
+source,scope,topology,dataset,stat,value,ci_lo,ci_hi,n_runs,n_groups,n_cut
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CC,n_spells,3.55,1.210391363022942,7.2,40,16,21
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CC,n_distinct,0.65,0.42105263157894735,0.8889639639639638,40,16,21
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CC,n_hops,1.525,0.375,3.4164304548450874,40,16,21
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CC,any_hop,25.0,12.812500000000002,37.50844594594594,40,16,21
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CL,n_spells,2.4358974358974357,1.0256410256410255,4.153846153846154,39,13,19
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CL,n_distinct,0.717948717948718,0.4358974358974359,1.0,39,13,19
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CL,n_hops,1.1025641025641026,0.41025641025641024,1.8717948717948718,39,13,19
+human L5,v09 + cloud (CL = v09 files),Hierarchy,CL,any_hop,28.205128205128204,15.384615384615385,41.02564102564103,39,13,19
+human L5,v09 + cloud (CL = v09 files),Hierarchy,EL,n_spells,3.4901960784313726,1.7450980392156863,5.803921568627451,51,17,35
+human L5,v09 + cloud (CL = v09 files),Hierarchy,EL,n_distinct,0.7058823529411765,0.5098039215686274,0.9411764705882353,51,17,35
+human L5,v09 + cloud (CL = v09 files),Hierarchy,EL,n_hops,1.7058823529411764,0.6073529411764705,3.3142156862745096,51,17,35
+human L5,v09 + cloud (CL = v09 files),Hierarchy,EL,any_hop,25.49019607843137,15.686274509803921,37.254901960784316,51,17,35

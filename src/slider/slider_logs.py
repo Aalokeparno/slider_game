@@ -360,8 +360,83 @@ def load_runs(purpose, roles={"train"}, allow_test=False, reason=None, **overrid
             raise ValueError("allow_test=True needs a reason")
         caller = inspect.currentframe().f_back
         caller_file = caller.f_globals.get("__vsc_ipynb_file__", caller.f_code.co_filename)   # the notebook, in VS Code
-        row = pd.DataFrame([{"timestamp": datetime.now().isoformat(timespec="seconds"), "caller": caller_file,
-                             "reason": reason, "n_test_runs": n_test}])
-        row.to_csv(config.TEST_ACCESS_LOG, mode="a", header=not config.TEST_ACCESS_LOG.exists(), index=False)
+        log_test_access(caller_file, reason, n_test, "full")
 
     return [runs[i] for i in chosen.index], chosen.reset_index(drop=True)
+
+
+def log_test_access(caller, reason, n_test, kind):
+    """Append one line to results/test_access_log.csv: timestamp, caller, reason, n_test_runs, kind.
+    kind = "full" (load_runs with allow_test=True) or "design_only" (test_design).
+    A log from before the kind column gets it first: ",kind" on the header and ",full" on every old line."""
+    path = config.TEST_ACCESS_LOG
+    if path.exists():
+        lines = path.read_text().splitlines()
+        if lines and "kind" not in lines[0].split(","):
+            lines = [lines[0] + ",kind"] + [line + ",full" for line in lines[1:] if line]
+            path.write_text("\n".join(lines) + "\n")
+    row = pd.DataFrame([{"timestamp": datetime.now().isoformat(timespec="seconds"), "caller": caller,
+                         "reason": reason, "n_test_runs": n_test, "kind": kind}])
+    row.to_csv(path, mode="a", header=not path.exists(), index=False)
+
+
+# ------------------------------------------------- test design only (no outcomes)
+
+# old-CL files whose timestamps are all whole seconds (load_runs' coarse_time; checked in tests/test_test_design.py).
+# Fixed here because test_design may not read rows.
+WHOLE_SECOND_FILES = {"log_Fri Sep 16 161000 EDT 2016.txt", "log_Wed Sep 14 155221 EDT 2016.txt",
+                      "log_Wed Sep 14 170705 EDT 2016.txt"}
+DESIGN_COLUMNS = ["file", "group_id", "dataset", "version", "topology", "wave", "time_limit"]
+
+
+def settings_waves(path):
+    """[(adjacency rows, time limit in s), ...] of one log file, from its XML settings block only, in wave order.
+    Lab: <WaveDescription> blocks before "Setting File End" (timeLimitSecs). Cloud: <Wave> blocks of
+    <ExperimentConfiguration> (WaveTimeout in minutes). The rest of the file is not parsed."""
+    text = Path(path).read_text(errors="replace")
+    if dataset_label(path) == "CC":
+        xml = text[:text.index("</ExperimentConfiguration>")]
+        blocks = re.findall(r"<Wave number=.*?</Wave>", xml, re.S)
+        limits = [60 * float(re.search(r'<WaveTimeout unit="minutes">\s*(\d+)', b).group(1)) for b in blocks]
+    else:
+        xml = text[:text.index("Setting File End")]
+        blocks = re.findall(r"<WaveDescription.*?</WaveDescription>", xml, re.S)
+        limits = [float(re.search(r'timeLimitSecs="(\d+)"', b).group(1)) for b in blocks]
+    return [([r.split() for r in re.findall(r"<row>(.*?)</row>", b)], limit) for b, limit in zip(blocks, limits)]
+
+
+def file_version(name, dataset):
+    """EL, CC, or for CL: whole_second (WHOLE_SECOND_FILES), v09 (interface.version_tag) or oldCL."""
+    if dataset != "CL":
+        return dataset
+    from slider.interface import version_tag          # here: interface imports this module
+    if name in WHOLE_SECOND_FILES:
+        return "whole_second"
+    return "v09" if version_tag(name) == "v09" else "oldCL"
+
+
+def test_design(reason):
+    """Design of the test rounds (Ring, CT-Hierarchy) from the file list and the XML settings blocks only:
+    no position or Agreement rows, end markers, success flags or end times are read.
+    One row per designed test wave of an EL / CL / CC file: DESIGN_COLUMNS. Every call adds a line with
+    kind = "design_only" to results/test_access_log.csv."""
+    if not reason:
+        raise ValueError("test_design needs a reason")
+    lab, cloud = log_files()
+    rows = []
+    for path in lab + cloud:
+        dataset = dataset_label(path)
+        if dataset == "":                       # not in EL / CL / CC
+            continue
+        for wave, (A_rows, limit) in enumerate(settings_waves(path), start=1):
+            A_log = np.array(A_rows, dtype=int)
+            topology = label_topology(A_log - np.diag(np.diag(A_log)))
+            if topology in config.TEST_TOPOLOGIES:
+                rows.append({"file": path.name, "group_id": path.name, "dataset": dataset,
+                             "version": file_version(path.name, dataset), "topology": topology, "wave": wave,
+                             "time_limit": limit})
+    out = pd.DataFrame(rows, columns=DESIGN_COLUMNS)
+    caller = inspect.currentframe().f_back
+    log_test_access(caller.f_globals.get("__vsc_ipynb_file__", caller.f_code.co_filename), reason, len(out),
+                    "design_only")
+    return out

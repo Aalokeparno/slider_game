@@ -18,6 +18,7 @@ from slider import config
 from slider import h5
 from slider import hazard
 from slider import slider_logs as sl
+from slider import traps
 from slider.crossings import JUMP, crossing_events
 from slider.fraught import fraught_percent_hold, round_end
 from slider.labclock import CELLS, events_table, exposure, lab_log
@@ -346,6 +347,7 @@ CHECKS = {1: "success_rate_pct", 2: "consensus_time_km_median_s", 3: "fraught_pc
           9: "f_rev_median", 10: "crossing_time_median_s"}
 PAUSE_SHARE = "pause_share_pct"           # 10c, used only by the L1b trigger (P24)
 GROUP_RATE = "reversal_rate_group"        # target 8 per group, used only by the L3 trigger (P24)
+TRAP_HOPS = 11                            # optional extra (P27): traps.trap_hops on the Hierarchy cells
 
 
 def median_or_limit(median, sessions):
@@ -373,7 +375,7 @@ def between_group_sd_ci(rates, n_boot=10000, seed=config.SEED):
     return group_bootstrap([(np.array([x], dtype=float),) for x in rates], between_group_sd, n_boot, seed)
 
 
-def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
+def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3, trap_hops=False):
     """The check statistics, one per target per cell, as point values (no bootstrap), with the same code as
     the full functions. Long format: target, stat, topology, dataset, group ("" for a cell value), value,
     in_check_list.
@@ -390,6 +392,9 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
     Not in the check list (P24 triggers only):
     10c          crossing_time_table(runs5): pause_share_pct, per cell (L1b)
     8 per group  reversal_rate_table of each group's runs5: rate, one row per cell and group (L3)
+    Optional (trap_hops=True, P27; not in the check list): target 11, traps.trap_hops on the Hierarchy rounds of
+    runs5, per cell: trap_<n_spells | n_distinct | n_hops | any_hop>_mean. With trap_hops=False (default) the
+    output is unchanged.
     """
     rows = []
 
@@ -438,6 +443,11 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3):
     n_main = len(rows)
     for e in extra:
         add(*e)
+    if trap_hops:
+        hops = traps.trap_hop_runs(runs5)
+        for (topology, dataset), c in hops[hops["topology"] == "Hierarchy"].groupby(["topology", "dataset"]):
+            for stat in traps.STATS:
+                add(TRAP_HOPS, topology, dataset, c[stat].mean(), f"trap_{stat}_mean")
     out = pd.DataFrame(rows, columns=["target", "stat", "topology", "dataset", "group", "value"])
     out["in_check_list"] = (np.arange(len(out)) < n_main) & ((out["target"] != 3) | (out["topology"] == "Hierarchy"))
     return out

@@ -79,6 +79,8 @@ PC2_PACE = TABLES / "pC2_pace.parquet"                 # C2 kept-movement pace: 
 PB2_TRY_KEEP = TABLES / "pB2_try_keep.csv"             # B2: P(kept) by sign(dA)
 PB0B_STYLE = TABLES / "pB0b_crossing_style.csv"        # B0b: pi, rho, q_sg
 MODEL_B_LOG = RESULTS / "model_b_log.md"
+P27_TEST_DESIGN = TABLES / "p27_test_design.csv"           # test rounds: design only (slider_logs.test_design)
+P27_TRAPHOPS = TABLES / "p27_traphops_train.csv"         # trap hops (traps.py), human L5 Hierarchy, v09 + cloud
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
