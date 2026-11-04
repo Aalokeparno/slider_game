@@ -61,15 +61,16 @@ def per_run_values(runs, table):
     return r, sp
 
 
-def train_targets(runs, table, n_boot=10000, seed=config.SEED):
-    """The target statistics in long format (see COLUMNS)."""
+def train_targets(runs, table, n_boot=10000, seed=config.SEED, topologies=h5.TOPOLOGIES, roles=ROLES):
+    """The target statistics in long format (see COLUMNS), per topology in topologies and (name, set of roles)
+    in roles (Step 5: the test topologies, all rounds as one role)."""
     r_all, sp_all = per_run_values(runs, table)
     rows = []
-    for topology in h5.TOPOLOGIES:
+    for topology in topologies:
         for dataset in sorted(r_all.loc[r_all["topology"] == topology, "dataset"].unique()):
-            for role, roles in ROLES:
-                r = r_all[(r_all["topology"] == topology) & (r_all["dataset"] == dataset) & r_all["role"].isin(roles)]
-                sp = sp_all[(sp_all["topology"] == topology) & (sp_all["dataset"] == dataset) & sp_all["role"].isin(roles)]
+            for role, role_set in roles:
+                r = r_all[(r_all["topology"] == topology) & (r_all["dataset"] == dataset) & r_all["role"].isin(role_set)]
+                sp = sp_all[(sp_all["topology"] == topology) & (sp_all["dataset"] == dataset) & sp_all["role"].isin(role_set)]
                 if len(r) == 0:
                     continue
                 cell = {"topology": topology, "dataset": dataset, "role": role,
@@ -146,7 +147,7 @@ def reversal_rate_runs(runs, m=2, tick=0.1, lab_clock_cc=True):
     return r
 
 
-def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True, n_boot=10000):
+def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True, n_boot=10000, cells=CELLS):
     """Target 8: reversals per human player-minute in each cell (topology x dataset), pooled over runs.
 
     Reversals: labclock.events_table (reversals.run_events with m, human players only). With
@@ -157,7 +158,7 @@ def reversal_rate_table(runs, m=2, tick=0.1, lab_clock_cc=True, n_boot=10000):
     """
     r = reversal_rate_runs(runs, m, tick, lab_clock_cc)
     out = []
-    for topology, dataset in CELLS:
+    for topology, dataset in cells:
         c = r[(r["topology"] == topology) & (r["dataset"] == dataset)]
         if len(c) == 0:
             continue
@@ -205,7 +206,7 @@ def agreement_values(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True, samples=Tru
     return pd.concat(rev), (pd.concat(smp) if samples else None), pd.DataFrame(info)
 
 
-def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True, n_boot=10000):
+def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True, n_boot=10000, cells=CELLS):
     """Target 9: Agreement A_i (hazard.agreement, in [0, 1]) at reversals and over at-risk time, per cell.
 
     f_rev   A_i of the reverser at the last row before the reversal's first step (row_before of run_events, m).
@@ -227,7 +228,7 @@ def agreement_at_reversal_table(runs, m=2, tick=0.1, b=0.25, lab_clock_cc=True, 
             return rv.reshape(-1, 10).sum(axis=0) / (sm.reshape(-1, 10).sum(axis=0) * b / 60)
 
     summary, h = [], []
-    for topology, dataset in CELLS:
+    for topology, dataset in cells:
         runs_c = info[(info["topology"] == topology) & (info["dataset"] == dataset)]
         if len(runs_c) == 0:
             continue
@@ -297,7 +298,7 @@ def crossing_values(runs, pause=0.3, lab_clock_cc=True):
     return cr, pd.DataFrame(per_run)
 
 
-def crossing_time_table(runs, pause=0.3, lab_clock_cc=True, n_boot=10000):
+def crossing_time_table(runs, pause=0.3, lab_clock_cc=True, n_boot=10000, cells=CELLS):
     """Target 10: crossings from one end band to the other (crossings.crossing_events), per cell.
 
     With lab_clock_cc=True, CC runs first go through labclock.lab_log (tick 0.1 s); lab data is used as logged.
@@ -317,7 +318,7 @@ def crossing_time_table(runs, pause=0.3, lab_clock_cc=True, n_boot=10000):
     per_run = per_run.merge(minutes, on=["file", "wave"])
 
     summary = []
-    for topology, dataset in CELLS:
+    for topology, dataset in cells:
         rc = per_run[(per_run["topology"] == topology) & (per_run["dataset"] == dataset)]
         if len(rc) == 0:
             continue
@@ -375,7 +376,8 @@ def between_group_sd_ci(rates, n_boot=10000, seed=config.SEED):
     return group_bootstrap([(np.array([x], dtype=float),) for x in rates], between_group_sd, n_boot, seed)
 
 
-def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3, trap_hops=False):
+def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3, trap_hops=False, topologies=h5.TOPOLOGIES,
+                cells=CELLS):
     """The check statistics, one per target per cell, as point values (no bootstrap), with the same code as
     the full functions. Long format: target, stat, topology, dataset, group ("" for a cell value), value,
     in_check_list.
@@ -395,6 +397,7 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3, trap_hops=False)
     Optional (trap_hops=True, P27; not in the check list): target 11, traps.trap_hops on the Hierarchy rounds of
     runs5, per cell: trap_<n_spells | n_distinct | n_hops | any_hop>_mean. With trap_hops=False (default) the
     output is unchanged.
+    topologies (targets 1-7) and cells (8-10): the training ones by default; Step 5 passes the test cells.
     """
     rows = []
 
@@ -403,7 +406,7 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3, trap_hops=False)
                      "group": group, "value": value})
 
     r_all, sp_all = per_run_values(runs3, table3)
-    for topology in h5.TOPOLOGIES:
+    for topology in topologies:
         for dataset in sorted(r_all.loc[r_all["topology"] == topology, "dataset"].unique()):
             r = r_all[(r_all["topology"] == topology) & (r_all["dataset"] == dataset)]
             sp = sp_all[(sp_all["topology"] == topology) & (sp_all["dataset"] == dataset)]
@@ -425,7 +428,7 @@ def check_stats(runs3, table3, runs5, m=2, tick=0.1, pause=0.3, trap_hops=False)
     rev, _, _ = agreement_values(runs5, m, tick, samples=False)
     cr, _ = crossing_values(runs5, pause)
     extra = []
-    for topology, dataset in CELLS:
+    for topology, dataset in cells:
         c = rates[(rates["topology"] == topology) & (rates["dataset"] == dataset)]
         if len(c) == 0:
             continue

@@ -1,0 +1,4 @@
+model,primary_pass,primary_n,secondary_pass,secondary_n,descriptive_pass,descriptive_n,pass_of_27,borderline,no_value,median_abs_gap
+C2,9,12,6,6,6,9,21,9,0,0.35917871135939694
+APEM,5,12,6,6,3,9,14,9,0,0.904019931510682
+final,6,12,5,6,2,9,13,12,0,1.0312375936885754

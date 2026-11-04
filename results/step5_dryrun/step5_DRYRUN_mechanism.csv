@@ -1,0 +1,137 @@
+metric,cell,who,type,stat,value,ci_lo,ci_hi
+stuck,Ring EL,humans,fraught,episodes,86.0,30.975,168.0
+stuck,Ring EL,humans,fraught,per_round,1.6862745098039216,0.6073529411764705,3.2941176470588234
+stuck,Ring EL,humans,fraught,duration_median,8.449999999999996,7.229999999999998,11.100000000000009
+stuck,Ring EL,humans,non-fraught,episodes,52.0,29.975,76.02499999999998
+stuck,Ring EL,humans,non-fraught,per_round,1.0196078431372548,0.5877450980392157,1.4906862745098035
+stuck,Ring EL,humans,non-fraught,duration_median,4.605000000000003,3.799999999999983,5.8012500000000005
+trap_hops,Ring EL,humans,,n_spells,3.4901960784313726,1.7450980392156863,5.803921568627451
+trap_hops,Ring EL,humans,,n_distinct,0.7058823529411765,0.5098039215686274,0.9411764705882353
+trap_hops,Ring EL,humans,,n_hops,1.7058823529411764,0.6073529411764705,3.3142156862745096
+trap_hops,Ring EL,humans,,any_hop,25.49019607843137,15.686274509803921,37.254901960784316
+trap_hops,Ring EL,humans,,spells_cut,35.0,,
+stuck,Ring CL v09,humans,fraught,episodes,38.0,8.0,72.04999999999995
+stuck,Ring CL v09,humans,fraught,per_round,0.9743589743589743,0.20512820512820512,1.8474358974358964
+stuck,Ring CL v09,humans,fraught,duration_median,5.425,4.050000000000002,10.999999999999996
+stuck,Ring CL v09,humans,non-fraught,episodes,26.0,10.975000000000001,47.0
+stuck,Ring CL v09,humans,non-fraught,per_round,0.6666666666666666,0.28141025641025647,1.205128205128205
+stuck,Ring CL v09,humans,non-fraught,duration_median,3.9499999999999993,3.1000000000000014,6.0
+trap_hops,Ring CL v09,humans,,n_spells,2.4358974358974357,1.0256410256410255,4.153846153846154
+trap_hops,Ring CL v09,humans,,n_distinct,0.717948717948718,0.4358974358974359,1.0
+trap_hops,Ring CL v09,humans,,n_hops,1.1025641025641026,0.41025641025641024,1.8717948717948718
+trap_hops,Ring CL v09,humans,,any_hop,28.205128205128204,15.384615384615385,41.02564102564103
+trap_hops,Ring CL v09,humans,,spells_cut,19.0,,
+stuck,CT-Hierarchy EL,humans,fraught,episodes,86.0,30.975,168.0
+stuck,CT-Hierarchy EL,humans,fraught,per_round,1.6862745098039216,0.6073529411764705,3.2941176470588234
+stuck,CT-Hierarchy EL,humans,fraught,duration_median,8.449999999999996,7.229999999999998,11.100000000000009
+stuck,CT-Hierarchy EL,humans,non-fraught,episodes,52.0,29.975,76.02499999999998
+stuck,CT-Hierarchy EL,humans,non-fraught,per_round,1.0196078431372548,0.5877450980392157,1.4906862745098035
+stuck,CT-Hierarchy EL,humans,non-fraught,duration_median,4.605000000000003,3.799999999999983,5.8012500000000005
+trap_hops,CT-Hierarchy EL,humans,,n_spells,3.4901960784313726,1.7450980392156863,5.803921568627451
+trap_hops,CT-Hierarchy EL,humans,,n_distinct,0.7058823529411765,0.5098039215686274,0.9411764705882353
+trap_hops,CT-Hierarchy EL,humans,,n_hops,1.7058823529411764,0.6073529411764705,3.3142156862745096
+trap_hops,CT-Hierarchy EL,humans,,any_hop,25.49019607843137,15.686274509803921,37.254901960784316
+trap_hops,CT-Hierarchy EL,humans,,spells_cut,35.0,,
+fig5_rounds,CT-Hierarchy EL,humans,,rounds_averaged,12.0,,
+stuck,Ring EL,C2,fraught,episodes,170.0,,
+stuck,Ring EL,C2,fraught,per_round,1.6666666666666667,,
+stuck,Ring EL,C2,fraught,duration_median,5.499999999999982,,
+stuck,Ring EL,C2,non-fraught,episodes,346.0,,
+stuck,Ring EL,C2,non-fraught,per_round,3.392156862745098,,
+stuck,Ring EL,C2,non-fraught,duration_median,3.650000000000004,,
+trap_hops,Ring EL,C2,,n_spells,3.450980392156863,,
+trap_hops,Ring EL,C2,,n_distinct,0.9803921568627451,,
+trap_hops,Ring EL,C2,,n_hops,1.6470588235294117,,
+trap_hops,Ring EL,C2,,any_hop,37.254901960784316,,
+trap_hops,Ring EL,C2,,spells_cut,57.0,,
+stuck,Ring CL v09,C2,fraught,episodes,83.0,,
+stuck,Ring CL v09,C2,fraught,per_round,1.064102564102564,,
+stuck,Ring CL v09,C2,fraught,duration_median,5.400000000000006,,
+stuck,Ring CL v09,C2,non-fraught,episodes,245.0,,
+stuck,Ring CL v09,C2,non-fraught,per_round,3.141025641025641,,
+stuck,Ring CL v09,C2,non-fraught,duration_median,3.700000000000001,,
+trap_hops,Ring CL v09,C2,,n_spells,2.8076923076923075,,
+trap_hops,Ring CL v09,C2,,n_distinct,1.0,,
+trap_hops,Ring CL v09,C2,,n_hops,1.1025641025641026,,
+trap_hops,Ring CL v09,C2,,any_hop,37.17948717948718,,
+trap_hops,Ring CL v09,C2,,spells_cut,32.0,,
+stuck,CT-Hierarchy EL,C2,fraught,episodes,170.0,,
+stuck,CT-Hierarchy EL,C2,fraught,per_round,1.6666666666666667,,
+stuck,CT-Hierarchy EL,C2,fraught,duration_median,5.499999999999982,,
+stuck,CT-Hierarchy EL,C2,non-fraught,episodes,346.0,,
+stuck,CT-Hierarchy EL,C2,non-fraught,per_round,3.392156862745098,,
+stuck,CT-Hierarchy EL,C2,non-fraught,duration_median,3.650000000000004,,
+trap_hops,CT-Hierarchy EL,C2,,n_spells,3.450980392156863,,
+trap_hops,CT-Hierarchy EL,C2,,n_distinct,0.9803921568627451,,
+trap_hops,CT-Hierarchy EL,C2,,n_hops,1.6470588235294117,,
+trap_hops,CT-Hierarchy EL,C2,,any_hop,37.254901960784316,,
+trap_hops,CT-Hierarchy EL,C2,,spells_cut,57.0,,
+fig5_rounds,CT-Hierarchy EL,C2,,rounds_averaged,33.0,,
+stuck,Ring EL,APEM,fraught,episodes,0.0,,
+stuck,Ring EL,APEM,fraught,per_round,0.0,,
+stuck,Ring EL,APEM,fraught,duration_median,,,
+stuck,Ring EL,APEM,non-fraught,episodes,0.0,,
+stuck,Ring EL,APEM,non-fraught,per_round,0.0,,
+stuck,Ring EL,APEM,non-fraught,duration_median,,,
+trap_hops,Ring EL,APEM,,n_spells,17.598039215686274,,
+trap_hops,Ring EL,APEM,,n_distinct,0.8823529411764706,,
+trap_hops,Ring EL,APEM,,n_hops,15.235294117647058,,
+trap_hops,Ring EL,APEM,,any_hop,35.294117647058826,,
+trap_hops,Ring EL,APEM,,spells_cut,53.0,,
+stuck,Ring CL v09,APEM,fraught,episodes,0.0,,
+stuck,Ring CL v09,APEM,fraught,per_round,0.0,,
+stuck,Ring CL v09,APEM,fraught,duration_median,,,
+stuck,Ring CL v09,APEM,non-fraught,episodes,0.0,,
+stuck,Ring CL v09,APEM,non-fraught,per_round,0.0,,
+stuck,Ring CL v09,APEM,non-fraught,duration_median,,,
+trap_hops,Ring CL v09,APEM,,n_spells,16.78205128205128,,
+trap_hops,Ring CL v09,APEM,,n_distinct,1.0897435897435896,,
+trap_hops,Ring CL v09,APEM,,n_hops,13.948717948717949,,
+trap_hops,Ring CL v09,APEM,,any_hop,43.58974358974359,,
+trap_hops,Ring CL v09,APEM,,spells_cut,41.0,,
+stuck,CT-Hierarchy EL,APEM,fraught,episodes,0.0,,
+stuck,CT-Hierarchy EL,APEM,fraught,per_round,0.0,,
+stuck,CT-Hierarchy EL,APEM,fraught,duration_median,,,
+stuck,CT-Hierarchy EL,APEM,non-fraught,episodes,0.0,,
+stuck,CT-Hierarchy EL,APEM,non-fraught,per_round,0.0,,
+stuck,CT-Hierarchy EL,APEM,non-fraught,duration_median,,,
+trap_hops,CT-Hierarchy EL,APEM,,n_spells,17.598039215686274,,
+trap_hops,CT-Hierarchy EL,APEM,,n_distinct,0.8823529411764706,,
+trap_hops,CT-Hierarchy EL,APEM,,n_hops,15.235294117647058,,
+trap_hops,CT-Hierarchy EL,APEM,,any_hop,35.294117647058826,,
+trap_hops,CT-Hierarchy EL,APEM,,spells_cut,53.0,,
+fig5_rounds,CT-Hierarchy EL,APEM,,rounds_averaged,35.0,,
+stuck,Ring EL,final,fraught,episodes,106.0,,
+stuck,Ring EL,final,fraught,per_round,1.0392156862745099,,
+stuck,Ring EL,final,fraught,duration_median,9.65,,
+stuck,Ring EL,final,non-fraught,episodes,362.0,,
+stuck,Ring EL,final,non-fraught,per_round,3.549019607843137,,
+stuck,Ring EL,final,non-fraught,duration_median,6.2250000000000085,,
+trap_hops,Ring EL,final,,n_spells,3.2745098039215685,,
+trap_hops,Ring EL,final,,n_distinct,1.107843137254902,,
+trap_hops,Ring EL,final,,n_hops,1.196078431372549,,
+trap_hops,Ring EL,final,,any_hop,43.13725490196079,,
+trap_hops,Ring EL,final,,spells_cut,49.0,,
+stuck,Ring CL v09,final,fraught,episodes,72.0,,
+stuck,Ring CL v09,final,fraught,per_round,0.9230769230769231,,
+stuck,Ring CL v09,final,fraught,duration_median,10.149999999999993,,
+stuck,Ring CL v09,final,non-fraught,episodes,262.0,,
+stuck,Ring CL v09,final,non-fraught,per_round,3.358974358974359,,
+stuck,Ring CL v09,final,non-fraught,duration_median,6.5,,
+trap_hops,Ring CL v09,final,,n_spells,3.730769230769231,,
+trap_hops,Ring CL v09,final,,n_distinct,1.1025641025641026,,
+trap_hops,Ring CL v09,final,,n_hops,1.3974358974358974,,
+trap_hops,Ring CL v09,final,,any_hop,41.02564102564103,,
+trap_hops,Ring CL v09,final,,spells_cut,36.0,,
+stuck,CT-Hierarchy EL,final,fraught,episodes,106.0,,
+stuck,CT-Hierarchy EL,final,fraught,per_round,1.0392156862745099,,
+stuck,CT-Hierarchy EL,final,fraught,duration_median,9.65,,
+stuck,CT-Hierarchy EL,final,non-fraught,episodes,362.0,,
+stuck,CT-Hierarchy EL,final,non-fraught,per_round,3.549019607843137,,
+stuck,CT-Hierarchy EL,final,non-fraught,duration_median,6.2250000000000085,,
+trap_hops,CT-Hierarchy EL,final,,n_spells,3.2745098039215685,,
+trap_hops,CT-Hierarchy EL,final,,n_distinct,1.107843137254902,,
+trap_hops,CT-Hierarchy EL,final,,n_hops,1.196078431372549,,
+trap_hops,CT-Hierarchy EL,final,,any_hop,43.13725490196079,,
+trap_hops,CT-Hierarchy EL,final,,spells_cut,49.0,,
+fig5_rounds,CT-Hierarchy EL,final,,rounds_averaged,21.0,,

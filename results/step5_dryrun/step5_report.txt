@@ -1,0 +1,104 @@
+[DRY RUN, training stand-in: numbers mean nothing] VERDICT: SUCCESS: C2 passes 9 of 12 primary checks, APEM published 5 of 12.
+
+protocol: docs/step5_protocol.md, locked at f547677a7a9b7ac6be262bb69c17dced5c7190fb
+mode: dry; R = 2; seeds C2 1, APEM 2, final 3
+
+rounds per cell (scope EL + CL v09; L5 filters):
+           cell  in_scope  drop_incomplete  drop_aborted  drop_empty  drop_bot  drop_whole_second  kept  groups
+        Ring EL        51                0             0           0         0                  0    51      17
+    Ring CL v09        39                0             0           0         0                  0    39      13
+CT-Hierarchy EL        51                0             0           0         0                  0    51      17
+speeds (step 0): 90 from the round's rows, 0 from the file's modal speed
+
+scorecard:
+model  primary_pass  primary_n  secondary_pass  secondary_n  descriptive_pass  descriptive_n  pass_of_27  borderline  no_value  median_abs_gap
+   C2             9         12               6            6                 6              9          21           9         0        0.359179
+ APEM             5         12               6            6                 3              9          14           9         0        0.904020
+final             6         12               5            6                 2              9          13          12         0        1.031238
+
+human CIs replaced or flagged by the zero-width rule: none
+
+checks (* = borderline):
+  C2       1 primary     Ring EL          pass*  sim 95.1  human 94.12 [88.24, 100]
+  C2       1 primary     Ring CL v09      pass*  sim 98.72  human 97.44 [92.31, 100]
+  C2       1 primary     CT-Hierarchy EL  pass*  sim 95.1  human 94.12 [88.24, 100]
+  C2       2 primary     Ring EL          miss*  sim 58.45  human 36.28 [20.63, 54.06]
+  C2       2 primary     Ring CL v09      miss  sim 59.85  human 36.84 [22.57, 45.1]
+  C2       2 primary     CT-Hierarchy EL  miss*  sim 58.45  human 36.28 [20.63, 54.06]
+  C2       3 primary     Ring EL          pass  sim 9.686  human 12.12 [6.335, 19.91]
+  C2       3 primary     Ring CL v09      pass*  sim 8.898  human 11.44 [4.573, 19.2]
+  C2       3 primary     CT-Hierarchy EL  pass  sim 9.686  human 12.12 [6.335, 19.91]
+  C2       4 primary     Ring EL          pass  sim 14.39  human 10.37 [5.705, 16.19]
+  C2       4 primary     Ring CL v09      pass  sim 12.57  human 9.598 [5.607, 13.73]
+  C2       4 primary     CT-Hierarchy EL  pass  sim 14.39  human 10.37 [5.705, 16.19]
+  C2       6 secondary   Ring EL          pass  sim 74.48  human 76.56 [69.51, 81.54]
+  C2       6 secondary   Ring CL v09      pass  sim 73.39  human 73.03 [67.99, 76.9]
+  C2       6 secondary   CT-Hierarchy EL  pass  sim 74.48  human 76.56 [69.51, 81.54]
+  C2       7 secondary   Ring EL          pass  sim 87.97  human 87.5 [77.37, 92.1]
+  C2       7 secondary   Ring CL v09      pass*  sim 86.27  human 80 [58.73, 87.69]
+  C2       7 secondary   CT-Hierarchy EL  pass  sim 87.97  human 87.5 [77.37, 92.1]
+  C2       8 descriptive Ring EL          pass  sim 3.915  human 3.669 [2.901, 4.609]
+  C2       8 descriptive Ring CL v09      pass  sim 3.934  human 3.597 [2.716, 4.507]
+  C2       8 descriptive CT-Hierarchy EL  pass  sim 3.915  human 3.669 [2.901, 4.609]
+  C2       9 descriptive Ring EL          miss  sim 0.3  human 0.375 [0.3333, 0.5]
+  C2       9 descriptive Ring CL v09      miss  sim 0.275  human 0.3333 [0.3333, 0.375]
+  C2       9 descriptive CT-Hierarchy EL  miss  sim 0.3  human 0.375 [0.3333, 0.5]
+  C2     10a descriptive Ring EL          pass*  sim 1.75  human 1.8 [1.7, 2.01]
+  C2     10a descriptive Ring CL v09      pass  sim 1.8  human 1.7 [1.7, 1.8]
+  C2     10a descriptive CT-Hierarchy EL  pass*  sim 1.75  human 1.8 [1.7, 2.01]
+  APEM     1 primary     Ring EL          pass  sim 95.1  human 94.12 [88.24, 100]
+  APEM     1 primary     Ring CL v09      pass*  sim 100  human 97.44 [92.31, 100]
+  APEM     1 primary     CT-Hierarchy EL  pass  sim 95.1  human 94.12 [88.24, 100]
+  APEM     2 primary     Ring EL          miss  sim 18.3  human 36.28 [20.63, 54.06]
+  APEM     2 primary     Ring CL v09      pass  sim 27.15  human 36.84 [22.57, 45.1]
+  APEM     2 primary     CT-Hierarchy EL  miss  sim 18.3  human 36.28 [20.63, 54.06]
+  APEM     3 primary     Ring EL          miss*  sim 23.53  human 12.12 [6.335, 19.91]
+  APEM     3 primary     Ring CL v09      miss  sim 25.67  human 11.44 [4.573, 19.2]
+  APEM     3 primary     CT-Hierarchy EL  miss*  sim 23.53  human 12.12 [6.335, 19.91]
+  APEM     4 primary     Ring EL          miss*  sim 5.628  human 10.37 [5.705, 16.19]
+  APEM     4 primary     Ring CL v09      pass*  sim 6.092  human 9.598 [5.607, 13.73]
+  APEM     4 primary     CT-Hierarchy EL  miss*  sim 5.628  human 10.37 [5.705, 16.19]
+  APEM     6 secondary   Ring EL          pass  sim 75.29  human 76.56 [69.51, 81.54]
+  APEM     6 secondary   Ring CL v09      pass  sim 74.19  human 73.03 [67.99, 76.9]
+  APEM     6 secondary   CT-Hierarchy EL  pass  sim 75.29  human 76.56 [69.51, 81.54]
+  APEM     7 secondary   Ring EL          pass  sim 85.87  human 87.5 [77.37, 92.1]
+  APEM     7 secondary   Ring CL v09      pass  sim 83.04  human 80 [58.73, 87.69]
+  APEM     7 secondary   CT-Hierarchy EL  pass  sim 85.87  human 87.5 [77.37, 92.1]
+  APEM     8 descriptive Ring EL          miss  sim 18.83  human 3.669 [2.901, 4.609]
+  APEM     8 descriptive Ring CL v09      miss  sim 21.16  human 3.597 [2.716, 4.507]
+  APEM     8 descriptive CT-Hierarchy EL  miss  sim 18.83  human 3.669 [2.901, 4.609]
+  APEM     9 descriptive Ring EL          miss  sim 0.25  human 0.375 [0.3333, 0.5]
+  APEM     9 descriptive Ring CL v09      miss  sim 0.25  human 0.3333 [0.3333, 0.375]
+  APEM     9 descriptive CT-Hierarchy EL  miss  sim 0.25  human 0.375 [0.3333, 0.5]
+  APEM   10a descriptive Ring EL          pass*  sim 1.7  human 1.8 [1.7, 2.01]
+  APEM   10a descriptive Ring CL v09      pass*  sim 1.8  human 1.7 [1.7, 1.8]
+  APEM   10a descriptive CT-Hierarchy EL  pass*  sim 1.7  human 1.8 [1.7, 2.01]
+  final    1 primary     Ring EL          miss*  sim 85.29  human 94.12 [88.24, 100]
+  final    1 primary     Ring CL v09      miss  sim 84.62  human 97.44 [92.31, 100]
+  final    1 primary     CT-Hierarchy EL  miss*  sim 85.29  human 94.12 [88.24, 100]
+  final    2 primary     Ring EL          miss  sim 121.8  human 36.28 [20.63, 54.06]
+  final    2 primary     Ring CL v09      miss  sim 115.8  human 36.84 [22.57, 45.1]
+  final    2 primary     CT-Hierarchy EL  miss  sim 121.8  human 36.28 [20.63, 54.06]
+  final    3 primary     Ring EL          pass*  sim 9.509  human 12.12 [6.335, 19.91]
+  final    3 primary     Ring CL v09      pass  sim 8.927  human 11.44 [4.573, 19.2]
+  final    3 primary     CT-Hierarchy EL  pass*  sim 9.509  human 12.12 [6.335, 19.91]
+  final    4 primary     Ring EL          pass*  sim 14.42  human 10.37 [5.705, 16.19]
+  final    4 primary     Ring CL v09      pass*  sim 12.24  human 9.598 [5.607, 13.73]
+  final    4 primary     CT-Hierarchy EL  pass*  sim 14.42  human 10.37 [5.705, 16.19]
+  final    6 secondary   Ring EL          pass*  sim 72.18  human 76.56 [69.51, 81.54]
+  final    6 secondary   Ring CL v09      pass  sim 71.7  human 73.03 [67.99, 76.9]
+  final    6 secondary   CT-Hierarchy EL  pass*  sim 72.18  human 76.56 [69.51, 81.54]
+  final    7 secondary   Ring EL          pass  sim 88.64  human 87.5 [77.37, 92.1]
+  final    7 secondary   Ring CL v09      miss  sim 88.57  human 80 [58.73, 87.69]
+  final    7 secondary   CT-Hierarchy EL  pass  sim 88.64  human 87.5 [77.37, 92.1]
+  final    8 descriptive Ring EL          pass*  sim 4.549  human 3.669 [2.901, 4.609]
+  final    8 descriptive Ring CL v09      miss*  sim 4.913  human 3.597 [2.716, 4.507]
+  final    8 descriptive CT-Hierarchy EL  pass*  sim 4.549  human 3.669 [2.901, 4.609]
+  final    9 descriptive Ring EL          miss  sim 0.2292  human 0.375 [0.3333, 0.5]
+  final    9 descriptive Ring CL v09      miss  sim 0.2417  human 0.3333 [0.3333, 0.375]
+  final    9 descriptive CT-Hierarchy EL  miss  sim 0.2292  human 0.375 [0.3333, 0.5]
+  final  10a descriptive Ring EL          miss  sim 3.3  human 1.8 [1.7, 2.01]
+  final  10a descriptive Ring CL v09      miss  sim 3.375  human 1.7 [1.7, 1.8]
+  final  10a descriptive CT-Hierarchy EL  miss  sim 3.3  human 1.8 [1.7, 2.01]
+
+wall time: 0.3 min

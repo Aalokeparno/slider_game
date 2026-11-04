@@ -297,6 +297,22 @@ def run_role(topology, group_label):
     return "other"
 
 
+def drop_mask(table, keep):
+    """The load_runs filters: True for rows of a load_runs table that keep (a full PURPOSES dict) drops."""
+    drop = pd.Series(False, index=table.index)
+    if not keep["keep_aborted"]:
+        drop |= (table["T"] == 1) & (table["end"] == "failed")
+    if not keep["keep_incomplete"]:
+        drop |= table["end"] == "incomplete"
+    if not keep["keep_bot"]:
+        drop |= table["has_bot"]
+    if not keep["keep_whole_second"]:
+        drop |= table["coarse_time"]
+    if not keep["keep_empty"]:
+        drop |= table["T"] < 2
+    return drop
+
+
 def load_runs(purpose, roles={"train"}, allow_test=False, reason=None, **overrides):
     """Runs for new analyses. Returns (runs, table): runs[k] is the run on row k of table.
 
@@ -336,18 +352,7 @@ def load_runs(purpose, roles={"train"}, allow_test=False, reason=None, **overrid
             coarse.append(f)
     table["coarse_time"] = table["file"].isin(coarse)
 
-    # filters
-    drop = pd.Series(False, index=table.index)
-    if not keep["keep_aborted"]:
-        drop |= (table["T"] == 1) & (table["end"] == "failed")
-    if not keep["keep_incomplete"]:
-        drop |= table["end"] == "incomplete"
-    if not keep["keep_bot"]:
-        drop |= table["has_bot"]
-    if not keep["keep_whole_second"]:
-        drop |= table["coarse_time"]
-    if not keep["keep_empty"]:
-        drop |= table["T"] < 2
+    drop = drop_mask(table, keep)
     chosen = table[~drop & table["role"].isin(roles)]
 
     # guard on the test runs

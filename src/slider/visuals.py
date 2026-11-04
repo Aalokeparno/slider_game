@@ -20,6 +20,7 @@ Averaging analysis: a port of the authors' runapem.m (OSF gvcpz, Code/runapem.m)
     plot        mean over rounds, then over the players of each group; the Left Branch's Agreement is negated
                 (Hierarchy); Full shows only the Apex Agreement
 """
+import networkx as nx
 import numpy as np
 import pandas as pd
 
@@ -98,10 +99,34 @@ def warped(run, topology):
 
 
 def qualifies(run, success, topology):
-    """runapem.m selection: successful; Hierarchy also % fraught > 10 (interpolated, 1001 points)."""
+    """runapem.m selection: successful; Hierarchy (and CT-Hierarchy, Step 5) also % fraught > 10 (interpolated,
+    1001 points)."""
     if not success:
         return False
-    return topology != "Hierarchy" or fraught_percent_interp(0, [run]) > 10
+    return topology not in ("Hierarchy", "CT-Hierarchy") or fraught_percent_interp(0, [run]) > 10
+
+
+def check_roles(topology):
+    """Checks from the adjacency that APEX, LEFT, RIGHT and SWITCHED fit graph nodes of a Hierarchy-like topology
+    (Step 5: CT-Hierarchy = Hierarchy + within-branch edges); raises AssertionError if not:
+      - the graph holds every Hierarchy edge, and every extra edge joins two nodes of the same branch
+      - the apex's neighbours are the two branch heads, and removing the apex leaves exactly LEFT and RIGHT
+      - SWITCHED (swap the branches) maps the graph onto itself
+      - every automorphism keeps the apex and maps each branch onto a branch (so the seat map's choice of
+        isomorphism does not change the roles)"""
+    G, H = GRAPHS[topology].astype(int), GRAPHS["Hierarchy"].astype(int)
+    assert np.all(G >= H), "a Hierarchy edge is missing"
+    for i, j in zip(*np.nonzero(G - H)):
+        assert {i, j} <= set(LEFT) or {i, j} <= set(RIGHT), f"extra edge {i}-{j} is not within a branch"
+    assert set(np.flatnonzero(G[APEX[0]])) == {LEFT[0], RIGHT[0]}
+    g = nx.from_numpy_array(G)
+    g.remove_node(APEX[0])
+    assert sorted(sorted(c) for c in nx.connected_components(g)) == sorted([sorted(LEFT), sorted(RIGHT)])
+    assert np.array_equal(G[np.ix_(SWITCHED, SWITCHED)], G)
+    full = nx.from_numpy_array(G)
+    for m in nx.algorithms.isomorphism.GraphMatcher(full, full).isomorphisms_iter():
+        assert m[APEX[0]] == APEX[0]
+        assert {frozenset(m[v] for v in LEFT), frozenset(m[v] for v in RIGHT)} == {frozenset(LEFT), frozenset(RIGHT)}
 
 
 def group_means(x):

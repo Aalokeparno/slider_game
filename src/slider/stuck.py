@@ -7,8 +7,8 @@ Positions: k = round(10 s), s sign-corrected, with the t = 0, k = 0 row first. A
                  configuration; the all-at-wall stretch from it (to the first row with a seat off its wall, or the
                  round end) must last >= 0.5 s. It ends on the first later row with a seat at the wall opposite
                  its side at the start, or at the round end. The next episode is searched from the end row.
-    type         Full, Star: the split 6-1, 5-2 or 4-3 (k_min = min(seats +, seats -)); Hierarchy: fraught or
-                 non-fraught (fraught.is_fraught at the corner of the start row)
+    type         Full, Star: the split 6-1, 5-2 or 4-3 (k_min = min(seats +, seats -)); Hierarchy, and for Step 5
+                 Ring and CT-Hierarchy: fraught or non-fraught (fraught.is_fraught at the corner of the start row)
     try          an m = 2 event (reversals.detect_events) by a seat whose previous row is at its start wall, with
                  its event row in (start, end]; kept = reversal, not kept = probe (unresolved: left out of P(kept))
     breaker      the seat(s) at the opposite wall on the end row; minority = the k_min side
@@ -24,7 +24,8 @@ from slider.reversals import detect_events, to_steps
 WALL = 10
 MIN_LEN = 0.5
 SPLITS = {1: "6-1", 2: "5-2", 3: "4-3"}
-TYPES = {"Full": ["6-1", "5-2", "4-3"], "Star": ["6-1", "5-2", "4-3"], "Hierarchy": ["fraught", "non-fraught"]}
+TYPES = {"Full": ["6-1", "5-2", "4-3"], "Star": ["6-1", "5-2", "4-3"], "Hierarchy": ["fraught", "non-fraught"],
+         "Ring": ["fraught", "non-fraught"], "CT-Hierarchy": ["fraught", "non-fraught"]}
 
 
 def round_episodes(t, k, A, topology, t_end, min_len=MIN_LEN, m=2):
@@ -52,8 +53,8 @@ def round_episodes(t, k, A, topology, t_end, min_len=MIN_LEN, m=2):
         end_row = i + 1 + opp[0] if len(opp) else len(t)
         tries = sorted((r, typ) for j in range(7) for r, typ in zip(ev[j]["event_row"], ev[j]["type"])
                        if i < r <= end_row and side[r - 1, j] == sd[j])
-        kind = ("fraught" if is_fraught(A, sd.astype(float)) else "non-fraught") if topology == "Hierarchy" \
-            else SPLITS[k_min]
+        kind = ("fraught" if is_fraught(A, sd.astype(float)) else "non-fraught") \
+            if TYPES[topology][0] == "fraught" else SPLITS[k_min]
         rec = {"type": kind, "start": t[i], "duration": (t[end_row] if len(opp) else t_end) - t[i],
                "broken": int(len(opp) > 0), "tries": len(tries),
                "kept": sum(typ == "reversal" for _, typ in tries), "probes": sum(typ == "probe" for _, typ in tries),

@@ -54,7 +54,12 @@ def seat_map(A, topology):
 def design(run_set):
     """One row per round of a run set: group, dataset, role, topology, wave, round_id, graph, seat_node, interface,
     d, speed, dt, T (time limit), lab (1 = EL / CL), whole_second."""
-    runs, table = load(run_set)
+    return design_rows(*load(run_set))
+
+
+def design_rows(runs, table):
+    """design() for any (runs, table) as load_runs returns them (Step 5: the test rounds). The speed of a lab
+    round is read from its own rows (interface.step_and_pace), else the file's modal speed (interface_table)."""
     files = pd.read_csv(config.INTERFACE_TABLE).set_index("file")
     rows = []
     for run, (_, r) in zip(runs, table.iterrows()):

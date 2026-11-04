@@ -6,3 +6,7 @@ __pycache__/
 
 # regenerable data (notebooks/path1/p8_hazard_table.ipynb)
 data/processed/*.parquet
+
+# Step 5: raw test runs and simulation batches (scripts/step5_test.py)
+results/test_cache/
+results/step5_dryrun/cache/

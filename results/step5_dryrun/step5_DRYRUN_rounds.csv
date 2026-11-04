@@ -1,0 +1,91 @@
+cell,file,wave,dataset,topology,interface,speed,speed_source
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 04 155722 EDT 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 04 155722 EDT 2016.txt,6,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 04 155722 EDT 2016.txt,9,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 04 165730 EDT 2016.txt,2,EL,Hierarchy,lab_v09,0.5,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 04 165730 EDT 2016.txt,6,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 04 165730 EDT 2016.txt,9,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 155640 EST 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 155640 EST 2016.txt,4,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 155640 EST 2016.txt,8,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 160012 EST 2016.txt,2,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 160012 EST 2016.txt,4,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 160012 EST 2016.txt,8,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 165515 EST 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 165515 EST 2016.txt,6,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Fri Nov 11 165515 EST 2016.txt,9,EL,Hierarchy,lab_v09,2.0,round rows
+Ring CL v09,log_v09_Fri Oct 07 155453 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Oct 07 155453 EDT 2016.txt,7,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Oct 07 155453 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Oct 07 162937 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Oct 07 162937 EDT 2016.txt,4,CL,Hierarchy,lab_v09,2.0,round rows
+Ring CL v09,log_v09_Fri Oct 07 162937 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 23 155758 EDT 2016.txt,2,CL,Hierarchy,lab_v09,2.0,round rows
+Ring CL v09,log_v09_Fri Sep 23 155758 EDT 2016.txt,4,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 23 155758 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 23 170644 EDT 2016.txt,1,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 23 170644 EDT 2016.txt,3,CL,Hierarchy,lab_v09,2.0,round rows
+Ring CL v09,log_v09_Fri Sep 23 170644 EDT 2016.txt,8,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 30 155411 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 30 155411 EDT 2016.txt,4,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Fri Sep 30 155411 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Nov 07 164258 EST 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Nov 07 164258 EST 2016.txt,4,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Nov 07 164258 EST 2016.txt,8,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Nov 07 175505 EST 2016.txt,2,EL,Hierarchy,lab_v09,0.5,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Nov 07 175505 EST 2016.txt,4,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Nov 07 175505 EST 2016.txt,8,EL,Hierarchy,lab_v09,0.5,round rows
+Ring CL v09,log_v09_Mon Oct 17 171209 EDT 2016.txt,1,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Mon Oct 17 171209 EDT 2016.txt,3,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Mon Oct 17 171209 EDT 2016.txt,8,CL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Oct 31 164716 EDT 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Oct 31 164716 EDT 2016.txt,4,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Mon Oct 31 164716 EDT 2016.txt,8,EL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Mon Sep 26 173549 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Mon Sep 26 173549 EDT 2016.txt,7,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Mon Sep 26 173549 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 02 170112 EDT 2016.txt,1,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 02 170112 EDT 2016.txt,3,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 02 170112 EDT 2016.txt,7,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 02 173358 EDT 2016.txt,2,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 02 173358 EDT 2016.txt,6,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 02 173358 EDT 2016.txt,9,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 154710 EST 2016.txt,1,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 154710 EST 2016.txt,3,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 154710 EST 2016.txt,7,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 162248 EST 2016.txt,1,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 162248 EST 2016.txt,3,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 162248 EST 2016.txt,7,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 175020 EST 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 175020 EST 2016.txt,4,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 09 175020 EST 2016.txt,8,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 154247 EST 2016.txt,2,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 154247 EST 2016.txt,6,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 154247 EST 2016.txt,9,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 155109 EST 2016.txt,1,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 155109 EST 2016.txt,3,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 155109 EST 2016.txt,7,EL,Hierarchy,lab_v09,2.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 171311 EST 2016.txt,2,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 171311 EST 2016.txt,4,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 171311 EST 2016.txt,8,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 172824 EST 2016.txt,1,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 172824 EST 2016.txt,3,EL,Hierarchy,lab_v09,1.0,round rows
+Ring EL + CT-Hierarchy EL,log_v09_Wed Nov 16 172824 EST 2016.txt,7,EL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Oct 05 154352 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Oct 05 154352 EDT 2016.txt,7,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Oct 05 154352 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Oct 05 165348 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Oct 05 165348 EDT 2016.txt,4,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Oct 05 165348 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 21 170402 EDT 2016.txt,1,CL,Hierarchy,lab_v09,0.5,round rows
+Ring CL v09,log_v09_Wed Sep 21 170402 EDT 2016.txt,3,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 21 170402 EDT 2016.txt,8,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 21 173748 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 21 173748 EDT 2016.txt,7,CL,Hierarchy,lab_v09,2.0,round rows
+Ring CL v09,log_v09_Wed Sep 21 173748 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 28 163724 EDT 2016.txt,2,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 28 163724 EDT 2016.txt,4,CL,Hierarchy,lab_v09,2.0,round rows
+Ring CL v09,log_v09_Wed Sep 28 163724 EDT 2016.txt,9,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 28 173239 EDT 2016.txt,1,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 28 173239 EDT 2016.txt,3,CL,Hierarchy,lab_v09,1.0,round rows
+Ring CL v09,log_v09_Wed Sep 28 173239 EDT 2016.txt,8,CL,Hierarchy,lab_v09,2.0,round rows
