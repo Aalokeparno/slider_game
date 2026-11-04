@@ -97,7 +97,7 @@ def test_checks_and_scorecard_on_a_toy_table():
     ch = s5.checks(human, reps, cells)
     card = s5.scorecard(ch).set_index("model")
     assert card.loc["C2", "primary_pass"] == 4 and card.loc["APEM", "primary_pass"] == 0
-    assert card.loc["C2", "pass_of_27"] == 9 and card.loc["C2", "median_abs_gap"] == 0.5
+    assert card.loc["C2", "all_pass"] == card.loc["C2", "all_n"] == 9 and card.loc["C2", "median_abs_gap"] == 0.5
     assert s5.verdict(card.reset_index()).startswith("VERDICT: SUCCESS")
 
 
@@ -106,6 +106,33 @@ def test_zero_width_rule():
                       "value": [100.0, 50.0, 2.0, 300.0, 0.0], "ci_lo": [100.0, 50.0, 2.0, 300.0, 0.0],
                       "ci_hi": [100.0, 50.0, 2.0, 300.0, 0.0], "n_runs": 51})
     out = s5.zero_width_rule(h)
-    assert out["ci_rule"].tolist() == ["Clopper-Pearson", "zero width, no rule (kept)", "pinned: +/- 0.05 s",
-                                       "pinned: +/- 0.05 s", "zero width, no rule (kept)"]
+    assert out["ci_rule"].tolist() == ["Clopper-Pearson", s5.NOT_EVALUABLE, "pinned: +/- 0.05 s",
+                                       "pinned: +/- 0.05 s", s5.NOT_EVALUABLE]
     assert np.isclose(out["ci_lo"][0], 100 * 0.025 ** (1 / 51)) and out["ci_hi"][2] == 2.05
+
+
+def test_A2_a_zero_width_ci_without_a_rule_is_not_evaluable_for_every_model():
+    """Target 3 (primary) has a zero-width human CI at 5 (no P24 rule): it leaves every count and the median |gap|."""
+    cells = {"Ring EL": ("Ring", "EL")}
+    lo = [8.0 if t != 3 else 5.0 for t in s5.TARGETS]
+    hi = [12.0 if t != 3 else 5.0 for t in s5.TARGETS]
+    human = pd.DataFrame({"target": s5.TARGETS, "stat": "s", "topology": "Ring", "dataset": "EL",
+                          "value": [10.0 if t != 3 else 5.0 for t in s5.TARGETS], "ci_lo": lo, "ci_hi": hi,
+                          "n_runs": 51})
+    human = s5.zero_width_rule(human)
+    assert human.loc[human["target"] == 3, "ci_rule"].tolist() == [s5.NOT_EVALUABLE]
+    reps = {m: pd.DataFrame({"target": np.repeat(s5.TARGETS, 2), "stat": "s", "topology": "Ring", "dataset": "EL",
+                             "value": [v if t != 3 else 5.0 for t in np.repeat(s5.TARGETS, 2)],
+                             "replicate": np.tile([0, 1], 9)})
+            for m, v in [("C2", 11.0), ("APEM", 13.0), ("final", 9.0)]}
+    ch = s5.checks(human, reps, cells)
+    t3 = ch[ch["target"] == 3]
+    assert set(t3["verdict"]) == {s5.NOT_EVALUABLE} and t3["gap"].isna().all() and not t3["borderline"].any()
+    card = s5.scorecard(ch).set_index("model")
+    assert card["not_evaluable"].tolist() == [1, 1, 1]
+    assert card["primary_n"].tolist() == [3, 3, 3] and card["all_n"].tolist() == [8, 8, 8]
+    assert card.loc["C2", "primary_pass"] == 3 and card.loc["C2", "all_pass"] == 8
+    assert card.loc["APEM", "primary_pass"] == 0 and card.loc["final", "all_pass"] == 8
+    assert card.loc["C2", "median_abs_gap"] == 0.5 and card.loc["APEM", "median_abs_gap"] == 1.5
+    assert s5.verdict(card.reset_index()) == ("VERDICT: SUCCESS: C2 passes 3 of 3 evaluable primary checks, "
+                                              "APEM published 0 of 3.")

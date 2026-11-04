@@ -1,6 +1,7 @@
-[DRY RUN, training stand-in: numbers mean nothing] VERDICT: SUCCESS: C2 passes 9 of 12 primary checks, APEM published 5 of 12.
+[DRY RUN, training stand-in: numbers mean nothing] VERDICT: SUCCESS: C2 passes 9 of 12 evaluable primary checks, APEM published 5 of 12.
 
-protocol: docs/step5_protocol.md, locked at f547677a7a9b7ac6be262bb69c17dced5c7190fb
+protocol: docs/step5_protocol.md, locked at f547677a7a9b7ac6be262bb69c17dced5c7190fb; addendum A1-A3 (blob a15c30d04d4440af67d6f56650585b1359071f67)
+not evaluable (A2): none
 mode: dry; R = 2; seeds C2 1, APEM 2, final 3
 
 rounds per cell (scope EL + CL v09; L5 filters):
@@ -11,12 +12,12 @@ CT-Hierarchy EL        51                0             0           0         0  
 speeds (step 0): 90 from the round's rows, 0 from the file's modal speed
 
 scorecard:
-model  primary_pass  primary_n  secondary_pass  secondary_n  descriptive_pass  descriptive_n  pass_of_27  borderline  no_value  median_abs_gap
-   C2             9         12               6            6                 6              9          21           9         0        0.359179
- APEM             5         12               6            6                 3              9          14           9         0        0.904020
-final             6         12               5            6                 2              9          13          12         0        1.031238
+model  not_evaluable  primary_pass  primary_n  secondary_pass  secondary_n  descriptive_pass  descriptive_n  all_pass  all_n  borderline  no_value  median_abs_gap
+   C2              0             9         12               6            6                 6              9        21     27           9         0        0.359179
+ APEM              0             5         12               6            6                 3              9        14     27           9         0        0.904020
+final              0             6         12               5            6                 2              9        13     27          12         0        1.031238
 
-human CIs replaced or flagged by the zero-width rule: none
+human CIs replaced by the zero-width rule or not evaluable (A2): none
 
 checks (* = borderline):
   C2       1 primary     Ring EL          pass*  sim 95.1  human 94.12 [88.24, 100]

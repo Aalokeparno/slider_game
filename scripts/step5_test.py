@@ -1,13 +1,14 @@
 """Step 5: the one-time test of C2, APEM (published) and final on the held-out cells, as locked in
-docs/step5_protocol.md (commit H_LOCK). Every rule below is the protocol's; the choices it leaves open are marked
-"(script choice)".
+docs/step5_protocol.md (commit H_LOCK) and docs/step5_protocol_addendum.md (A1-A3, file hash H_ADD). Every rule
+below is the protocol's or the addendum's; the choices they leave open are marked "(script choice)".
 
 Modes
     --dry-run   the whole pipeline on a TRAINING stand-in: Hierarchy EL as "Ring EL", Hierarchy CL v09 as
                 "Ring CL v09", Hierarchy EL again as "CT-Hierarchy EL"; R = 2, seeds C2 1, APEM 2, final 3.
                 No test access. Outputs go to results/step5_dryrun/ (their numbers mean nothing).
     --open      the test, once:
-                (a) H_LOCK must be an ancestor of HEAD and docs/step5_protocol.md unchanged since H_LOCK;
+                (a) H_LOCK must be an ancestor of HEAD and docs/step5_protocol.md unchanged since H_LOCK; the
+                    addendum must be committed and unchanged (its git blob hash, in HEAD and on disk, = H_ADD);
                 (b) results/test_cache/step5_runs.pkl is loaded if it exists; otherwise ONE call to
                     load_runs("behavior", roles={"test"}, allow_test=True, reason=REASON) with every keep flag on
                     (the filters are applied in (c), with slider_logs.drop_mask), saved to that file;
@@ -25,18 +26,20 @@ Checks (27 = 9 targets x 3 cells): 1 success_rate_pct, 2 consensus_time_km_media
     model value   targets.check_stats per replicate (the P24 fast path), mean over replicates; se_mc = SD / sqrt(n)
     human value   the full functions (train_targets, reversal_rate_table, agreement_at_reversal_table,
                   crossing_time_table) on the test rounds, group bootstrap 1,000 resamples, seed 573
-    target 2      the KM median, or the time limit if there is none, for humans as for the models (P24
-                  median_or_limit); the human CI bounds are capped at the time limit (= median_or_limit in every
-                  resample; a resample with no median counts as +inf in stats.group_bootstrap) (script choice)
+    target 2      (A1) the KM median, or the time limit if there is none (human success < 50%), for humans as for
+                  the models (P24 median_or_limit); the human CI bounds are capped at the time limit
+                  (= median_or_limit in every resample; a resample with no median counts as +inf in
+                  stats.group_bootstrap)
     zero-width human CI (< 1e-9), as P24: success at 0 or 100 -> Clopper-Pearson over the cell's rounds; 10a ->
-                  +/- 0.05 s (half the lab clock step); target 2 pinned at the time limit -> +/- 0.05 s (script
-                  choice: a time pinned by the interface). Any other zero-width CI is kept and flagged (P24 would
-                  stop; here the test is already open, so the script reports instead) (script choice)
-    verdict       pass = sim mean inside [ci_lo, ci_hi]; borderline = within 2 se_mc of an edge; "no human value"
-                  if the human statistic is undefined (e.g. no reversal), "no value" if no replicate has one
+                  +/- 0.05 s (half the lab clock step); target 2 at the time limit -> +/- 0.05 s (A1). Any other
+                  zero-width CI makes the check NOT EVALUABLE for all models (A2): left out of every pass count
+                  (numerator and denominator) and of the median |gap|, and listed in the report
+    verdict       pass = sim mean inside [ci_lo, ci_hi]; borderline = within 2 se_mc of an edge; "not evaluable"
+                  (A2); "no human value" if the human statistic is undefined (e.g. no reversal), "no value" if no
+                  replicate has one (both count as not passed) (script choice)
     gap           (sim mean - human) / CI half-width, half-width = (ci_hi - ci_lo) / 2 (as p24_directions.py)
     roles         primary 1-4 (12), secondary 6-7 (6), descriptive 8-10a (9)
-    success       C2 passes more of the 12 primary checks than APEM published (tie = no success)
+    success       C2 passes more of the evaluable primary checks than APEM published (tie = no success)
 
 Mechanism metrics (descriptive, step5_mechanism.csv):
     stuck         stuck.episode_table, type fraught / non-fraught; per cell and type: episodes, per round, median
@@ -44,7 +47,8 @@ Mechanism metrics (descriptive, step5_mechanism.csv):
                   Humans: stuck.boot_cell CIs (1,000, seed 573); models pooled over replicates
     trap hops     traps.trap_hop_table (humans with CIs; models pooled over replicates, no CI)
     Fig 5 (CT)    visuals.trajectories on the CT cell (roles checked by visuals.check_roles), humans and models
-                  (all replicates pooled): number of rounds averaged; step5_fig1.png
+                  (all replicates pooled): number of rounds averaged; step5_fig1.png. Rounds: the Hierarchy rule,
+                  successful with > 10% fraught time (A3, visuals.qualifies)
 
     python scripts/step5_test.py --dry-run
     python scripts/step5_test.py --open --procs 2        (once)
@@ -70,6 +74,9 @@ warnings.filterwarnings("ignore", message="Pandas requires version")
 
 H_LOCK = "f547677a7a9b7ac6be262bb69c17dced5c7190fb"       # "Step 5 protocol locked"
 PROTOCOL = config.ROOT / "docs" / "step5_protocol.md"
+H_ADD = "a15c30d04d4440af67d6f56650585b1359071f67"        # git blob hash of the addendum (A1-A3)
+ADDENDUM = config.ROOT / "docs" / "step5_protocol_addendum.md"
+NOT_EVALUABLE = "not evaluable (A2)"
 REASON = "Step 5 test opening"
 MODELS = {"C2": ("C2", {}), "APEM": ("APEM", V.APEM_PUBLISHED), "final": ("final", {})}
 SEEDS = {"open": {"C2": 9101, "APEM": 9102, "final": 9103}, "dry": {"C2": 1, "APEM": 2, "final": 3}}
@@ -107,12 +114,19 @@ def paths(mode):
 # ------------------------------------------------------------------ (a) lock, (b) the one test access
 
 def check_lock():
-    """H_LOCK is an ancestor of HEAD and the protocol file (working tree) is unchanged since H_LOCK."""
+    """H_LOCK is an ancestor of HEAD and the protocol file (working tree) is unchanged since H_LOCK; the addendum
+    is committed and unchanged: its blob hash in HEAD and on disk is H_ADD."""
     git = ["git", "-C", str(config.ROOT)]
     if subprocess.run(git + ["merge-base", "--is-ancestor", H_LOCK, "HEAD"]).returncode != 0:
         raise SystemExit(f"STOP: {H_LOCK} (protocol lock) is not an ancestor of HEAD")
     if subprocess.run(git + ["diff", "--quiet", H_LOCK, "--", str(PROTOCOL)]).returncode != 0:
         raise SystemExit(f"STOP: {PROTOCOL} differs from the locked version ({H_LOCK})")
+    rel = ADDENDUM.relative_to(config.ROOT).as_posix()
+    head = subprocess.run(git + ["rev-parse", f"HEAD:{rel}"], capture_output=True, text=True).stdout.strip()
+    disk = subprocess.run(git + ["hash-object", str(ADDENDUM)], capture_output=True, text=True).stdout.strip()
+    if head != H_ADD or disk != H_ADD:
+        raise SystemExit(f"STOP: {ADDENDUM} is not the committed addendum (blob {H_ADD}): HEAD {head or 'missing'}, "
+                         f"disk {disk or 'missing'}")
 
 
 def load_test_runs(cache):
@@ -272,7 +286,8 @@ def human_stats(runs, table, cells, n_boot=N_BOOT):
 
 
 def zero_width_rule(human):
-    """P24's rule for zero-width human CIs (module doc); adds ci_rule."""
+    """P24's rule for zero-width human CIs, A1 for target 2 at the limit, A2 for the rest (module doc); adds
+    ci_rule."""
     human = human.assign(ci_rule="")
     for i, r in human[(human["ci_hi"] - human["ci_lo"]).abs() < ZERO].iterrows():
         if r["target"] == 1 and r["value"] in (0, 100):
@@ -283,7 +298,7 @@ def zero_width_rule(human):
             human.loc[i, ["ci_lo", "ci_hi", "ci_rule"]] = [r["value"] - LAB_CLOCK_HALF, r["value"] + LAB_CLOCK_HALF,
                                                            "pinned: +/- 0.05 s"]
         else:
-            human.loc[i, "ci_rule"] = "zero width, no rule (kept)"
+            human.loc[i, "ci_rule"] = NOT_EVALUABLE
     return human
 
 
@@ -305,12 +320,14 @@ def checks(human, reps, cells):
         x["n"] = x["n"].fillna(0).astype(int)
         x["se_mc"] = x["sim_sd"] / np.sqrt(x["n"])
         inside = (x["sim_mean"] >= x["ci_lo"]) & (x["sim_mean"] <= x["ci_hi"])
-        x["verdict"] = np.select([x["value"].isna() | x["ci_lo"].isna() | x["ci_hi"].isna(), x["sim_mean"].isna(),
-                                  inside], ["no human value", "no value", "pass"], "miss")
+        out_ = x["ci_rule"] == NOT_EVALUABLE
+        x["verdict"] = np.select([out_, x["value"].isna() | x["ci_lo"].isna() | x["ci_hi"].isna(),
+                                  x["sim_mean"].isna(), inside],
+                                 [NOT_EVALUABLE, "no human value", "no value", "pass"], "miss")
         edge = np.minimum(np.abs(x["sim_mean"] - x["ci_lo"]), np.abs(x["sim_mean"] - x["ci_hi"]))
-        x["borderline"] = edge <= 2 * x["se_mc"]
+        x["borderline"] = (edge <= 2 * x["se_mc"]) & ~out_
         with np.errstate(divide="ignore", invalid="ignore"):
-            x["gap"] = (x["sim_mean"] - x["value"]) / ((x["ci_hi"] - x["ci_lo"]) / 2)
+            x["gap"] = np.where(out_, np.nan, (x["sim_mean"] - x["value"]) / ((x["ci_hi"] - x["ci_lo"]) / 2))
         x["role"] = x["target"].map(ROLE)
         out.append(x)
     cols = ["model", "cell", "target", "stat", "role", "R", "n", "sim_mean", "sim_sd", "se_mc", "value", "ci_lo",
@@ -322,14 +339,16 @@ def checks(human, reps, cells):
 
 
 def scorecard(ch):
-    """Per model: passes by role and of 27, borderline, median |gap|."""
+    """Per model, over the evaluable checks only (A2): passes and evaluable checks by role and of all 27 (_n),
+    borderline, no value, median |gap|; not_evaluable = checks left out."""
     rows = []
     for model, c in ch.groupby("model", sort=False):
-        row = {"model": model}
+        row = {"model": model, "not_evaluable": int((c["verdict"] == NOT_EVALUABLE).sum())}
+        c = c[c["verdict"] != NOT_EVALUABLE]
         for role in ["primary", "secondary", "descriptive"]:
             x = c[c["role"] == role]
             row[f"{role}_pass"], row[f"{role}_n"] = int((x["verdict"] == "pass").sum()), len(x)
-        row["pass_of_27"] = int((c["verdict"] == "pass").sum())
+        row["all_pass"], row["all_n"] = int((c["verdict"] == "pass").sum()), len(c)
         row["borderline"] = int(c["borderline"].sum())
         row["no_value"] = int(c["verdict"].isin(["no value", "no human value"]).sum())
         row["median_abs_gap"] = float(np.nanmedian(np.abs(c["gap"].replace([np.inf, -np.inf], np.nan))))
@@ -338,10 +357,12 @@ def scorecard(ch):
 
 
 def verdict(card):
+    """The success rule over the evaluable primary checks (the same set for every model)."""
     c2 = int(card.loc[card["model"] == "C2", "primary_pass"].iloc[0])
     apem = int(card.loc[card["model"] == "APEM", "primary_pass"].iloc[0])
+    n = int(card.loc[card["model"] == "C2", "primary_n"].iloc[0])
     word = "SUCCESS" if c2 > apem else "NO SUCCESS" + (" (tie)" if c2 == apem else "")
-    return f"VERDICT: {word}: C2 passes {c2} of 12 primary checks, APEM published {apem} of 12."
+    return f"VERDICT: {word}: C2 passes {c2} of {n} evaluable primary checks, APEM published {apem} of {n}."
 
 
 # ------------------------------------------------------------------ (e) mechanism metrics
@@ -516,13 +537,16 @@ def run(mode, procs):
              + (" - DRY RUN" if mode == "dry" else ""))
 
     lines = [line, "",
-             f"protocol: docs/step5_protocol.md, locked at {H_LOCK}",
+             f"protocol: docs/step5_protocol.md, locked at {H_LOCK}; addendum A1-A3 (blob {H_ADD})",
+             "not evaluable (A2): " + ("; ".join(f"{r.target} {r.stat} {r.cell}" for r in
+                                                ch[(ch["verdict"] == NOT_EVALUABLE) & (ch["model"] == "C2")]
+                                                .itertuples()) or "none"),
              f"mode: {mode}; R = {R[mode]}; seeds " + ", ".join(f"{m} {s}" for m, s in SEEDS[mode].items()),
              "", "rounds per cell (scope EL + CL v09; L5 filters):", counts.to_string(index=False),
              f"speeds (step 0): {int((rounds['speed_source'] == 'round rows').sum())} from the round's rows, "
              f"{int((rounds['speed_source'] != 'round rows').sum())} from the file's modal speed",
              "", "scorecard:", card.to_string(index=False),
-             "", "human CIs replaced or flagged by the zero-width rule: "
+             "", "human CIs replaced by the zero-width rule or not evaluable (A2): "
              + ("; ".join(f"{r.stat} {r.topology} {r.dataset}: {r.ci_rule}" for r in human[human["ci_rule"] != ""]
                           .itertuples()) or "none"),
              "", "checks (* = borderline):"]
