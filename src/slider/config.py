@@ -81,6 +81,7 @@ PB0B_STYLE = TABLES / "pB0b_crossing_style.csv"        # B0b: pi, rho, q_sg
 MODEL_B_LOG = RESULTS / "model_b_log.md"
 P27_TEST_DESIGN = TABLES / "p27_test_design.csv"           # test rounds: design only (slider_logs.test_design)
 P27_TRAPHOPS = TABLES / "p27_traphops_train.csv"         # trap hops (traps.py), human L5 Hierarchy, v09 + cloud
+P27_TRAPHOPS_REF = TABLES / "p27_traphops_ref.csv"         # trap hops: humans vs C2 and APEM (published), 20 replicates
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
