@@ -132,8 +132,21 @@ def test_strategies_see_only_their_own_inputs(delays):
         assert len(hist) == round(t / game.DT) + 1 and all(isinstance(a, float) for a in hist)
         assert {"rng", "s_history"} <= keys
         assert keys - {"rng", "s_history"} <= strategies.S2.MEMORY_KEYS
-        assert set(attrs) <= {"eps", "H", "T", "p", "kappa"}
+        assert set(attrs) <= {"eps", "H", "T", "p", "kappa", "B", "Q"}
     assert out["strategy"] == "S2"
+
+
+def test_s2_v2_clock_ignores_blips():
+    s2 = strategies.S2(B=3)
+    agr = [0.5, 0.5, 0.6, 0.5, 0.5, 0.6, 0.6, 0.5, 0.5]     # two blips of 1 and 2 ticks: no reset
+    mem = {"s_history": [1.0] * len(agr)}
+    assert s2.flat(0.8, agr, mem) == pytest.approx(0.8)
+    agr += [0.7, 0.7, 0.7, 0.7]                               # a change that lasts 3 ticks: reset at its 3rd tick
+    mem["s_history"] += [1.0] * 4
+    assert s2.flat(1.2, agr, mem) == pytest.approx(0.1)
+    # own moves never count: Agr changes only at ticks where the player moved, then stays
+    mem = {"s_history": [1.0, 0.9, 0.9, 0.9, 0.9, 0.9]}
+    assert s2.flat(0.5, [0.5, 0.4, 0.4, 0.4, 0.4, 0.4], mem) == pytest.approx(0.5)
 
 
 # ------------------------------------------------------------------ tests 1-3: behaviour
@@ -150,7 +163,7 @@ def test_1_s0a_never_leaves_F0(delays):
         assert np.all(np.sign(out["path"]) == signs), "S0a changed the sign pattern"
 
 
-@pytest.mark.parametrize("cls", [strategies.S0b, pytest.param(strategies.S2, marks=pytest.mark.xfail(
+@pytest.mark.parametrize("cls", [strategies.S0b, strategies.S2, pytest.param(strategies.S2_v1, marks=pytest.mark.xfail(
     reason="known failure (v1): S2 escapes F0 in 92% of 200 runs (bar 95%)"))])
 def test_2_yield_strategies_escape_F0(cls, delays):
     outs = runs_from(cls, {}, F0 * 10, delays, 200, 2000)

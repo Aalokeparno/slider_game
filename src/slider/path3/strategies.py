@@ -102,12 +102,13 @@ class S0b(Strategy):
         return self.start_probe(s_i, agr_history, memory)
 
 
-class S2(Strategy):
-    """Stuck timer + yield + hold: S0a, plus a flat clock = time since Agr last changed at a tick when the
+class S2_v1(Strategy):
+    """S2 v1, stuck timer + yield + hold: S0a, plus a flat clock = time since Agr last changed at a tick when the
     player itself did not move. Stuck = flat >= T, Agr < 1 and the last probe did not help.
-    While stuck (checked every idle tick and at each decision), yield with prob p * dt per tick, then hold H."""
-    name = "S2"
-    MEMORY_KEYS = Strategy.MEMORY_KEYS | {"scanned", "last_change"}
+    While stuck (checked every idle tick and at each decision), yield with prob p * dt per tick, then hold H.
+    memory["idle_ticks"] / ["stuck_ticks"] count the idle ticks (interrupt calls) and those spent stuck."""
+    name = "S2_v1"
+    MEMORY_KEYS = Strategy.MEMORY_KEYS | {"scanned", "last_change", "idle_ticks", "stuck_ticks"}
 
     def __init__(self, T=1.3, p=0.1, H=4.0):
         self.T, self.p, self.H = T, p, H
@@ -123,27 +124,65 @@ class S2(Strategy):
         memory["scanned"] = len(agr_history) - 1
         return t - 0.1 * memory.get("last_change", 0)
 
-    def stuck_yield(self, t, s_i, agr_history, memory):
-        """A yield, or None (one chance per tick)."""
-        stuck = (self.flat(t, agr_history, memory) >= self.T - 1e-9 and agr_history[-1] < 1
-                 and memory.get("helped") is False)
+    def is_stuck(self, t, agr_history, memory):
+        return (self.flat(t, agr_history, memory) >= self.T - 1e-9 and agr_history[-1] < 1
+                and memory.get("helped") is False)
+
+    def stuck_yield(self, t, s_i, agr_history, memory, stuck):
+        """A yield, or None (one chance per tick while stuck)."""
         if stuck and memory["rng"].random() < self.p * 0.1:
             return self.yield_action(s_i, 1 if memory["rng"].random() < 0.5 else -1)
         return None
 
     def interrupt(self, t, s_i, agr_history, memory):
-        return self.stuck_yield(t, s_i, agr_history, memory)
+        stuck = self.is_stuck(t, agr_history, memory)
+        memory["idle_ticks"] = memory.get("idle_ticks", 0) + 1
+        memory["stuck_ticks"] = memory.get("stuck_ticks", 0) + stuck
+        return self.stuck_yield(t, s_i, agr_history, memory, stuck)
 
     def decide(self, t, s_i, agr_history, memory):
         if "probe" in memory:
             d, before, s0, rose, fell = self.end_probe(agr_history, memory)
             return self.greedy(d, s0, rose, fell) or ("target", s0, 0.0, False)
-        act = self.stuck_yield(t, s_i, agr_history, memory)
+        act = self.stuck_yield(t, s_i, agr_history, memory, self.is_stuck(t, agr_history, memory))
         if act:
             return act
         if agr_history[-1] >= 1:
             return IDLE
         return self.start_probe(s_i, agr_history, memory)
+
+
+class S2(S2_v1):
+    """S2 v2: S2_v1 with a blip-tolerant flat clock. The player keeps a reference A_ref of its displayed Agr.
+    The clock resets only when the displayed Agr differs from A_ref for B consecutive ticks in which the player
+    did not move (reset at the B-th such tick); then A_ref = the new value. Changes that revert sooner (a
+    neighbour's out-and-back probe) are ignored. Own moves never count: at a tick where the player moved,
+    A_ref takes the new value and the count starts again."""
+    name = "S2"
+    MEMORY_KEYS = S2_v1.MEMORY_KEYS | {"a_ref", "differ"}
+
+    def __init__(self, T=1.3, p=0.1, H=4.0, B=3):
+        super().__init__(T, p, H)
+        self.B = B
+
+    def flat(self, t, agr_history, memory):
+        s_hist = memory["s_history"]
+        if "a_ref" not in memory:
+            memory["a_ref"], memory["differ"] = agr_history[0], 0
+        j = memory.get("scanned", 0) + 1
+        while j < len(agr_history):
+            if s_hist[j] != s_hist[j - 1]:                  # own move
+                memory["a_ref"], memory["differ"] = agr_history[j], 0
+            elif agr_history[j] != memory["a_ref"]:
+                memory["differ"] += 1
+                if memory["differ"] >= self.B:
+                    memory["last_change"] = j
+                    memory["a_ref"], memory["differ"] = agr_history[j], 0
+            else:
+                memory["differ"] = 0
+            j += 1
+        memory["scanned"] = len(agr_history) - 1
+        return t - 0.1 * memory.get("last_change", 0)
 
 
 class S1(Strategy):
@@ -167,4 +206,4 @@ class S1(Strategy):
         return ("target", k / 10, 0.0, False)
 
 
-STRATEGIES = {"S0a": S0a, "S0b": S0b, "S2": S2, "S1": S1}
+STRATEGIES = {"S0a": S0a, "S0b": S0b, "S2": S2, "S1": S1, "S2_v1": S2_v1}
