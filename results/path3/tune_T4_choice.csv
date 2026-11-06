@@ -1,0 +1,9 @@
+start,variant,graphs,pooled_median_t,pooled_p95_t,worst_p95_t,worst_graph,graphs_p95_beats_S0b''
+A,S0b'',23,26.5,91.7,129.9,G427,
+A,S0b''' eps 0.5,23,26.2,96.6,159.3,Full,13.0
+A,S0b''' eps 0.75,23,24.5,87.6,115.4,Ring,10.0
+A,S0b''' eps 1,23,24.7,85.2,108.6,Ring,16.0
+B,S0b'',15,28.1,92.3,118.0,Ring,
+B,S0b''' eps 0.5,15,21.2,71.0,100.6,G1089,11.0
+B,S0b''' eps 0.75,15,21.65,76.1,99.8,G853,12.0
+B,S0b''' eps 1,15,23.6,90.4,127.4,G427,10.0

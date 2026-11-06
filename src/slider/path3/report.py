@@ -308,3 +308,63 @@ def t3_figure(table, order, path):
     fig.tight_layout(rect=(0, 0.02, 1, 1))
     fig.savefig(path, dpi=150, facecolor=SURFACE)
     return fig
+
+
+# ------------------------------------------------------------------ tuning run T4 (soft-gate eps)
+
+LABELS_T4 = ["S0b''", "S0b''' eps 0.5", "S0b''' eps 0.75", "S0b''' eps 1"]
+NAMED = ["Hierarchy", "Full", "Ring", "Star", "CT"]
+
+
+def t4_choice(table):
+    """Choice table per start and variant: pooled median and p95, the worst-graph p95 and its graph, and the
+    number of graphs whose p95 beats S0b'' (strictly lower); and Spearman of dp95 (variant - S0b'') with edges."""
+    rows, corr = [], []
+    for start in ["A", "B"]:
+        t = table[table["start"] == start]
+        per = t[t["graph"] != "pooled"].pivot(index="graph", columns="label", values="p95_t")
+        edges = t[t["graph"] != "pooled"].groupby("graph")["edges"].first()
+        for lab in LABELS_T4:
+            pooled = t[(t["graph"] == "pooled") & (t["label"] == lab)].iloc[0]
+            worst = per[lab].idxmax()
+            beats = int((per[lab] < per["S0b''"]).sum()) if lab != "S0b''" else np.nan
+            rows.append({"start": start, "variant": lab, "graphs": len(per), "pooled_median_t": pooled["median_t"],
+                         "pooled_p95_t": pooled["p95_t"], "worst_p95_t": per[lab].max(), "worst_graph": worst,
+                         "graphs_p95_beats_S0b''": beats})
+            if lab != "S0b''":
+                d = per[lab] - per["S0b''"]
+                corr.append({"start": start, "variant": lab, "graphs": len(d),
+                             "spearman_dp95_edges": d.corr(edges.loc[d.index], method="spearman")})
+    return pd.DataFrame(rows), pd.DataFrame(corr)
+
+
+def t4_figure(table, path):
+    """dp95 (S0b''' at eps 0.5 / 0.75 / 1 minus S0b'') vs edge count, start A on top, start B below; one marker
+    and color per eps; Hierarchy, Full, Ring, Star and CT labeled."""
+    styles = {"S0b''' eps 0.5": ("o", BLUE), "S0b''' eps 0.75": ("s", ORANGE), "S0b''' eps 1": ("^", "#1baf7a")}
+    fig, axes = plt.subplots(2, 1, figsize=(10, 9), facecolor=SURFACE, sharex=True)
+    for ax, start in zip(axes, ["A", "B"]):
+        style(ax)
+        t = table[(table["start"] == start) & (table["graph"] != "pooled")]
+        per = t.pivot(index="graph", columns="label", values="p95_t")
+        edges = t.groupby("graph")["edges"].first()
+        ax.axhline(0, color=INK_2, linewidth=1)
+        for k, (lab, (marker, color)) in enumerate(styles.items()):
+            d = per[lab] - per["S0b''"]
+            x = edges.loc[d.index] + (k - 1) * 0.18
+            ax.scatter(x, d, marker=marker, s=42, color=color, edgecolor=SURFACE, linewidth=1, zorder=3,
+                       label=lab.replace("S0b''' eps", "S0b''' ε"))
+        for g in NAMED:
+            if g in per.index:
+                top = max((per.loc[g, lab] - per.loc[g, "S0b''"]) for lab in styles)
+                ax.annotate(g, (edges[g], top), xytext=(0, 8), textcoords="offset points", ha="center",
+                            fontsize=8, color=INK)
+        ax.set_ylabel("Δ p95 vs S0b'' (s)", fontsize=8, color=INK_2)
+        runs = "200 paired runs per graph" if start == "A" else "the screen_B corners x 20 paired runs"
+        ax.set_title(f"Start {start}: {len(per)} graphs, {runs}; below 0 = shorter tail than S0b''", fontsize=9,
+                     color=INK, loc="left")
+        ax.legend(frameon=False, fontsize=8, loc="upper left")
+    axes[1].set_xlabel("number of edges", fontsize=8, color=INK_2)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150, facecolor=SURFACE)
+    return fig
