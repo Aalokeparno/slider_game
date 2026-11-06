@@ -10,7 +10,9 @@ import numpy as np
 import pandas as pd
 
 
-NAMES = {"S0a": "S0a greedy", "S0b": "S0b'' noise + hold", "S2": "S2 stuck timer", "S1": "S1' averaging"}
+NAMES = {"S0a": "S0a greedy", "S0b": "S0b'' noise + hold", "S2": "S2 stuck timer", "S1p": "S1' averaging",
+         "S2_v1": "S2 v1", "S1p_v1": "S1' v1"}
+ORDER = ["S0a", "S0b", "S2", "S1p", "S2_v1", "S1p_v1"]
 INK, INK_2, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 BLUE, ORANGE = "#2a78d6", "#eb6834"
 
@@ -35,16 +37,26 @@ def summary(runs, by):
     return pd.DataFrame(rows)
 
 
-def rankings(screen):
-    """Per (start, graph) and pooled over the screening set ("pooled"): summary() per strategy, ranked by
-    success_300 (high first), then median_t (low first)."""
+def sanity(fix_tests):
+    """Strategy -> "passed" / "failed sanity test", from the Hierarchy tests: S0a test 1 and S2_v1 / S1p_v1
+    (v1 round, pytest), S0b / S2 / S1p from fix_tests (results/path3/fix_tests.csv)."""
+    out = {"S0a": "passed", "S2_v1": "failed sanity test", "S1p_v1": "failed sanity test"}
+    for s, ok in zip(fix_tests["strategy"], fix_tests["pass"]):
+        out[s] = "passed" if ok else "failed sanity test"
+    return out
+
+
+def rankings(screen, flags):
+    """Per (start, graph) and pooled over the screening set ("pooled", all runs together): summary() per strategy,
+    ranked by success_300 (high first), then median_t (low first); sanity = flags[strategy]."""
     per_graph = summary(screen, ["start", "graph", "strategy"])
     pooled = summary(screen, ["start", "strategy"]).assign(graph="pooled")
     t = pd.concat([pooled, per_graph], ignore_index=True)
     t = t.sort_values(["start", "graph", "success_300", "median_t"], ascending=[True, True, False, True])
     t["rank"] = t.groupby(["start", "graph"]).cumcount() + 1
-    cols = ["start", "graph", "rank", "strategy"] + [c for c in t.columns if c not in ("start", "graph", "rank", "strategy")]
-    return t[cols].reset_index(drop=True)
+    t["sanity"] = t["strategy"].map(flags)
+    first = ["start", "graph", "rank", "strategy", "sanity"]
+    return t[first + [c for c in t.columns if c not in first]].reset_index(drop=True)
 
 
 def efficiency_gap(screen_A, human):
@@ -76,8 +88,8 @@ def sweep_figure(sweeps, path):
     """Median time vs each swept parameter (Hierarchy), start A and B; failures-as-inf medians drawn at 300 s
     with an open marker."""
     panels = [("S0b", "eps", "ε"), ("S0b", "H", "H (s)"), ("S2", "T", "T (s)"), ("S2", "p", "p (1/s)"),
-              ("S2", "H", "H (s)"), ("S1", "kappa", "κ")]
-    fig, axes = plt.subplots(2, 3, figsize=(11, 6), facecolor=SURFACE)
+              ("S2", "H", "H (s)"), ("S2", "B", "B (ticks)"), ("S1p", "kappa", "κ"), ("S1p", "Q", "Q (ticks)")]
+    fig, axes = plt.subplots(2, 4, figsize=(14, 6), facecolor=SURFACE)
     for ax, (s, param, label) in zip(axes.ravel(), panels):
         style(ax)
         d = sweeps[sweeps["strategy"] == s].copy()
@@ -105,10 +117,10 @@ def sweep_figure(sweeps, path):
 
 def heatmap_figure(screen_A, order, path):
     """Strategy x screening graph, median time to consensus (start A); '>300' where the median is inf."""
-    strategies = ["S0a", "S0b", "S2", "S1"]
+    strategies = ORDER
     M = np.array([[median_time(screen_A[(screen_A["strategy"] == s) & (screen_A["graph"] == g)]["t_consensus"]
                                .to_numpy()) for g in order] for s in strategies])
-    fig, ax = plt.subplots(figsize=(13, 3.2), facecolor=SURFACE)
+    fig, ax = plt.subplots(figsize=(13, 4), facecolor=SURFACE)
     shown = np.where(np.isfinite(M), M, np.nan)
     im = ax.imshow(shown, cmap="Blues", vmin=0, vmax=np.nanmax(shown) if np.isfinite(shown).any() else 1,
                    aspect="auto")
