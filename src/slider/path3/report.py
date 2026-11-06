@@ -144,3 +144,30 @@ def heatmap_figure(screen_A, order, path):
     fig.tight_layout()
     fig.savefig(path, dpi=150, facecolor=SURFACE)
     return fig
+
+
+# ------------------------------------------------------------------ tuning run T1
+
+def p95_time(t):
+    """95th percentile of t_consensus with NaN as inf (inverted CDF: an actual run's value, inf if > 5% fail)."""
+    return float(np.quantile(np.where(np.isnan(t), np.inf, t), 0.95, method="inverted_cdf"))
+
+
+def tune_table(runs):
+    """One row per setting x graph of the T1 runs (block, strategy, H, t0, eps, graph): runs, success_180,
+    success_300, median_t, p95_t, yields_per_run, collisions_per_run (overlapping yield pairs), moving_per_tick,
+    and on Full cross_toward_share = greedy crossings toward the global majority / (toward + away), pooled over
+    the runs (ties, sum of s = 0, left out)."""
+    rows = []
+    for (block, strategy, params, graph), d in runs.groupby(["block", "strategy", "params", "graph"], sort=False):
+        p = json.loads(params)
+        t = d["t_consensus"].to_numpy()
+        toward, away = d["cross_toward"].sum(), d["cross_away"].sum()
+        rows.append({"block": block, "strategy": strategy, "H": p.get("H", np.nan), "t0": p.get("t0", np.nan),
+                     "eps": p.get("eps", np.nan), "graph": graph, "runs": len(d),
+                     "success_180": d["success_180"].mean(), "success_300": d["success_300"].mean(),
+                     "median_t": median_time(t), "p95_t": p95_time(t), "yields_per_run": d["n_yields"].mean(),
+                     "collisions_per_run": d["n_collisions"].mean(), "moving_per_tick": d["moving_per_tick"].mean(),
+                     "cross_toward_share": toward / (toward + away) if graph == "Full" else np.nan})
+    return pd.DataFrame(rows)
+

@@ -8,7 +8,8 @@ Blocks (results/path3/blocks/<block>.csv; a block that exists is skipped):
     T1c    S0b'', eps in {0.1, 0.25, 0.5, 1} x H in {2, 4, 8} s
 Seeds as in the screen: every setting on a graph reuses the 200 screen_A seeds of its base strategy on that graph
 (S0a for S0a_hold, S0b for the S0b'' settings), so settings are compared on common random numbers.
-All runs -> results/path3/runs_T1.csv.
+All runs -> results/path3/runs_T1.csv; one row per setting x graph -> results/path3/tune_T1.csv
+(report.tune_table).
 
 Usage: python scripts/path3_tune_T1.py
 """
@@ -18,7 +19,7 @@ import numpy as np
 import pandas as pd
 
 from slider import config
-from slider.path3 import game, human, sim, strategies
+from slider.path3 import game, human, report, sim, strategies
 
 OUT = config.PATH3 / "blocks"
 GRAPHS = ["Hierarchy", "Full"]
@@ -79,4 +80,6 @@ def check_reference(ref):
 if __name__ == "__main__":
     parts = {b: run_block(b) for b in BLOCKS}
     check_reference(parts["T1ref"])
-    pd.concat(parts.values()).to_csv(config.PATH3 / "runs_T1.csv", index=False)
+    runs = pd.concat(parts.values())
+    runs.to_csv(config.PATH3 / "runs_T1.csv", index=False)
+    report.tune_table(runs).to_csv(config.PATH3 / "tune_T1.csv", index=False)
