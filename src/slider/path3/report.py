@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 
-NAMES = {"S0a": "S0a greedy", "S0b": "S0b'' noise + hold", "S2": "S2 stuck timer", "S1p": "S1' averaging",
+NAMES = {"S0a": "S0a greedy", "S0b": "S0b'' noise + hold", "S2": "S2 v2 stuck timer", "S1p": "S1' v2 averaging",
          "S2_v1": "S2 v1", "S1p_v1": "S1' v1"}
 ORDER = ["S0a", "S0b", "S2", "S1p", "S2_v1", "S1p_v1"]
 INK, INK_2, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
@@ -122,7 +122,9 @@ def heatmap_figure(screen_A, order, path):
                                .to_numpy()) for g in order] for s in strategies])
     fig, ax = plt.subplots(figsize=(13, 4), facecolor=SURFACE)
     shown = np.where(np.isfinite(M), M, np.nan)
-    im = ax.imshow(shown, cmap="Blues", vmin=0, vmax=np.nanmax(shown) if np.isfinite(shown).any() else 1,
+    cmap = plt.get_cmap("Blues").copy()
+    cmap.set_bad("#c3c2b7")                                  # failing cells: neutral gray
+    im = ax.imshow(shown, cmap=cmap, vmin=0, vmax=np.nanmax(shown) if np.isfinite(shown).any() else 1,
                    aspect="auto")
     for i in range(M.shape[0]):
         for j in range(M.shape[1]):
@@ -137,7 +139,7 @@ def heatmap_figure(screen_A, order, path):
     cb = fig.colorbar(im, ax=ax, fraction=0.02, pad=0.01)
     cb.set_label("median time to consensus (s)", fontsize=8, color=INK_2)
     cb.ax.tick_params(labelsize=7, colors=INK_2)
-    ax.set_title("Start A (all sliders at 0), 200 runs per cell; white '>300': half or more of the runs fail",
+    ax.set_title("Start A (all sliders at 0), 200 runs per cell; gray '>300': half or more of the runs fail",
                  fontsize=9, color=INK, loc="left")
     fig.tight_layout()
     fig.savefig(path, dpi=150, facecolor=SURFACE)
