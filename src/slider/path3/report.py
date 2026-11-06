@@ -171,3 +171,60 @@ def tune_table(runs):
                      "cross_toward_share": toward / (toward + away) if graph == "Full" else np.nan})
     return pd.DataFrame(rows)
 
+
+def tune_figure(tune, path):
+    """Median (solid) and 95th percentile (dashed) of the time to consensus vs each T1 parameter, Hierarchy and
+    Full side by side. Rows: S0a_hold vs H, S0b'' vs t0, S0b'' vs eps (one line per H). Gray dotted: the
+    reference (S0a, S0b'' at defaults). Values above 300 s (failures counted as inf) are drawn at 330 with an
+    open marker."""
+    TOP, HIGH = 300, 330
+    colors = {2.0: BLUE, 4.0: ORANGE, 8.0: "#1baf7a"}
+    fig, axes = plt.subplots(3, 2, figsize=(11, 10), facecolor=SURFACE, sharey=True)
+
+    def draw(ax, x, med, p95, color, label):
+        for y, dash, kind in [(med, "-", "median"), (p95, "--", "95th pct")]:
+            y = np.asarray(y, dtype=float)
+            ok = y <= TOP
+            yy = np.where(ok, y, HIGH)
+            ax.plot(x, yy, dash, color=color, linewidth=2, label=f"{label}, {kind}" if label else kind)
+            ax.scatter(np.asarray(x)[ok], yy[ok], color=color, s=36, zorder=3, edgecolor=SURFACE, linewidth=1.5)
+            ax.scatter(np.asarray(x)[~ok], yy[~ok], facecolor=SURFACE, edgecolor=color, s=36, zorder=3, linewidth=1.5)
+
+    def reference(ax, d):
+        for y, dash in [(d["median_t"], ":"), (d["p95_t"], ":")]:
+            ax.axhline(min(y, HIGH), color=INK_2, linestyle=dash, linewidth=1.2)
+
+    for col, graph in enumerate(["Hierarchy", "Full"]):
+        g = tune[tune["graph"] == graph]
+        ref = g[g["block"] == "T1ref"].set_index("strategy")
+        ax = axes[0, col]
+        a = g[g["block"] == "T1a"].sort_values("H")
+        draw(ax, a["H"], a["median_t"], a["p95_t"], BLUE, "")
+        reference(ax, ref.loc["S0a"])
+        ax.set_xlabel("H (s)", fontsize=8, color=INK_2)
+        ax.set_title(f"{graph}: S0a_hold vs H (dotted: S0a)", fontsize=9, color=INK, loc="left")
+        ax = axes[1, col]
+        b = g[g["block"] == "T1b"].sort_values("t0")
+        draw(ax, b["t0"], b["median_t"], b["p95_t"], BLUE, "")
+        reference(ax, ref.loc["S0b"])
+        ax.set_xlabel("t0 (s)", fontsize=8, color=INK_2)
+        ax.set_title(f"{graph}: S0b'' (eps 0.5, H 4) vs t0 (dotted: S0b'' default)", fontsize=9, color=INK, loc="left")
+        ax = axes[2, col]
+        c = g[g["block"] == "T1c"]
+        for H, d in c.groupby("H"):
+            d = d.sort_values("eps")
+            draw(ax, d["eps"], d["median_t"], d["p95_t"], colors[H], f"H = {H:g} s")
+        ax.set_xlabel("ε", fontsize=8, color=INK_2)
+        ax.set_title(f"{graph}: S0b'' vs ε, one line per H", fontsize=9, color=INK, loc="left")
+    for ax in axes.ravel():
+        style(ax)
+        ax.set_ylim(0, 345)
+        ax.set_yticks([0, 50, 100, 150, 200, 250, 300, HIGH], ["0", "50", "100", "150", "200", "250", "300", ">300"])
+        ax.set_ylabel("time to consensus (s)", fontsize=8, color=INK_2)
+    axes[0, 0].legend(frameon=False, fontsize=8)
+    axes[2, 0].legend(frameon=False, fontsize=7, ncol=2, loc="upper left")
+    fig.text(0.01, 0.005, "Start A, 200 runs per point, common seeds (screen_A). Solid: median; dashed: 95th "
+             "percentile; open marker at '>300': above 300 s (failures counted as infinite).", fontsize=8, color=INK_2)
+    fig.tight_layout(rect=(0, 0.02, 1, 1))
+    fig.savefig(path, dpi=150, facecolor=SURFACE)
+    return fig
