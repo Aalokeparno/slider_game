@@ -1,2 +1,3 @@
 timestamp,caller,reason,n_test_runs,kind
 2026-11-03T22:19:03,/home/aalok/ELEC573/Tabor/scripts/p27a_test_design.py,"P27a: count test rounds per cell, v09 scope",165,design_only
+2026-11-04T10:16:50,/home/aalok/ELEC573/Tabor/scripts/step5_test.py,Step 5 test opening,189,full

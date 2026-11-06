@@ -1,0 +1,59 @@
+           cell  in_scope  drop_incomplete  drop_aborted  drop_empty  drop_bot  drop_whole_second  kept  groups  planned  planned_groups
+        Ring EL        51                0             0           0         0                  0    51      17       51              17
+    Ring CL v09        39                0             1           1         0                  0    38      13       39              13
+CT-Hierarchy EL        51                0             0           0         0                  0    51      17       51              17
+simulation: 30 batches to run, 2 processes
+10:24:59  C2 replicates 0-19 done; about 236 min left
+10:25:19  C2 replicates 20-39 done; about 119 min left
+10:33:02  C2 replicates 40-59 done; about 146 min left
+10:33:24  C2 replicates 60-79 done; about 108 min left
+10:41:06  C2 replicates 80-99 done; about 121 min left
+10:41:31  C2 replicates 100-119 done; about 99 min left
+10:49:12  C2 replicates 120-139 done; about 106 min left
+10:49:36  C2 replicates 140-159 done; about 90 min left
+10:57:13  C2 replicates 160-179 done; about 94 min left
+10:57:38  C2 replicates 180-199 done; about 82 min left
+11:01:50  APEM replicates 0-19 done; about 78 min left
+11:02:19  APEM replicates 20-39 done; about 68 min left
+11:06:26  APEM replicates 40-59 done; about 65 min left
+11:07:02  APEM replicates 60-79 done; about 57 min left
+11:10:58  APEM replicates 80-99 done; about 54 min left
+11:11:37  APEM replicates 100-119 done; about 48 min left
+11:15:45  APEM replicates 120-139 done; about 45 min left
+11:16:14  APEM replicates 140-159 done; about 40 min left
+11:20:27  APEM replicates 160-179 done; about 37 min left
+11:20:59  APEM replicates 180-199 done; about 32 min left
+11:27:58  final replicates 0-19 done; about 30 min left
+11:28:37  final replicates 20-39 done; about 26 min left
+11:35:42  final replicates 40-59 done; about 24 min left
+11:36:08  final replicates 60-79 done; about 20 min left
+11:43:15  final replicates 80-99 done; about 17 min left
+11:43:36  final replicates 100-119 done; about 13 min left
+11:50:47  final replicates 120-139 done; about 10 min left
+11:51:09  final replicates 140-159 done; about 7 min left
+11:58:33  final replicates 160-179 done; about 4 min left
+11:58:40  final replicates 180-199 done; about 0 min left
+/home/aalok/ELEC573/Tabor/scripts/step5_test.py:380: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  ep = pd.concat([m["episodes"] for m in parts], ignore_index=True)
+VERDICT: SUCCESS: C2 passes 6 of 12 evaluable primary checks, APEM published 2 of 12.
+
+protocol: docs/step5_protocol.md, locked at f547677a7a9b7ac6be262bb69c17dced5c7190fb; addendum A1-A3 (blob a15c30d04d4440af67d6f56650585b1359071f67)
+not evaluable (A2): 9 f_rev_median Ring EL; 9 f_rev_median Ring CL v09
+mode: open; R = 200; seeds C2 9101, APEM 9102, final 9103
+
+rounds per cell (scope EL + CL v09; L5 filters):
+           cell  in_scope  drop_incomplete  drop_aborted  drop_empty  drop_bot  drop_whole_second  kept  groups  planned  planned_groups
+        Ring EL        51                0             0           0         0                  0    51      17       51              17
+    Ring CL v09        39                0             1           1         0                  0    38      13       39              13
+CT-Hierarchy EL        51                0             0           0         0                  0    51      17       51              17
+speeds (step 0): 140 from the round's rows, 0 from the file's modal speed
+
+scorecard:
+model  not_evaluable  primary_pass  primary_n  secondary_pass  secondary_n  descriptive_pass  descriptive_n  all_pass  all_n  borderline  no_value  median_abs_gap
+   C2              2             6         12               4            6                 7              7        17     25           2         0        0.796250
+ APEM              2             2         12               1            6                 1              7         4     25           3         0        2.103221
+final              2             4         12               4            6                 2              7        10     25           0         0        1.363988
+
+human CIs replaced by the zero-width rule or not evaluable (A2): f_rev_median Ring CL: not evaluable (A2); f_rev_median Ring EL: not evaluable (A2)
+
+wrote /home/aalok/ELEC573/Tabor/results/step5_report.txt
