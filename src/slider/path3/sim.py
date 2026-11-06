@@ -28,7 +28,8 @@ def ticks(seconds):
 
 def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_path=False):
     """One round. start_k: start positions (integers, s = k / 10). delays: {"halt": array, "start": array} in s.
-    Returns the per-run row (row()); with keep_path also "path" (positions k per tick, (ticks + 1) x 7)."""
+    Returns the per-run row (row()); with keep_path also "path" (positions k per tick, (ticks + 1) x 7),
+    "memory" (each player's memory without rng / s_history) and "yields" ((player, first tick, first idle tick))."""
     n = len(A)
     k = np.array(start_k, dtype=int)
     players = [cls(**params) for _ in range(n)]
@@ -112,6 +113,7 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
     if keep_path:
         out["path"] = path
         out["memory"] = [{key: v for key, v in m.items() if key not in ("rng", "s_history")} for m in mem]
+        out["yields"] = yields                      # (player, first tick, first idle tick) per yield
     return out
 
 
