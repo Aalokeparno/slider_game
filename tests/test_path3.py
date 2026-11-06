@@ -80,10 +80,14 @@ def test_outcome_classes():
     n = 3001
     still = np.tile(F0 * 10, (n, 1))
     assert sim.outcome_class(still, success=False)[0] == "fixed trap"
-    # one slider wiggles between 1.0 and 0.9 forever: sign pattern constant -> periodic, period 1
+    # one slider wiggles between 1.0 and 0.9 forever: sign pattern constant -> fixed trap
     wiggle = still.copy()
     wiggle[::2, 0] = 9
-    assert sim.outcome_class(wiggle, success=False) == ("periodic", 1)
+    assert sim.outcome_class(wiggle, success=False) == ("fixed trap", 0)
+    # sign pattern constant in the last 30 s only, after earlier changes -> fixed trap
+    late = still.copy()
+    late[:-400:7, 2] = -10
+    assert sim.outcome_class(late, success=False)[0] == "fixed trap"
     # two sign patterns alternating every 10 ticks -> periodic, period 2
     alt = still.copy()
     alt[(np.arange(n) // 10) % 2 == 1, 0] = -10

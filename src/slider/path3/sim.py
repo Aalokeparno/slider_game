@@ -119,18 +119,16 @@ def collisions(yields):
 
 
 def outcome_class(path, success):
-    """(class, period). consensus; fixed trap = no slider change in the last 30 s; periodic = the sign-pattern
-    sequence of the last 120 s (consecutive repeats merged) repeats with a fixed period p, at least twice
-    (p = 1: one sign pattern held all the time while sliders still move); else irregular."""
+    """(class, period). consensus; fixed trap = the sign pattern (sign of each s_i) is constant over the last 30 s,
+    even if sliders wiggle; periodic = the sign-pattern sequence of the last 120 s (consecutive repeats merged)
+    repeats with a fixed period p >= 2 (at least 2 distinct patterns), at least twice; else irregular."""
     if success:
         return "consensus", 0
-    last = path[-(int(FIXED_S / game.DT) + 1):]
+    last = np.sign(path[-(int(FIXED_S / game.DT) + 1):])
     if np.all(last == last[0]):
         return "fixed trap", 0
     signs = [tuple(r) for r in np.sign(path[-(int(CYCLE_S / game.DT) + 1):])]
     seq = [signs[0]] + [b for a, b in zip(signs, signs[1:]) if a != b]
-    if len(seq) == 1:
-        return "periodic", 1
     for p in range(2, len(seq) // 2 + 1):
         if all(seq[j] == seq[j + p] for j in range(len(seq) - p)):
             return "periodic", p
