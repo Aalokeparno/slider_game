@@ -1,7 +1,8 @@
 """Path 3 strategy simulator (src/slider/path3): game rules, graph measures, outcome classes,
 the information constraint on strategies, and the four required behaviour tests.
 
-The behaviour tests (1-3) use the human reaction / start delays (lab v09, G-train); they take a few minutes.
+The behaviour tests (1-3) use the human reaction / start delays (lab v09, G-train); they take ~20 minutes and are
+marked slow: a plain `pytest` skips them, `pytest -m slow` runs them.
 """
 import ast
 import inspect
@@ -156,6 +157,7 @@ def runs_from(cls, params, start, delays, n, seed0, t_max=300):
             for r in range(n)]
 
 
+@pytest.mark.slow
 def test_1_s0a_never_leaves_F0(delays):
     signs = np.sign(F0)
     for out in runs_from(strategies.S0a, {}, F0 * 10, delays, 200, 1000):
@@ -163,6 +165,7 @@ def test_1_s0a_never_leaves_F0(delays):
         assert np.all(np.sign(out["path"]) == signs), "S0a changed the sign pattern"
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("cls", [strategies.S0b, strategies.S2, pytest.param(strategies.S2_v1, marks=pytest.mark.xfail(
     reason="known failure (v1): S2 escapes F0 in 92% of 200 runs (bar 95%)"))])
 def test_2_yield_strategies_escape_F0(cls, delays):
@@ -172,6 +175,7 @@ def test_2_yield_strategies_escape_F0(cls, delays):
     assert rate >= 0.95, rate
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("cls", [pytest.param(strategies.S1p, marks=pytest.mark.xfail(strict=True,
     reason="S1′ v2 (quiet probe) κ=1.05: 5.7% success; sign accuracy q=0.88 < 0.98 needed; collapses to s=0")),
     pytest.param(strategies.S1p_v1, marks=pytest.mark.xfail(
