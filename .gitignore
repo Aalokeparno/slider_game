@@ -10,3 +10,8 @@ data/processed/*.parquet
 # Step 5: raw test runs and simulation batches (scripts/step5_test.py)
 results/test_cache/
 results/step5_dryrun/cache/
+
+# Path 3: per-block run files (same rows as runs.csv), the per-probe log and run logs
+results/path3/blocks/
+results/path3/s1p_probe_log.parquet
+results/path3/*.log
