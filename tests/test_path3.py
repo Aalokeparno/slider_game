@@ -215,6 +215,15 @@ def test_2_yield_strategies_escape_F0(cls, delays):
 
 
 @pytest.mark.slow
+def test_2_soft_gate_escapes_F0(delays):
+    # S0b''' (soft gate, eps 0.5, H 4) from F0: the bar and seeds of test 2
+    outs = runs_from(strategies.S0b, {"soft_gate": True}, F0 * 10, delays, 200, 2000)
+    rate = np.mean([o["success_300"] for o in outs])
+    print("S0b''' success_300 from F0:", rate)
+    assert rate >= 0.95, rate
+
+
+@pytest.mark.slow
 @pytest.mark.parametrize("cls", [pytest.param(strategies.S1p, marks=pytest.mark.xfail(strict=True,
     reason="S1′ v2 (quiet probe) κ=1.05: 5.7% success; sign accuracy q=0.88 < 0.98 needed; collapses to s=0")),
     pytest.param(strategies.S1p_v1, marks=pytest.mark.xfail(
