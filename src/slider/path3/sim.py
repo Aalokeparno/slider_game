@@ -16,7 +16,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from slider.path3 import game
+from slider.path3 import game, tail
 
 DECIDE, MOVE, WAIT = 0, 1, 2
 FIXED_S, CYCLE_S = 30, 120            # outcome classes: last 30 s (fixed trap), last 120 s (periodic)
@@ -162,12 +162,24 @@ def outcome_class(path, success):
 def row(A, path, t_cons, yields, strategy, params, cross):
     """The per-run row. moving_per_tick = mean number of sliders that move in a tick (probes included).
     cross_toward / cross_away / cross_tie: greedy (non-yield) moves to the wall on the other side of 0 from the
-    player's current position, by the sign of the sum of all 7 s at the decision tick (tie: the sum is 0)."""
+    player's current position, by the sign of the sum of all 7 s at the decision tick (tie: the sum is 0).
+    breakups (tail.breakups), breakups_per_min (per minute played: t_consensus, or t_max without consensus);
+    yields_majority / yields_sided (yields by majority-side players / yields with sum of s != 0) and
+    yields_undone (back on the old side within 10 s), as in tail.yield_flags; *_share = their ratios (NaN if none)."""
     success = not np.isnan(t_cons)
     cls, period = outcome_class(path, success)
+    flags = [tail.yield_flags(path, i, start, end) for i, start, end in yields]
+    sided = [m for m, _ in flags if not np.isnan(m)]
+    n_break = tail.breakups(path)
+    minutes = (len(path) - 1) * game.DT / 60
     return {"strategy": strategy, "params": json.dumps(params, sort_keys=True),
             "success_180": bool(success and t_cons <= 180), "success_300": bool(success and t_cons <= 300),
             "t_consensus": t_cons, "frac_time_fraught": float(np.mean(game.fraught_now(A, path[:-1]))),
             "n_yields": len(yields), "n_collisions": collisions(yields), "outcome": cls, "period": period,
             "moving_per_tick": float(np.mean(np.sum(path[1:] != path[:-1], axis=1))),
-            "cross_toward": cross["toward"], "cross_away": cross["away"], "cross_tie": cross["tie"]}
+            "cross_toward": cross["toward"], "cross_away": cross["away"], "cross_tie": cross["tie"],
+            "breakups": n_break, "breakups_per_min": n_break / minutes,
+            "yields_majority": int(sum(sided)), "yields_sided": len(sided),
+            "yields_undone": int(sum(u for _, u in flags)),
+            "yield_majority_share": float(np.mean(sided)) if sided else np.nan,
+            "yield_undone_share": float(np.mean([u for _, u in flags])) if flags else np.nan}

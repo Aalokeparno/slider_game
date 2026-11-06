@@ -34,20 +34,36 @@ def last_flips(k):
     return flip
 
 
+def breakups(path):
+    """Breakups in a trajectory: |sum s| / 7 reaches >= 5/7 and later falls to <= 3/7 (it must reach 5/7 again
+    before the next one counts)."""
+    count, armed = 0, False
+    for v in np.abs(path.sum(axis=1)) / (7 * game.WALL):
+        if v >= 5 / 7 - 1e-9:
+            armed = True
+        elif armed and v <= 3 / 7 + 1e-9:
+            count, armed = count + 1, False
+    return count
+
+
+def yield_flags(path, i, start, end):
+    """(on_majority, undone) of one yield (see the module doc); on_majority is NaN when the sum of s is 0."""
+    side = np.sign(path[start, i])
+    maj = np.sign(path[start].sum())
+    later = path[end:min(start + int(round(UNDO_S / game.DT)), len(path) - 1) + 1, i]
+    return (float(side == maj) if maj != 0 else np.nan), bool(np.any(np.sign(later) == side))
+
+
 def yield_table(A, path, yields):
     """One row per yield: player, start_s, end_s, on_majority, at_fraught, undone, age_s, agr_before."""
     fraught = game.fraught_now(A, path)
-    total = path.sum(axis=1)
     flips = {i: last_flips(path[:, i]) for i in range(path.shape[1])}
     rows = []
     for i, start, end in yields:
-        side = np.sign(path[start, i])
-        later = path[end:min(start + int(round(UNDO_S / game.DT)), len(path) - 1) + 1, i]
-        maj = np.sign(total[start])
+        on_majority, undone = yield_flags(path, i, start, end)
         f = flips[i][start]
-        rows.append({"player": i, "start_s": start * game.DT, "end_s": end * game.DT,
-                     "on_majority": float(side == maj) if maj != 0 else np.nan,
-                     "at_fraught": bool(fraught[start]), "undone": bool(np.any(np.sign(later) == side)),
+        rows.append({"player": i, "start_s": start * game.DT, "end_s": end * game.DT, "on_majority": on_majority,
+                     "at_fraught": bool(fraught[start]), "undone": undone,
                      "age_s": (start - f) * game.DT if f >= 0 else np.nan,
                      "agr_before": float(game.agreement(A, path[max(start - 1, 0)])[i])})
     return pd.DataFrame(rows, columns=["player", "start_s", "end_s", "on_majority", "at_fraught", "undone", "age_s",
@@ -61,12 +77,6 @@ def run_metrics(A, out):
     fraught = game.fraught_now(A, held)
     level = np.abs(path.sum(axis=1)) / (7 * game.WALL)
     near = (level[:-1] >= 5 / 7) & ~fraught
-    breakups, armed = 0, False
-    for v in level:
-        if v >= 5 / 7 - 1e-9:
-            armed = True
-        elif armed and v <= 3 / 7 + 1e-9:
-            breakups, armed = breakups + 1, False
     patterns = {tuple(r) for r in np.sign(held[fraught])}
     entries = int(fraught[0]) + int(np.sum(fraught[1:] & ~fraught[:-1]))
     y = yield_table(A, path, out["yields"])
@@ -75,7 +85,7 @@ def run_metrics(A, out):
             "fraught_patterns": len(patterns), "moving_per_tick": out["moving_per_tick"],
             "frac_mid": float(np.mean(np.any(np.abs(held) < 9, axis=1))),
             "cross_toward_share": toward / (toward + away) if toward + away else np.nan,
-            "max_level": float(level[:-1].max()), "breakups": breakups,
+            "max_level": float(level[:-1].max()), "breakups": breakups(path),
             "n_yields": out["n_yields"], "n_collisions": out["n_collisions"],
             "yield_on_majority": y["on_majority"].mean(), "yield_at_fraught": y["at_fraught"].mean(),
             "yield_undone": y["undone"].mean(), "yield_age_median_s": y["age_s"].median(),
