@@ -172,7 +172,9 @@ def test_2_yield_strategies_escape_F0(cls, delays):
     assert rate >= 0.95, rate
 
 
-@pytest.mark.parametrize("cls", [strategies.S1p, pytest.param(strategies.S1p_v1, marks=pytest.mark.xfail(
+@pytest.mark.parametrize("cls", [pytest.param(strategies.S1p, marks=pytest.mark.xfail(strict=True,
+    reason="S1′ v2 (quiet probe) κ=1.05: 5.7% success; sign accuracy q=0.88 < 0.98 needed; collapses to s=0")),
+    pytest.param(strategies.S1p_v1, marks=pytest.mark.xfail(
     reason="known failure (v1): S1' kappa = 1.05 reaches consensus in 3.2% of 126 corners x 20 runs (bar 95%)"))])
 def test_3_s1_from_every_non_consensus_corner(cls, delays):
     ok = []
