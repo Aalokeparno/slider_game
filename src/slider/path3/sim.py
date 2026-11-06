@@ -40,6 +40,7 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
     hold_end = [0] * n
     target, hold_after, yield_start = [0] * n, [0.0] * n, [None] * n
     yields = []                                   # (player, first tick, first idle tick)
+    cross = {"toward": 0, "away": 0, "tie": 0}    # greedy crossings vs the global majority (sign of sum of s)
     path = [k.copy()]
     t_cons = np.nan
 
@@ -84,6 +85,9 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
             else:                                            # ("target", x, hold, is_yield)
                 target[i], hold_after[i] = int(round(10 * act[1])), act[2]
                 yield_start[i] = tick if act[3] else None
+                if not act[3] and abs(target[i]) == game.WALL and k[i] * target[i] < 0:   # greedy crossing
+                    total = int(k.sum())
+                    cross["tie" if total == 0 else "toward" if total * target[i] > 0 else "away"] += 1
                 if target[i] == k[i]:
                     finish_move(i, tick)
                     continue
@@ -104,7 +108,7 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
     for i in range(n):                                       # a yield still on its way at the end
         if yield_start[i] is not None:
             yields.append((i, yield_start[i], len(path) - 1))
-    out = row(A, path, t_cons, yields, cls.name, params)
+    out = row(A, path, t_cons, yields, cls.name, params, cross)
     if keep_path:
         out["path"] = path
         out["memory"] = [{key: v for key, v in m.items() if key not in ("rng", "s_history")} for m in mem]
@@ -153,10 +157,15 @@ def outcome_class(path, success):
     return "irregular", 0
 
 
-def row(A, path, t_cons, yields, strategy, params):
+def row(A, path, t_cons, yields, strategy, params, cross):
+    """The per-run row. moving_per_tick = mean number of sliders that move in a tick (probes included).
+    cross_toward / cross_away / cross_tie: greedy (non-yield) moves to the wall on the other side of 0 from the
+    player's current position, by the sign of the sum of all 7 s at the decision tick (tie: the sum is 0)."""
     success = not np.isnan(t_cons)
     cls, period = outcome_class(path, success)
     return {"strategy": strategy, "params": json.dumps(params, sort_keys=True),
             "success_180": bool(success and t_cons <= 180), "success_300": bool(success and t_cons <= 300),
             "t_consensus": t_cons, "frac_time_fraught": float(np.mean(game.fraught_now(A, path[:-1]))),
-            "n_yields": len(yields), "n_collisions": collisions(yields), "outcome": cls, "period": period}
+            "n_yields": len(yields), "n_collisions": collisions(yields), "outcome": cls, "period": period,
+            "moving_per_tick": float(np.mean(np.sum(path[1:] != path[:-1], axis=1))),
+            "cross_toward": cross["toward"], "cross_away": cross["away"], "cross_tie": cross["tie"]}
