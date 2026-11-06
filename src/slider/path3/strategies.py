@@ -105,11 +105,12 @@ class S0a_hold(Strategy):
 
 class S0b(Strategy):
     """S0b'': S0a, plus: if Agr < 1 and the probe does not help (the S0a 'otherwise' case), with prob eps
-    yield (move to the opposite wall), then hold H."""
+    yield (move to the opposite wall), then hold H. Clock phase t0: while the round clock t < t0 it never
+    yields (and draws no yield random number), so it plays exactly as S0a; t0 = 0 is the original S0b''."""
     name = "S0b"
 
-    def __init__(self, eps=0.5, H=4.0):
-        self.eps, self.H = eps, H
+    def __init__(self, eps=0.5, H=4.0, t0=0.0):
+        self.eps, self.H, self.t0 = eps, H, t0
 
     def decide(self, t, s_i, agr_history, memory):
         if "probe" in memory:
@@ -117,7 +118,7 @@ class S0b(Strategy):
             act = self.greedy(d, s0, rose, fell)
             if act:
                 return act
-            if before < 1 and memory["rng"].random() < self.eps:
+            if t >= self.t0 and before < 1 and memory["rng"].random() < self.eps:
                 return self.yield_action(s0, d)
             return ("target", s0, 0.0, False)
         if agr_history[-1] >= 1:

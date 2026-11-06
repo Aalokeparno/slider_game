@@ -133,7 +133,7 @@ def test_strategies_see_only_their_own_inputs(delays):
         assert len(hist) == round(t / game.DT) + 1 and all(isinstance(a, float) for a in hist)
         assert {"rng", "s_history"} <= keys
         assert keys - {"rng", "s_history"} <= strategies.S2.MEMORY_KEYS
-        assert set(attrs) <= {"eps", "H", "T", "p", "kappa", "B", "Q"}
+        assert set(attrs) <= {"eps", "H", "T", "p", "kappa", "B", "Q", "t0"}
     assert out["strategy"] == "S2"
 
 
@@ -172,6 +172,21 @@ def test_s0a_hold_plays_like_s0a_until_its_first_hold(delays):
     b = sim.run(H, strategies.S0a_hold, {"H": 4.0}, F0 * 10, delays, np.random.default_rng(5), t_max=300,
                 keep_path=True)
     assert np.array_equal(a["path"], b["path"])           # at F0 S0a never makes a greedy move (test 1)
+
+
+def test_s0b_t0_zero_is_the_original(delays):
+    # 20 runs, same seeds: t0 = 0 gives the same rounds as S0b'' without t0 (start A and F0)
+    for r in range(20):
+        for start in [np.zeros(7, dtype=int), F0 * 10]:
+            a = sim.run(H, strategies.S0b, {}, start, delays, np.random.default_rng(r), keep_path=True)
+            b = sim.run(H, strategies.S0b, {"t0": 0.0}, start, delays, np.random.default_rng(r), keep_path=True)
+            assert np.array_equal(a["path"], b["path"]) and a["n_yields"] == b["n_yields"]
+
+
+def test_s0b_plays_as_s0a_before_t0(delays):
+    # at F0 S0a never leaves (test 1), so S0b'' with t0 = 300 must not yield either
+    out = sim.run(H, strategies.S0b, {"t0": 300.0}, F0 * 10, delays, np.random.default_rng(1), keep_path=True)
+    assert out["n_yields"] == 0 and np.all(np.sign(out["path"]) == np.sign(F0))
 
 
 # ------------------------------------------------------------------ tests 1-3: behaviour
