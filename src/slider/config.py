@@ -22,6 +22,7 @@ HAZARD_TABLE_S3 = PROCESSED / "hazard_table_s3.parquet"     # P13 S3: m = 3 (b =
 # splits of the runs (split T, by topology, is TRAIN_TOPOLOGIES / TEST_TOPOLOGIES below)
 SPLITS_DIR = ROOT / "data" / "splits"
 SPLIT_G = SPLITS_DIR / "split_G.csv"               # split G: by group (log file), train / val
+GRAPH_SPLIT = SPLITS_DIR / "graph_split.csv"       # Path 3: the 853 connected 7-node graphs, graph-train / graph-test
 
 # results
 RESULTS = ROOT / "results"
@@ -82,6 +83,9 @@ MODEL_B_LOG = RESULTS / "model_b_log.md"
 P27_TEST_DESIGN = TABLES / "p27_test_design.csv"           # test rounds: design only (slider_logs.test_design)
 P27_TRAPHOPS = TABLES / "p27_traphops_train.csv"         # trap hops (traps.py), human L5 Hierarchy, v09 + cloud
 P27_TRAPHOPS_REF = TABLES / "p27_traphops_ref.csv"         # trap hops: humans vs C2 and APEM (published), 20 replicates
+
+# Path 3 (strategy simulator)
+PATH3 = RESULTS / "path3"
 
 # time limit of a round (seconds)
 TIME_LIMIT = {"lab": 300, "cloud": 180}
