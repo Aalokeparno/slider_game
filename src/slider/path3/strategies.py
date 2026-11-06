@@ -12,6 +12,7 @@ No graph, no neighbours, no IDs, no other players' positions. This module import
 Actions (the simulator carries them out):
     ("step", d)                     move one 0.1 step (d = +1 / -1) this tick; decide is called again next tick
     ("idle",)                       stay; the next decision comes after a reaction delay
+    ("stay",)                       stay this tick; decide is called again next tick
     ("target", x, hold, is_yield)   move to x, one step per tick; on arrival hold for `hold` s (no decisions),
                                     then idle (reaction delay); is_yield marks a yield
 A strategy may also define interrupt(t, s_i, agr_history, memory), called every tick while it is idle
@@ -23,6 +24,7 @@ with the value before: rose -> "helps", fell or equal -> "doesn't help".
 import math
 
 IDLE = ("idle",)
+STAY = ("stay",)
 
 
 def at_wall(s):
@@ -185,25 +187,61 @@ class S2(S2_v1):
         return t - 0.1 * memory.get("last_change", 0)
 
 
-class S1(Strategy):
-    """S1' amplified averaging: probe to get sigma = the sign of the neighbourhood sum (helps -> the probe
+class S1p_v1(Strategy):
+    """S1' v1 amplified averaging: probe to get sigma = the sign of the neighbourhood sum (helps -> the probe
     direction, else the opposite); target = clip(kappa * sigma * Agr, -1, 1), Agr = the value before the probe,
-    put on the 0.1 grid by randomized rounding; move there, go idle."""
-    name = "S1"
+    put on the 0.1 grid by randomized rounding; move there, go idle.
+    memory["probe_log"]: one (start tick, sigma, ticks waited for quiet) per probe (v1 never waits)."""
+    name = "S1p_v1"
+    MEMORY_KEYS = Strategy.MEMORY_KEYS | {"probe_tick", "probe_log", "wait_from", "wait"}
 
     def __init__(self, kappa=1.05):
         self.kappa = kappa
 
-    def decide(self, t, s_i, agr_history, memory):
-        if "probe" not in memory:
-            return self.start_probe(s_i, agr_history, memory)
+    def probe(self, t, s_i, agr_history, memory, wait):
+        memory["probe_tick"], memory["wait"] = len(agr_history) - 1, wait
+        return self.start_probe(s_i, agr_history, memory)
+
+    def finish(self, agr_history, memory):
         d, before, s0, rose, fell = self.end_probe(agr_history, memory)
         sigma = d if rose else -d
+        memory.setdefault("probe_log", []).append((memory.pop("probe_tick"), sigma, memory.pop("wait")))
         x = round(10 * min(1.0, max(-1.0, self.kappa * sigma * before)), 9)
         k = math.floor(x)
         if memory["rng"].random() < x - k:
             k += 1
         return ("target", k / 10, 0.0, False)
 
+    def decide(self, t, s_i, agr_history, memory):
+        if "probe" in memory:
+            return self.finish(agr_history, memory)
+        return self.probe(t, s_i, agr_history, memory, 0)
 
-STRATEGIES = {"S0a": S0a, "S0b": S0b, "S2": S2, "S1": S1, "S2_v1": S2_v1}
+
+class S1p(S1p_v1):
+    """S1' v2, quiet probe: a probe may start only if the displayed Agr has been unchanged for the last Q ticks
+    while the player did not move; if not, the player stays and checks again each tick. The rest as S1p_v1."""
+    name = "S1p"
+
+    def __init__(self, kappa=1.05, Q=2):
+        super().__init__(kappa)
+        self.Q = Q
+
+    def quiet(self, agr_history, memory):
+        s_hist, n = memory["s_history"], len(agr_history) - 1
+        if n < self.Q:
+            return False
+        return all(agr_history[j] == agr_history[j - 1] and s_hist[j] == s_hist[j - 1]
+                   for j in range(n - self.Q + 1, n + 1))
+
+    def decide(self, t, s_i, agr_history, memory):
+        if "probe" in memory:
+            return self.finish(agr_history, memory)
+        now = len(agr_history) - 1
+        memory.setdefault("wait_from", now)
+        if not self.quiet(agr_history, memory):
+            return STAY
+        return self.probe(t, s_i, agr_history, memory, now - memory.pop("wait_from"))
+
+
+STRATEGIES = {"S0a": S0a, "S0b": S0b, "S2": S2, "S1p": S1p, "S2_v1": S2_v1, "S1p_v1": S1p_v1}

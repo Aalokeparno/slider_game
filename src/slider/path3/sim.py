@@ -3,7 +3,7 @@
 One tick n (time n * dt): every player acts on what it has seen up to now (its Agr history ends with Agr(n)),
 all moves are applied at once, then Agr(n + 1) is computed and appended to each player's history.
 A player is in one of three modes:
-    decide   decide() is called this tick
+    decide   decide() is called this tick (after a "step" or a "stay")
     move     going to a target, one step per tick (no calls)
     wait     idle until tick `until` (first the hold, then the reaction delay); interrupt() is called on every
              idle tick after the hold, if the strategy has one
@@ -14,6 +14,7 @@ The round ends at consensus (game.is_consensus) or at t_max.
 import json
 
 import numpy as np
+import pandas as pd
 
 from slider.path3 import game
 
@@ -76,6 +77,8 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
             if act[0] == "step":
                 move[i] = act[1]
                 mode[i] = DECIDE
+            elif act[0] == "stay":
+                mode[i] = DECIDE
             elif act[0] == "idle":
                 become_idle(i, tick, 0)
             else:                                            # ("target", x, hold, is_yield)
@@ -104,7 +107,22 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
     out = row(A, path, t_cons, yields, cls.name, params)
     if keep_path:
         out["path"] = path
+        out["memory"] = [{key: v for key, v in m.items() if key not in ("rng", "s_history")} for m in mem]
     return out
+
+
+def probe_table(A, path, memory):
+    """Probes logged by S1p / S1p_v1 (memory["probe_log"]) in one run kept with keep_path: player, tick (probe
+    start), sigma, true_sign (sign of s_i + sum of the neighbours' s at the probe start; 0 if the sum is 0),
+    nbr_moved (a neighbour moved during the probe tick) and wait_s (time waited for quiet)."""
+    S = path @ (A + np.eye(len(A))).T
+    rows = []
+    for i, m in enumerate(memory):
+        for tick, sigma, wait in m.get("probe_log", []):
+            moved = bool(np.any((path[tick + 1] != path[tick]) & (A[i] > 0)))
+            rows.append({"player": i, "tick": tick, "sigma": sigma, "true_sign": int(np.sign(S[tick, i])),
+                         "nbr_moved": moved, "wait_s": wait * game.DT})
+    return pd.DataFrame(rows, columns=["player", "tick", "sigma", "true_sign", "nbr_moved", "wait_s"])
 
 
 def collisions(yields):

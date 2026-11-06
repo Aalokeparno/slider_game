@@ -172,14 +172,24 @@ def test_2_yield_strategies_escape_F0(cls, delays):
     assert rate >= 0.95, rate
 
 
-@pytest.mark.xfail(reason="known failure (v1): S1' kappa = 1.05 reaches consensus in 3.2% of 126 corners x 20 runs "
-                          "(bar 95%)")
-def test_3_s1_from_every_non_consensus_corner(delays):
+@pytest.mark.parametrize("cls", [strategies.S1p, pytest.param(strategies.S1p_v1, marks=pytest.mark.xfail(
+    reason="known failure (v1): S1' kappa = 1.05 reaches consensus in 3.2% of 126 corners x 20 runs (bar 95%)"))])
+def test_3_s1_from_every_non_consensus_corner(cls, delays):
     ok = []
     for c, corner in enumerate(game.non_consensus_corners()):
         for r in range(20):
-            out = sim.run(H, strategies.S1, {"kappa": 1.05}, corner * 10, delays,
-                          np.random.default_rng(3000 + 20 * c + r))
+            out = sim.run(H, cls, {"kappa": 1.05}, corner * 10, delays, np.random.default_rng(3000 + 20 * c + r))
             ok.append(out["success_300"])
-    print("S1 success_300 over 126 corners x 20 runs:", np.mean(ok))
+    print(cls.name, "success_300 over 126 corners x 20 runs:", np.mean(ok))
     assert np.mean(ok) >= 0.95, np.mean(ok)
+
+
+def test_s1p_v2_probes_only_when_quiet(delays):
+    out = sim.run(H, strategies.S1p, {"Q": 2}, F0 * 10, delays, np.random.default_rng(7), t_max=60, keep_path=True)
+    path = out["path"]
+    agr = np.array([game.agreement(H, k) for k in path])
+    probes = sim.probe_table(H, path, out["memory"])
+    assert len(probes) > 10
+    for i, tick in zip(probes["player"], probes["tick"]):
+        for j in [tick, tick - 1]:                          # the last Q = 2 ticks before the probe step
+            assert agr[j, i] == agr[j - 1, i] and path[j, i] == path[j - 1, i]
