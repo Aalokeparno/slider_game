@@ -82,6 +82,27 @@ class S0a(Strategy):
         return self.start_probe(s_i, agr_history, memory)
 
 
+class S0a_hold(Strategy):
+    """S0a with commitment, no noise: every greedy move (to a wall, including the first move from 0) ends with a
+    hold of H s (no decisions, no probes), then the usual reaction delay. A step back after a failed probe is not
+    a greedy move and has no hold."""
+    name = "S0a_hold"
+
+    def __init__(self, H=4.0):
+        self.H = H
+
+    def decide(self, t, s_i, agr_history, memory):
+        if "probe" in memory:
+            d, before, s0, rose, fell = self.end_probe(agr_history, memory)
+            act = self.greedy(d, s0, rose, fell)
+            if act:
+                return ("target", act[1], self.H, False)
+            return ("target", s0, 0.0, False)
+        if agr_history[-1] >= 1:
+            return IDLE
+        return self.start_probe(s_i, agr_history, memory)
+
+
 class S0b(Strategy):
     """S0b'': S0a, plus: if Agr < 1 and the probe does not help (the S0a 'otherwise' case), with prob eps
     yield (move to the opposite wall), then hold H."""
@@ -244,4 +265,4 @@ class S1p(S1p_v1):
         return self.probe(t, s_i, agr_history, memory, now - memory.pop("wait_from"))
 
 
-STRATEGIES = {"S0a": S0a, "S0b": S0b, "S2": S2, "S1p": S1p, "S2_v1": S2_v1, "S1p_v1": S1p_v1}
+STRATEGIES = {"S0a": S0a, "S0a_hold": S0a_hold, "S0b": S0b, "S2": S2, "S1p": S1p, "S2_v1": S2_v1, "S1p_v1": S1p_v1}

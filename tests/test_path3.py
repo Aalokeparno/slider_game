@@ -150,6 +150,30 @@ def test_s2_v2_clock_ignores_blips():
     assert s2.flat(0.5, [0.5, 0.4, 0.4, 0.4, 0.4, 0.4], mem) == pytest.approx(0.5)
 
 
+def test_s0a_hold_holds_after_greedy_moves_only():
+    rng = np.random.default_rng(0)
+    p = strategies.S0a_hold(H=4.0)
+    # probe from +1 rose (minority): the greedy move to -1 carries the hold
+    mem = {"rng": rng, "s_history": [1.0]}
+    assert p.decide(0.0, 1.0, [0.5], mem) == ("step", -1)
+    assert p.decide(0.1, 0.9, [0.5, 0.6], mem) == ("target", -1.0, 4.0, False)
+    # probe from +1 fell (majority): the step back to +1 has no hold
+    mem = {"rng": rng, "s_history": [1.0]}
+    p.decide(0.0, 1.0, [0.5], mem)
+    assert p.decide(0.1, 0.9, [0.5, 0.4], mem) == ("target", 1.0, 0.0, False)
+    # the first move from 0 (any probe rises) is greedy: hold
+    mem = {"rng": rng, "s_history": [0.0]}
+    d = p.decide(0.0, 0.0, [0.0], mem)[1]
+    assert p.decide(0.1, d / 10, [0.0, 0.03], mem) == ("target", float(d), 4.0, False)
+
+
+def test_s0a_hold_plays_like_s0a_until_its_first_hold(delays):
+    a = sim.run(H, strategies.S0a, {}, F0 * 10, delays, np.random.default_rng(5), t_max=300, keep_path=True)
+    b = sim.run(H, strategies.S0a_hold, {"H": 4.0}, F0 * 10, delays, np.random.default_rng(5), t_max=300,
+                keep_path=True)
+    assert np.array_equal(a["path"], b["path"])           # at F0 S0a never makes a greedy move (test 1)
+
+
 # ------------------------------------------------------------------ tests 1-3: behaviour
 
 def runs_from(cls, params, start, delays, n, seed0, t_max=300):
