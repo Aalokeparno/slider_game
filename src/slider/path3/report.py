@@ -228,3 +228,83 @@ def tune_figure(tune, path):
     fig.tight_layout(rect=(0, 0.02, 1, 1))
     fig.savefig(path, dpi=150, facecolor=SURFACE)
     return fig
+
+
+# ------------------------------------------------------------------ tuning run T3 (soft gate)
+
+def t3_table(runs):
+    """One row per block x variant x eps x graph x start, plus pooled rows (graph = "pooled", all runs of the block,
+    variant, eps and start together). success_180 / 300, median_t / p95_t (failures = inf), yields_per_run,
+    collisions_per_run (overlapping yield pairs), breakups_per_run, breakups_per_min (all breakups / all minutes
+    played), yield_majority_share (yields by majority-side players / yields with sum of s != 0) and
+    yield_undone_share (yields undone within 10 s / all yields), both pooled over the runs."""
+    runs = runs.assign(eps=[json.loads(p)["eps"] for p in runs["params"]],
+                       minutes=np.where(runs["t_consensus"].isna(), 5.0, runs["t_consensus"] / 60))
+    keys = ["block", "variant", "eps", "start"]
+    parts = [(k, d) for k, d in runs.groupby(keys + ["graph"], sort=False)]
+    parts += [(k + ("pooled",), d) for k, d in runs.groupby(keys, sort=False)]
+    rows = []
+    for key, d in parts:
+        t = d["t_consensus"].to_numpy()
+        rows.append({**dict(zip(keys + ["graph"], key)), "runs": len(d),
+                     "success_180": d["success_180"].mean(), "success_300": d["success_300"].mean(),
+                     "median_t": median_time(t), "p95_t": p95_time(t),
+                     "yields_per_run": d["n_yields"].mean(), "collisions_per_run": d["n_collisions"].mean(),
+                     "breakups_per_run": d["breakups"].mean(), "breakups_per_min": d["breakups"].sum() / d["minutes"].sum(),
+                     "yield_majority_share": d["yields_majority"].sum() / d["yields_sided"].sum(),
+                     "yield_undone_share": d["yields_undone"].sum() / d["n_yields"].sum()})
+    return pd.DataFrame(rows)
+
+
+def t3_figure(table, order, path):
+    """Top: every screening graph, start A, S0b'' vs S0b''' (eps 0.5, H 4): median (filled) and 95th percentile
+    (open). Bottom: S0b''' eps sweep on Hierarchy and Full (median solid, p95 dashed; S0b'' dotted).
+    Above 300 s (failures counted as inf) is drawn at '>300'."""
+    TOP, HIGH = 300, 330
+    clip = lambda y: np.where(np.asarray(y, dtype=float) <= TOP, y, HIGH)
+    fig = plt.figure(figsize=(14, 9), facecolor=SURFACE)
+    ax = fig.add_subplot(2, 1, 1)
+    a = table[(table["block"] == "T3a") & (table["graph"] != "pooled")]
+    x = np.arange(len(order))
+    for k, (variant, color) in enumerate([("S0b''", BLUE), ("S0b'''", ORANGE)]):
+        d = a[a["variant"] == variant].set_index("graph").loc[order]
+        xs = x + (k - 0.5) * 0.25
+        ax.scatter(xs, clip(d["median_t"]), color=color, s=40, zorder=3, edgecolor=SURFACE, linewidth=1.5,
+                   label=f"{variant} median")
+        ax.scatter(xs, clip(d["p95_t"]), facecolor=SURFACE, edgecolor=color, s=40, zorder=3, linewidth=1.5,
+                   label=f"{variant} 95th pct")
+        ax.vlines(xs, clip(d["median_t"]), clip(d["p95_t"]), color=color, linewidth=1, alpha=0.6)
+    ax.set_xticks(x, order, rotation=60, fontsize=8)
+    ax.set_title("Start A, every screening graph (sparse to dense), 200 paired runs per point (eps 0.5, H 4 s)", fontsize=9,
+                 color=INK, loc="left")
+    ax.legend(frameon=False, fontsize=8, ncol=4, loc="upper left")
+    axes = [ax]
+    c = table[(table["block"] == "T3c") & (table["graph"] != "pooled")]
+    for j, graph in enumerate(["Hierarchy", "Full"]):
+        ax = fig.add_subplot(2, 2, 3 + j)
+        d = c[c["graph"] == graph].sort_values("eps")
+        for col, dash, kind in [("median_t", "-", "median"), ("p95_t", "--", "95th pct")]:
+            y = np.asarray(d[col], dtype=float)
+            ax.plot(d["eps"], clip(y), dash, color=ORANGE, linewidth=2, label=f"S0b''' {kind}")
+            ok = y <= TOP
+            ax.scatter(d["eps"][ok], y[ok], color=ORANGE, s=36, zorder=3, edgecolor=SURFACE, linewidth=1.5)
+            ax.scatter(d["eps"][~ok], np.full((~ok).sum(), HIGH), facecolor=SURFACE, edgecolor=ORANGE, s=36,
+                       zorder=3, linewidth=1.5)
+        ref = a[(a["variant"] == "S0b''") & (a["graph"] == graph)].iloc[0]
+        for col in ["median_t", "p95_t"]:
+            ax.axhline(min(ref[col], HIGH), color=INK_2, linestyle=":", linewidth=1.2)
+        ax.set_xlabel("ε", fontsize=8, color=INK_2)
+        ax.set_title(f"{graph}: S0b''' vs ε (H 4 s); dotted: S0b'' at ε 0.5", fontsize=9, color=INK, loc="left")
+        if j == 0:
+            ax.legend(frameon=False, fontsize=8)
+        axes.append(ax)
+    for ax in axes:
+        style(ax)
+        ax.set_ylim(0, 345)
+        ax.set_yticks([0, 50, 100, 150, 200, 250, 300, HIGH], ["0", "50", "100", "150", "200", "250", "300", ">300"])
+        ax.set_ylabel("time to consensus (s)", fontsize=8, color=INK_2)
+    fig.text(0.01, 0.005, "Failures count as infinite; '>300': above 300 s. Seeds: the screen's S0b'' seeds (paired).",
+             fontsize=8, color=INK_2)
+    fig.tight_layout(rect=(0, 0.02, 1, 1))
+    fig.savefig(path, dpi=150, facecolor=SURFACE)
+    return fig

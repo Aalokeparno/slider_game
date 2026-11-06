@@ -6,6 +6,7 @@ Blocks (results/path3/blocks/<block>.csv, git-ignored; a block that exists is sk
     T3c  start A, Hierarchy and Full, 200 runs each: S0b''' with eps in {0.5, 0.75, 1}, H 4
 Seeds as in the screen: every run reuses the seed (and, for start B, the corner) of an S0b'' run in runs.csv
 (screen_A / screen_B), so S0b'' vs S0b''' is paired. Every S0b'' rerun must equal its runs.csv row.
+Then writes results/path3/tune_T3.csv (report.t3_table) and results/figures/path3_tune_T3.png (report.t3_figure).
 
 Usage: python scripts/path3_tune_T3.py
 """
@@ -15,7 +16,7 @@ import numpy as np
 import pandas as pd
 
 from slider import config
-from slider.path3 import graphs, human, sim, strategies
+from slider.path3 import graphs, human, report, sim, strategies
 
 OUT = config.PATH3 / "blocks"
 DELAYS = human.load_delays()
@@ -87,3 +88,7 @@ def check_plain(df):
 if __name__ == "__main__":
     parts = [run_block(b) for b in ["T3a", "T3b", "T3c"]]
     check_plain(pd.concat(parts[:2]))
+    table = report.t3_table(pd.concat(parts, ignore_index=True))
+    table.to_csv(config.PATH3 / "tune_T3.csv", index=False)
+    order = sorted(GRAPHS, key=lambda g: GRAPHS[g].sum())        # by number of edges (sparse to dense)
+    report.t3_figure(table, order, config.FIGURES / "path3_tune_T3.png")
