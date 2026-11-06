@@ -1,0 +1,2 @@
+chosen,rule,chosen_minus_S0b''_worst_decile_p95,lo,hi,beats_S0b''
+S0b''' 0.75,"step 2: pooled p95: eps 1 - eps 0.75 = 1.80 s, CI [0.50, 3.20] excludes 0",-3.2933333333334076,-7.821180327868915,0.9801195549241967,False
