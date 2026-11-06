@@ -1,0 +1,4 @@
+test,strategy,runs,success_300,pass,median_t,stuck_share_of_idle_ticks,probes,share_sum_zero,q,q_nbr_moved,q_nbr_still,share_nbr_moved,median_wait_s,mean_wait_s
+2,S0b,200,1.0,True,18.1,,,,,,,,,
+2,S2,200,1.0,True,19.1,0.16270378617320333,,,,,,,,
+3,S1p,2520,0.056746031746031746,False,inf,,5974460.0,0.7528695480428357,0.8820031006365855,0.7243514183594844,1.0,0.42807003998046694,0.1,0.1411438690693384
