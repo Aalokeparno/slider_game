@@ -10,6 +10,14 @@ A player is in one of three modes:
 Reaction delay (whenever a player becomes idle): a human halt duration resampled (human.load_delays),
 rounded to ticks, at least 1. The first decision of the round: a resampled human start delay, the same way.
 The round ends at consensus (game.is_consensus) or at t_max.
+
+S3.2 additions (all off by default, so earlier runs replay exactly):
+    watch()       a strategy may define watch(t, s_i, agr_history, memory), called on every tick while it moves to a
+                  target; it returns a new action or None (S3's travel check)
+    seed role     a strategy with assigned_seed = True (S3a): one seat, uniform at random, gets memory["seed"] = True
+    noise         fidget: a player that has only ever been idle (S3's WAIT) takes one random 0.1 step at rate `fidget`
+                  per s (not undone); slip: every action with a direction is reversed with prob `slip` (slipped()).
+                  Noise draws come from a generator spawned from the run's rng, so the run's other draws are unchanged.
 """
 import json
 
@@ -26,7 +34,23 @@ def ticks(seconds):
     return max(1, int(round(seconds / game.DT)))
 
 
-def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_path=False):
+def slipped(act, k_i, noise, slip):
+    """Slip: with prob `slip` an action with a direction goes the other way. A step: -d. A target at the other wall
+    (more than one step away): the opposite wall (from a wall that is the player's own wall: no move). Any other target
+    (one step, e.g. back from a probe): mirrored about the player's position, clipped. A target equal to the position
+    has no direction (no draw). A yield that no longer moves is not a yield (the hold stays)."""
+    if act[0] == "step":
+        return ("step", -act[1]) if noise.random() < slip else act
+    if act[0] != "target":
+        return act
+    x = int(round(10 * act[1]))
+    if x == k_i or noise.random() >= slip:
+        return act
+    new = -x if abs(x) == game.WALL and abs(x - k_i) > 1 else int(np.clip(2 * k_i - x, -game.WALL, game.WALL))
+    return ("target", new / 10, act[2], act[3] and new != k_i)
+
+
+def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_path=False, fidget=0.0, slip=0.0):
     """One round. start_k: start positions (integers, s = k / 10). delays: {"halt": array, "start": array} in s.
     Returns the per-run row (row()); with keep_path also "path" (positions k per tick, (ticks + 1) x 7),
     "memory" (each player's memory without rng / s_history) and "yields" ((player, first tick, first idle tick))."""
@@ -38,6 +62,12 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
     mem = [{"rng": np.random.default_rng(rng.integers(2**63)), "s_history": [k[i] / 10]} for i in range(n)]
     mode = [WAIT] * n
     until = [ticks(rng.choice(delays["start"])) for _ in range(n)]
+    has_watch = hasattr(players[0], "watch")
+    if getattr(players[0], "assigned_seed", False):
+        mem[int(rng.integers(n))]["seed"] = True
+    noise = rng.spawn(1)[0] if fidget or slip else None
+    waiting = [True] * n                          # only idle actions so far (fidgets apply to these players)
+    n_fidget = 0
     hold_end = [0] * n
     target, hold_after, yield_start = [0] * n, [0.0] * n, [None] * n
     yields = []                                   # (player, first tick, first idle tick)
@@ -60,13 +90,16 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
         t = round(tick * game.DT, 10)
         move = [0] * n
         for i in range(n):
-            if mode[i] == MOVE:
-                move[i] = 1 if target[i] > k[i] else -1
-                if k[i] + move[i] == target[i]:
-                    finish_move(i, tick + 1)
-                continue
             act = None
-            if mode[i] == WAIT:
+            if mode[i] == MOVE:
+                if has_watch:
+                    act = players[i].watch(t, k[i] / 10, hist[i], mem[i])
+                if act is None:
+                    move[i] = 1 if target[i] > k[i] else -1
+                    if k[i] + move[i] == target[i]:
+                        finish_move(i, tick + 1)
+                    continue
+            elif mode[i] == WAIT:
                 if tick < until[i]:
                     if has_interrupt and tick >= hold_end[i]:
                         act = players[i].interrupt(t, k[i] / 10, hist[i], mem[i])
@@ -76,6 +109,10 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
                     act = players[i].decide(t, k[i] / 10, hist[i], mem[i])
             else:
                 act = players[i].decide(t, k[i] / 10, hist[i], mem[i])
+            if act[0] != "idle":
+                waiting[i] = False
+            if slip:
+                act = slipped(act, k[i], noise, slip)
             if act[0] == "step":
                 move[i] = act[1]
                 mode[i] = DECIDE
@@ -96,6 +133,11 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
                 mode[i] = MOVE
                 if k[i] + move[i] == target[i]:
                     finish_move(i, tick + 1)
+        if fidget:
+            for i in range(n):
+                if waiting[i] and move[i] == 0 and noise.random() < fidget * game.DT:
+                    move[i] = 1 if noise.random() < 0.5 else -1
+                    n_fidget += 1
         k = np.clip(k + np.array(move), -game.WALL, game.WALL)
         agr = game.agreement(A, k, display)
         for i in range(n):
@@ -110,11 +152,47 @@ def run(A, cls, params, start_k, delays, rng, t_max=300, display="int", keep_pat
         if yield_start[i] is not None:
             yields.append((i, yield_start[i], len(path) - 1))
     out = row(A, path, t_cons, yields, cls.name, params, cross)
+    out.update(strategy_log(cls.name, mem, path, n_fidget))
     if keep_path:
         out["path"] = path
         out["memory"] = [{key: v for key, v in m.items() if key not in ("rng", "s_history")} for m in mem]
         out["yields"] = yields                      # (player, first tick, first idle tick) per yield
     return out
+
+
+def strategy_log(name, mem, path, n_fidget):
+    """Per-run fields of the S3.2 strategies, from the players' memories after the round (and the path).
+    S3: n_seeds, t_all_reached (when the last player left WAIT; NaN if one never did), n_followers, n_reversals
+        (travel checks), n_wrong_wall (followers whose first wall after leaving WAIT is opposite to the consensus
+        side; NaN without consensus), n_fidgets.
+    S6 / S7: decisions_per_min (decisions per player per minute played; S7: slow decisions only), mean_W (mean W at
+        those decisions). S7 also: slow_share (mean over players of the share of the round spent slow), n_switches
+        (fast -> slow switches)."""
+    t_end = (len(path) - 1) * game.DT
+    if name == "S3":
+        consensus = game.is_consensus(path[-1])
+        final = np.sign(path[-1].sum())
+        reach = [m.get("t_reach", np.nan) for m in mem]
+        wrong = 0
+        for i, m in enumerate(mem):
+            if m.get("follower"):
+                walls = np.flatnonzero(np.abs(path[int(round(m["t_reach"] / game.DT)):, i]) == game.WALL)
+                first = path[int(round(m["t_reach"] / game.DT)) + walls[0], i] if len(walls) else 0
+                wrong += int(np.sign(first) != final)
+        return {"n_seeds": sum(bool(m.get("seeded")) for m in mem), "t_all_reached": float(np.max(reach)),
+                "n_followers": sum(bool(m.get("follower")) for m in mem),
+                "n_reversals": sum(m.get("n_rev", 0) for m in mem),
+                "n_wrong_wall": wrong if consensus else np.nan, "n_fidgets": n_fidget}
+    if name in ("S6", "S7"):
+        n_dec = sum(m.get("n_dec", 0) for m in mem)
+        out = {"decisions_per_min": n_dec / len(mem) / (t_end / 60),
+               "mean_W": sum(m.get("sum_W", 0.0) for m in mem) / n_dec if n_dec else np.nan}
+        if name == "S7":
+            slow = [m.get("slow_time", 0.0) + (t_end - m["slow_from"] if m.get("slow") else 0.0) for m in mem]
+            out.update(slow_share=float(np.mean(slow)) / t_end,
+                       n_switches=sum(m.get("n_switch", 0) for m in mem))
+        return out
+    return {}
 
 
 def probe_table(A, path, memory):
