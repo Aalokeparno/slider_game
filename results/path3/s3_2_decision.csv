@@ -1,0 +1,5 @@
+strategy,1 failures (S0b''' 0),2a pooled median diff (s),2b pooled p95 diff (s),3 dense median / p95 diff (s),3 worst-decile p95 diff (s),verdict
+S3a+,"3144; diff CI [2840, 3466] -> FAIL","-6.0 [-8.0, -3.3] -> below 0","+146.0 [+138.2, +153.8] -> not below 0","+15.8 [+12.9, +18.3] / inf (no CI)",inf (no CI),not promoted (reported separately: needs an assigned seed role)
+S3b+,"3192; diff CI [2890, 3514] -> FAIL","-4.2 [-6.5, -2.9] -> below 0","+146.6 [+138.8, +155.0] -> not below 0","+13.8 [+10.2, +15.7] / inf (no CI)",inf (no CI),not promoted
+S6,"29; diff CI [15, 46] -> FAIL","+1.1 [+0.8, +1.4] -> not below 0","+16.2 [+15.1, +17.3] -> not below 0","+2.9 [+2.1, +3.6] / +26.5 [+23.2, +30.1]","+14.6 [+10.6, +21.8]",not promoted
+S7,"10; diff CI [2, 21] -> FAIL","+3.3 [+3.0, +3.6] -> not below 0","+11.2 [+9.5, +13.0] -> not below 0","+6.1 [+5.4, +6.9] / +18.7 [+15.6, +21.6]","+6.0 [+2.7, +13.7]",not promoted

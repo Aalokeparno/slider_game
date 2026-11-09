@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 
 from slider import config
-from slider.path3 import graphs, human, sim, strategies
+from slider.path3 import graphs, human, s32, sim, strategies
 
 OUT = config.PATH3 / "blocks" / "S32"
 DELAYS = human.load_delays()
@@ -187,6 +187,7 @@ def collect():
     parts = []
     for p in (OUT / "stage1").glob("*/*.csv"):
         d = pd.read_csv(p, keep_default_na=False, na_values=[""])
+        d["run"] = range(len(d))                         # rows are in seed order
         parts.append(d)
     s1 = pd.concat(parts, ignore_index=True)
     s1.insert(0, "block", np.where(s1["variant"].isin(list(DEFAULTS)), "S32_screen", "S32_sweep"))
@@ -204,7 +205,31 @@ def collect():
     print(f"runs_s3_2_confirm.parquet: {len(s2)} stage-2 rows")
 
 
+def analyse():
+    """Writes results/path3/s3_2_stage1.csv, s3_2_stage2_summary.csv, s3_2_stage2_per_graph.csv, s3_2_decision.csv,
+    s3_2_outcomes.csv and the four figures results/figures/path3_s3_2_*.png."""
+    runs = pd.read_csv(config.PATH3 / "runs.csv", keep_default_na=False, na_values=[""], low_memory=False)
+    s1 = runs[runs["block"].isin(["S32_screen", "S32_sweep"])].reset_index(drop=True)
+    for c in ["success_180", "success_300"]:
+        s1[c] = s1[c].astype(str) == "True"
+    table = s32.stage1_table(s1)
+    table.to_csv(config.PATH3 / "s3_2_stage1.csv", index=False)
+    s32.figure_fidget(table, config.FIGURES / "path3_s3_2_fidget.png")
+    s32.figure_q(table, config.FIGURES / "path3_s3_2_S7_q.png")
+    s32.figure_wmax(table, config.FIGURES / "path3_s3_2_S6_Wmax.png")
+    s2 = pd.read_parquet(config.PATH3 / "runs_s3_2_confirm.parquet")
+    t = train_graphs()
+    summ, pg, worst, dense = s32.stage2(s2, t)
+    summ.to_csv(config.PATH3 / "s3_2_stage2_summary.csv", index=False)
+    pg.to_csv(config.PATH3 / "s3_2_stage2_per_graph.csv", index=False)
+    s32.decide(summ).to_csv(config.PATH3 / "s3_2_decision.csv", index=False)
+    out = pd.crosstab(s2["variant"], s2["outcome"], normalize="index")
+    out.to_csv(config.PATH3 / "s3_2_outcomes.csv")
+    s32.figure_edges(pg, config.FIGURES / "path3_s3_2_edges.png")
+    print(f"worst-decile set {worst.sum()} graphs, dense subset {dense.sum()} graphs")
+
+
 if __name__ == "__main__":
     for step in sys.argv[1:]:
         {"pilot": pilot, "stage1": lambda: run_jobs(stage1_jobs()), "stage2": lambda: run_jobs(stage2_jobs()),
-         "collect": collect}[step]()
+         "collect": collect, "analyse": analyse}[step]()
