@@ -439,3 +439,5 @@ follows from the grace-as-hold rule.
 | Test 4, S4-new from F0 | success_300 = 1.0 |
 | Test 4, S6 from F0 | success_300 = 1.0 |
 | Test 4, S7 (q = 0) from F0 | success_300 = 1.0 |
+
+Full repo suite, `pytest tests/` (slow tests deselected by default): **215 passed**, 11 deselected (15 min).
