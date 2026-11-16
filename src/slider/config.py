@@ -84,6 +84,11 @@ P27_TEST_DESIGN = TABLES / "p27_test_design.csv"           # test rounds: design
 P27_TRAPHOPS = TABLES / "p27_traphops_train.csv"         # trap hops (traps.py), human L5 Hierarchy, v09 + cloud
 P27_TRAPHOPS_REF = TABLES / "p27_traphops_ref.csv"         # trap hops: humans vs C2 and APEM (published), 20 replicates
 
+# Path 2, Unit 1: static trap landscape of the 853 connected 7-node graphs (landscape.py)
+U1_TRAPS = TABLES / "u1_traps.csv"
+U1_GRAPHS = TABLES / "u1_graphs.csv"
+U1_BALANCE = TABLES / "u1_balance.csv"
+
 # Path 3 (strategy simulator)
 PATH3 = RESULTS / "path3"
 
