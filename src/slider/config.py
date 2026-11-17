@@ -96,6 +96,22 @@ U2_TRAP_TAU = TABLES / "u2_trap_tau_train.csv"
 U2B_GRAPH = TABLES / "u2b_graph_train.csv"           # Unit 2b: trap time, entries, first hit (per graph x T)
 U2B_PLATEAU = TABLES / "u2b_plateau_train.csv"       # Unit 2b: committor per plateau x T
 
+# Path 2, Unit 5: pre-registered ranking of graph-only predictors of trap time (u5.py, scripts/u5_test.py)
+U5_PREREG = ROOT / "docs" / "u5_preregistration.md"
+U5_H_LOCK = "6d366bd52dbeaa5723f300e5c54f130749c785e1"      # commit of the pre-registration (committed alone)
+U5_EXPECTATION = ROOT / "docs" / "u5_train_expectation.md"
+U5_H_EXP = None                                             # commit of the S-train expectation (set after it)
+U5_TRAIN_RANKING = TABLES / "u5_train_ranking.csv"
+U5_TRAIN_LAW = TABLES / "u5_train_law.csv"
+U5_DRYRUN_RANKING = TABLES / "u5_dryrun_ranking.csv"
+U5_DRYRUN_LAW = TABLES / "u5_dryrun_law.csv"
+U5_DRYRUN_PREDICTIONS = TABLES / "u5_dryrun_predictions.csv"
+U5_TEST_RANKING = TABLES / "u5_test_ranking.csv"            # written once by scripts/u5_test.py --open
+U5_TEST_LAW = TABLES / "u5_test_law.csv"
+U5_TEST_PREDICTIONS = TABLES / "u5_test_predictions.csv"
+U5_TEST_CACHE = RESULTS / "u5_test_cache"                   # S-test outcomes (git-ignored)
+GRAPH_TEST_ACCESS_LOG = RESULTS / "graph_test_access_log.csv"   # every computation on graph-test graphs
+
 # Path 3 (strategy simulator)
 PATH3 = RESULTS / "path3"
 

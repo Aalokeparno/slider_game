@@ -70,10 +70,13 @@ def monte_carlo(A, T, start, n_runs, seed=config.SEED):
     return steps
 
 
-def check_train(atlas_id, split, allow_test=False):
-    """Raises for a graph that is not graph-train unless allow_test=True."""
-    if split[atlas_id] != "train" and not allow_test:
-        raise ValueError(f"atlas graph {atlas_id} is in graph-{split[atlas_id]}; Unit 2 is graph-train only")
+def check_train(atlas_id, split, allow_test=False, reason=None):
+    """Raises for a graph that is not graph-train unless allow_test=True and a reason string is given."""
+    if split[atlas_id] != "train":
+        if not allow_test:
+            raise ValueError(f"atlas graph {atlas_id} is in graph-{split[atlas_id]}; graph-train only")
+        if not reason:
+            raise ValueError("allow_test=True needs a reason")
 
 
 def graph_tau(atlas_id, split, graphs, T_grid=T_GRID, allow_test=False):
@@ -202,6 +205,16 @@ def committor(A, T, plateau_states):
         out[f"flux_share_{name}"] = f.sum() / F.sum()
         out[f"q_{name}"] = (f * q[Y]).sum() / f.sum() if f.sum() > 0 else np.nan
     return out
+
+
+def graph_outcomes(atlas_id, split, graphs, u1, T_grid, allow_test=False, reason=None):
+    """trap_time rows (atlas_id, T, Yc, Yb, entries, duration, P_hit, Ya) of one atlas graph; traps from
+    u1 = u1_traps.csv. Raises for a graph that is not graph-train unless allow_test=True with a reason."""
+    check_train(atlas_id, split, allow_test, reason)
+    A = graphs[atlas_id]
+    codes = [state_code(x) for x in u1.loc[u1["atlas_id"] == atlas_id, "state"]]
+    assert sorted(codes) == sorted(L.traps(L.basics(A)[1]))
+    return [{"atlas_id": atlas_id, "T": T, **trap_time(A, T, codes)} for T in T_grid]
 
 
 def graph_trap_time(atlas_id, split, graphs, u1, T_grid=T_GRID, allow_test=False):

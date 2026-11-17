@@ -15,3 +15,6 @@ results/step5_dryrun/cache/
 results/path3/blocks/
 results/path3/s1p_probe_log.parquet
 results/path3/*.log
+
+# Unit 5: S-test outcomes (scripts/u5_test.py --open)
+results/u5_test_cache/
