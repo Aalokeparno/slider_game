@@ -89,6 +89,11 @@ U1_TRAPS = TABLES / "u1_traps.csv"
 U1_GRAPHS = TABLES / "u1_graphs.csv"
 U1_BALANCE = TABLES / "u1_balance.csv"
 
+# Path 2, Unit 2a: exact escape times under the logit rule, graph-train graphs only (markov.py)
+U2_DIR = RESULTS / "u2"
+U2_TAU_TRAIN = U2_DIR / "tau_train.parquet"
+U2_TRAP_TAU = TABLES / "u2_trap_tau_train.csv"
+
 # Path 3 (strategy simulator)
 PATH3 = RESULTS / "path3"
 
