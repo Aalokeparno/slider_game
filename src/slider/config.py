@@ -93,6 +93,8 @@ U1_BALANCE = TABLES / "u1_balance.csv"
 U2_DIR = RESULTS / "u2"
 U2_TAU_TRAIN = U2_DIR / "tau_train.parquet"
 U2_TRAP_TAU = TABLES / "u2_trap_tau_train.csv"
+U2B_GRAPH = TABLES / "u2b_graph_train.csv"           # Unit 2b: trap time, entries, first hit (per graph x T)
+U2B_PLATEAU = TABLES / "u2b_plateau_train.csv"       # Unit 2b: committor per plateau x T
 
 # Path 3 (strategy simulator)
 PATH3 = RESULTS / "path3"
