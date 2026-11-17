@@ -1,0 +1,5 @@
+prediction,result,detail
+P1,fail,T = 0.2: #1 = modularity; B_max is #3
+P2,fail,"T = 1.0: #1 = lamP; n_traps #5, P_max #10"
+P3,fail,T=0.2: conductance beats n_edges; T=0.2: modularity beats n_edges; T=0.2: lamP beats n_edges; T=0.5: conductance beats n_gates_min; T=0.5: conductance beats n_edges; T=0.5: modularity beats n_gates_min; T=0.5: modularity beats n_edges; T=0.5: lamP beats n_gates_min; T=0.5: lamP beats n_edges
+P4,fail,law fits at T = 0.2: True; at T = 1.0: True
