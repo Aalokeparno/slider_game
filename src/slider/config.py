@@ -113,7 +113,7 @@ U5_TEST_CACHE = RESULTS / "u5_test_cache"                   # S-test outcomes (g
 GRAPH_TEST_ACCESS_LOG = RESULTS / "graph_test_access_log.csv"   # every computation on graph-test graphs
 U5_TRAIN_FACTORS = TABLES / "u5_train_factors.csv"         # addendum: log entries / log duration ranking (S-train)
 U5_ADDENDUM = ROOT / "docs" / "u5_addendum.md"
-U5_H_ADD = None                                             # commit of the addendum (set after it)
+U5_H_ADD = "2614695863662a9cec1484edad7290ebbe61c0c0"       # commit of the addendum
 U5_DRYRUN_ADDENDUM = TABLES / "u5_dryrun_addendum.csv"
 U5_TEST_ADDENDUM = TABLES / "u5_test_addendum.csv"          # written once by scripts/u5_test.py --open
 

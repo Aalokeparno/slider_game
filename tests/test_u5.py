@@ -1,4 +1,4 @@
-"""u5.py: Unit 5 scoring, dry run and the --open guards. Never touches S-test: the --open checks run on a
+"""u5.py: Unit 5 scoring, the addendum (A1-A3), dry run and the --open guards. Never touches S-test: the --open checks run on a
 temporary git repo and log, and compute_outcomes is replaced so any computation fails the test."""
 import subprocess
 
@@ -53,15 +53,24 @@ def test_dry_run_outputs(monkeypatch):
         return real(atlas_id, split, *args, **kw)
 
     monkeypatch.setattr(markov, "graph_outcomes", spy)
-    rank, law, preds = u5.dry_run()
+    rank, law, preds, add = u5.dry_run()
     fit, hold = u5.dry_split()
     assert len(fit) == 256 and len(hold) == 110 and not set(fit) & set(hold)
     assert {s for _, s, _ in seen} == {"train"} and not any(allow for _, _, allow in seen)
     assert len(rank) == 2 * 3 * 14 and set(rank["n_score"]) == {110} and set(rank["n_fit"]) == {256}
     assert len(law) == 3 and list(preds["prediction"]) == ["P1", "P2", "P3", "P4"]
     assert set(preds["result"]) <= {"pass", "fail"}
-    for path in [config.U5_DRYRUN_RANKING, config.U5_DRYRUN_LAW, config.U5_DRYRUN_PREDICTIONS]:
+    for path in [config.U5_DRYRUN_RANKING, config.U5_DRYRUN_LAW, config.U5_DRYRUN_PREDICTIONS,
+                 config.U5_DRYRUN_ADDENDUM]:
         assert path.exists()
+    # addendum: A1 and A2 per outcome (log entries, log duration) x T, A3 per T
+    assert len(add) == 2 * 2 * 3 + 3
+    assert add.groupby("hypothesis").size().to_dict() == {"A1": 6, "A2": 6, "A3": 3}
+    assert set(add["result"]) <= {"pass", "fail"} and add[["diff_lo", "diff_hi"]].notna().all().all()
+    factors = pd.read_csv(config.U5_TRAIN_FACTORS)
+    two = factors[factors["model"] == "two_var"].set_index("T")
+    a3 = add[add["hypothesis"] == "A3"].set_index("T")
+    assert all(a3.loc[T, "train_top"] == f"{two.loc[T, 'x_E']} + {two.loc[T, 'x_D']}" for T in u5.T_U5)
 
 
 def test_compute_outcomes_guard():
@@ -96,12 +105,19 @@ def repo(tmp_path, monkeypatch):
     git(root, "add", "exp.md")
     git(root, "commit", "-qm", "exp")
     h_exp = git(root, "rev-parse", "HEAD")
+    addendum, factors = root / "addendum.md", root / "factors.csv"
+    addendum.write_text("addendum\n")
+    factors.write_text("a,b\n1,2\n")
+    git(root, "add", "addendum.md", "factors.csv")
+    git(root, "commit", "-qm", "addendum")
+    h_add = git(root, "rev-parse", "HEAD")
 
     def no_test(*args, **kw):
         raise AssertionError("compute_outcomes reached")
 
     monkeypatch.setattr(u5, "compute_outcomes", no_test)
-    kw = dict(prereg=prereg, h_lock=h_lock, expectation=exp, h_exp=h_exp, log=tmp_path / "log.csv",
+    kw = dict(prereg=prereg, h_lock=h_lock, expectation=exp, h_exp=h_exp, addendum=addendum, factors=factors,
+              h_add=h_add, log=tmp_path / "log.csv",
               cache=tmp_path / "cache", root=root)
     return kw
 
@@ -124,6 +140,19 @@ def test_open_refuses_changed_expectation(repo):
         u5.open_test(**repo)
 
 
+def test_open_refuses_changed_addendum(repo):
+    repo["addendum"].write_text("edited\n")
+    with pytest.raises(SystemExit):
+        u5.open_test(**repo)
+
+
+def test_open_refuses_changed_factors_table(repo):
+    repo["factors"].write_text("a,b\n1,3\n")
+    git(repo["root"], "commit", "-qam", "edit")
+    with pytest.raises(SystemExit):
+        u5.open_test(**repo)
+
+
 def test_open_refuses_wrong_hash(repo):
     repo["h_lock"] = "0" * 40
     with pytest.raises(SystemExit):
@@ -139,5 +168,6 @@ def test_open_refuses_existing_log_entry(repo):
 
 def test_no_open_outputs_yet():
     assert not config.U5_TEST_RANKING.exists() and not config.U5_TEST_CACHE.exists()
+    assert not config.U5_TEST_ADDENDUM.exists()
     log = config.GRAPH_TEST_ACCESS_LOG
     assert not log.exists() or not pd.read_csv(log)["caller"].astype(str).str.contains("u5_test").any()
