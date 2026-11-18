@@ -29,6 +29,7 @@ N_BOOT = 2000
 N_FOLDS = 5
 FACTOR_OUTCOMES = ["log_entries", "log_dur"]
 FAMILY = {**{p: "global" for p in SPECTRAL}, **{p: "landscape" for p in LOCAL}, "n_edges": "baseline"}
+H_ADD_V1 = "2614695863662a9cec1484edad7290ebbe61c0c0"           # first addendum (A3 vs the S-test #1); superseded
 REASON = "Unit 5: the one pre-registered S-test scoring (docs/u5_preregistration.md)"
 CALLER = "scripts/u5_test.py --open"
 
@@ -408,11 +409,18 @@ def addendum_text(factors):
     for o in FACTOR_OUTCOMES:
         lines.append(f"  - {name[o]}: " + "; ".join(f"T = {T}: {FAMILY[tops[(o, T)]]} (S-train #1 {tops[(o, T)]})"
                                                    for T in T_U5))
-    lines.append("- A3 (two-part model). The two-variable line log Y_b = a + b_E x_E + b_D x_D (fitted on S-train, "
-                 "frozen) beats the best single predictor for log Y_b on S-test, i.e. the S-test #1 of the 14 "
-                 "pre-registered single-predictor lines (frozen on S-train):")
-    lines.append("  - " + "; ".join(f"T = {T}: {two.loc[T, 'x_E']} + {two.loc[T, 'x_D']} (S-train best single "
-                                    f"{two.loc[T, 'best_single']})" for T in T_U5))
+    lines.append("- A3 (two-part model). On S-test, the two-variable line log Y_b = a + b_E x_E + b_D x_D (fitted "
+                 "on S-train, frozen) beats the named comparator: the S-train best single predictor for log Y_b by "
+                 "R2_cv (u5_train_ranking.csv, rank_cv = 1), its line fitted on S-train and frozen. Same paired-"
+                 "bootstrap rule on R2, 2000 resamples, seed 573, the same resamples as the pre-registered scoring:")
+    lines.append("  - " + "; ".join(f"T = {T}: {two.loc[T, 'x_E']} + {two.loc[T, 'x_D']} vs "
+                                    f"{two.loc[T, 'best_single']}" for T in T_U5))
+    lines.append("  - Secondary, descriptive only (not part of pass / fail): the same two-variable line against the "
+                 "S-test #1 of the 14 single-predictor lines (frozen on S-train).")
+    lines += ["", "## Revision", "",
+              "- Nov 17, before opening: A3 comparator changed from the S-test #1 to the pre-named S-train best, to "
+              "avoid a winner's-curse advantage for the comparator. (Previous addendum: commit "
+              f"{H_ADD_V1}.)"]
     return "\n".join(lines) + "\n"
 
 
@@ -424,9 +432,21 @@ def save_factors():
     return factors
 
 
+def named_comparators(factors):
+    """{T: S-train best single predictor for log Yb by R2_cv} from factors (u5_train_factors.csv); checked
+    against u5_train_ranking.csv (rank_cv = 1, log_Yb)."""
+    named = factors[factors["model"] == "two_var"].set_index("T")["best_single"].to_dict()
+    rank = pd.read_csv(config.U5_TRAIN_RANKING)
+    top = rank[(rank["outcome"] == "log_Yb") & (rank["rank_cv"] == 1)].set_index("T")["predictor"].to_dict()
+    assert named == top, (named, top)
+    return named
+
+
 def addendum_scoring(X, d_fit, d_score, factors, path):
     """A1-A3 on the scoring set with lines frozen on d_fit; names from factors (u5_train_factors.csv).
-    One row per hypothesis x outcome x T: result pass / fail, R2s and the CI behind the call."""
+    One row per hypothesis x outcome x T: result pass / fail, R2s and the CI behind the call.
+    A3 compares the two-variable line with the named S-train best single (comparator column); the row
+    A3_secondary (role descriptive, result "descriptive") compares it with the S-test #1 single line."""
     rank_f, boot_f = rank_table(X, d_fit, d_score, FACTOR_OUTCOMES)
     rows = []
     for o in FACTOR_OUTCOMES:
@@ -444,6 +464,7 @@ def addendum_scoring(X, d_fit, d_score, factors, path):
             rows.append({"hypothesis": "A2", **base, "result": FAMILY[test_top] == FAMILY[top],
                          "detail": f"train {FAMILY[top]}, test {FAMILY[test_top]}"})
     two = factors[factors["model"] == "two_var"].set_index("T")
+    named = named_comparators(factors)
     for T in T_U5:
         xE, xD = two.loc[T, "x_E"], two.loc[T, "x_D"]
         F, S = frame(X, d_fit, T), frame(X, d_score, T)
@@ -456,13 +477,18 @@ def addendum_scoring(X, d_fit, d_score, factors, path):
         t, boot = score(S["log_Yb"], preds, preds)
         t = t.set_index("predictor")
         best = t.loc[PREDICTORS, "R2"].idxmax()
-        lo, hi = np.percentile(boot["two_var"] - boot[best], [2.5, 97.5])
-        rows.append({"hypothesis": "A3", "outcome": "log_Yb", "T": T, "train_top": f"{xE} + {xD}",
-                     "R2_train_top": t.loc["two_var", "R2"], "test_top": best, "R2_test_top": t.loc[best, "R2"],
-                     "diff_lo": lo, "diff_hi": hi, "result": bool(lo > 0),
-                     "detail": f"two-variable {xE} + {xD} vs best single {best}; CI of R2(two) - R2(best)"})
+        for hyp, comp in [("A3", named[T]), ("A3_secondary", best)]:
+            lo, hi = np.percentile(boot["two_var"] - boot[comp], [2.5, 97.5])
+            rows.append({"hypothesis": hyp, "outcome": "log_Yb", "T": T, "train_top": f"{xE} + {xD}",
+                         "R2_train_top": t.loc["two_var", "R2"], "comparator": comp, "R2_comparator": t.loc[comp, "R2"],
+                         "test_top": best, "R2_test_top": t.loc[best, "R2"], "diff_lo": lo, "diff_hi": hi,
+                         "result": bool(lo > 0) if hyp == "A3" else "descriptive",
+                         "detail": f"two-variable {xE} + {xD} vs {comp} "
+                                   f"({'named S-train best' if hyp == 'A3' else 'S-test #1, descriptive'}); "
+                                   f"CI of R2(two) - R2({comp}); beats: {lo > 0}"})
     out = pd.DataFrame(rows)
-    out["result"] = out["result"].map({True: "pass", False: "fail"})
+    out["role"] = np.where(out["hypothesis"] == "A3_secondary", "descriptive", "confirmatory")
+    out["result"] = out["result"].map({True: "pass", False: "fail", "descriptive": "descriptive"})
     out.to_csv(path, index=False)
     return out
 

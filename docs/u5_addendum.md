@@ -45,5 +45,10 @@ Rules as the pre-registration: lines fitted on S-train and frozen; S-test R2 = 1
 - A2 (families). The S-test #1 predictor is in the same family as the S-train #1:
   - log entries: T = 0.2: global (S-train #1 lamP); T = 0.5: global (S-train #1 lamP); T = 1.0: landscape (S-train #1 n_traps)
   - log duration: T = 0.2: landscape (S-train #1 B_max); T = 0.5: global (S-train #1 modularity); T = 1.0: global (S-train #1 modularity)
-- A3 (two-part model). The two-variable line log Y_b = a + b_E x_E + b_D x_D (fitted on S-train, frozen) beats the best single predictor for log Y_b on S-test, i.e. the S-test #1 of the 14 pre-registered single-predictor lines (frozen on S-train):
-  - T = 0.2: lamP + B_max (S-train best single modularity); T = 0.5: lamP + modularity (S-train best single modularity); T = 1.0: n_traps + modularity (S-train best single lamP)
+- A3 (two-part model). On S-test, the two-variable line log Y_b = a + b_E x_E + b_D x_D (fitted on S-train, frozen) beats the named comparator: the S-train best single predictor for log Y_b by R2_cv (u5_train_ranking.csv, rank_cv = 1), its line fitted on S-train and frozen. Same paired-bootstrap rule on R2, 2000 resamples, seed 573, the same resamples as the pre-registered scoring:
+  - T = 0.2: lamP + B_max vs modularity; T = 0.5: lamP + modularity vs modularity; T = 1.0: n_traps + modularity vs lamP
+  - Secondary, descriptive only (not part of pass / fail): the same two-variable line against the S-test #1 of the 14 single-predictor lines (frozen on S-train).
+
+## Revision
+
+- Nov 17, before opening: A3 comparator changed from the S-test #1 to the pre-named S-train best, to avoid a winner's-curse advantage for the comparator. (Previous addendum: commit 2614695863662a9cec1484edad7290ebbe61c0c0.)
