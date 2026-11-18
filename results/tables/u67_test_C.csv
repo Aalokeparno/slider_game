@@ -1,0 +1,226 @@
+variant,topology,cell,T,T_value,stat,part,obs,exp,diff,diff_lo,diff_hi,n,n_files,structural
+main,CT,CT EL,inf,inf,success_rate,all,0.14414414414414414,0.3239675318883254,-0.17982338774418125,-0.2415400419630521,-0.0981298620933536,111,16.0,
+main,CT,CT EL,inf,inf,brier,all,0.15586000665894842,0.21877205114142717,-0.06291204448247875,-0.08468962531085729,-0.034138313937475996,111,16.0,
+main,CT,CT EL,inf,inf,success_rate,up,0.14414414414414414,0.3239675318883254,-0.17982338774418125,-0.2415400419630521,-0.0981298620933536,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,inf,inf,brier,up,0.15586000665894842,0.21877205114142717,-0.06291204448247875,-0.08468962531085729,-0.034138313937475996,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,inf,inf,attempts_per_escape,all,3.75,3.086729074889854,0.6632709251101461,-0.6671159578748708,2.34519805492454,16,16.0,
+main,CT,CT EL,T_hat,0.611009,success_rate,all,0.14414414414414414,0.3899282107762087,-0.24578406663206456,-0.30771849098399195,-0.16275180383637175,111,16.0,
+main,CT,CT EL,T_hat,0.611009,brier,all,0.1848911390181196,0.23532120489211056,-0.05043006587399096,-0.06470394437173849,-0.03308038224409363,111,16.0,
+main,CT,CT EL,T_hat,0.611009,success_rate,up,0.14414414414414414,0.3899282107762087,-0.24578406663206456,-0.30771849098399195,-0.16275180383637175,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,T_hat,0.611009,brier,up,0.1848911390181196,0.23532120489211056,-0.05043006587399096,-0.06470394437173849,-0.03308038224409363,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,CT EL,T_hat,0.611009,attempts_per_escape,all,3.75,2.564574638006711,1.185425361993289,-0.15128057139552523,2.8644391973749213,16,16.0,
+main,CT,CT EL,T_hat,0.611009,probe,aborted,0.6451612903225806,0.40107206638043974,0.2440892239421409,0.12289593709038814,0.3464648940834301,93,16.0,descriptive (not scored)
+main,CT,pooled,inf,inf,success_rate,all,0.14414414414414414,0.3239675318883254,-0.17982338774418125,-0.2415400419630521,-0.0981298620933536,111,16.0,
+main,CT,pooled,inf,inf,brier,all,0.15586000665894842,0.21877205114142717,-0.06291204448247875,-0.08468962531085729,-0.034138313937475996,111,16.0,
+main,CT,pooled,inf,inf,success_rate,up,0.14414414414414414,0.3239675318883254,-0.17982338774418125,-0.2415400419630521,-0.0981298620933536,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,inf,inf,brier,up,0.15586000665894842,0.21877205114142717,-0.06291204448247875,-0.08468962531085729,-0.034138313937475996,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,inf,inf,attempts_per_escape,all,3.75,3.086729074889854,0.6632709251101461,-0.6671159578748708,2.34519805492454,16,16.0,
+main,CT,pooled,T_hat,0.611009,success_rate,all,0.14414414414414414,0.3899282107762087,-0.24578406663206456,-0.30771849098399195,-0.16275180383637175,111,16.0,
+main,CT,pooled,T_hat,0.611009,brier,all,0.1848911390181196,0.23532120489211056,-0.05043006587399096,-0.06470394437173849,-0.03308038224409363,111,16.0,
+main,CT,pooled,T_hat,0.611009,success_rate,up,0.14414414414414414,0.3899282107762087,-0.24578406663206456,-0.30771849098399195,-0.16275180383637175,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,T_hat,0.611009,brier,up,0.1848911390181196,0.23532120489211056,-0.05043006587399096,-0.06470394437173849,-0.03308038224409363,111,16.0,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+main,CT,pooled,T_hat,0.611009,attempts_per_escape,all,3.75,2.564574638006711,1.185425361993289,-0.15128057139552523,2.8644391973749213,16,16.0,
+main,CT,pooled,T_hat,0.611009,probe,aborted,0.6451612903225806,0.40107206638043974,0.2440892239421409,0.12289593709038814,0.3464648940834301,93,16.0,descriptive (not scored)
+main,Ring,Ring EL,inf,inf,success_rate,all,0.3467741935483871,0.3387096774193548,0.008064516129032306,0.0,0.026086956521739146,124,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,inf,inf,brier,all,0.008064516129032258,0.0,0.008064516129032258,0.0,0.02608695652173913,124,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,inf,inf,success_rate,up,0.012195121951219513,0.0,0.012195121951219513,0.0,0.04,82,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,inf,inf,brier,up,0.012195121951219513,0.0,0.012195121951219513,0.0,0.04,82,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,42,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,42,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,inf,inf,attempts_per_escape,all,2.4186046511627906,2.9523809523809526,-0.533776301218162,-1.1429166666666666,-0.11477398140107128,43,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,success_rate,all,0.3467741935483871,0.3387096774193548,0.008064516129032306,0.0,0.026086956521739146,124,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,brier,all,0.008064516129032258,0.0,0.008064516129032258,0.0,0.02608695652173913,124,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,success_rate,up,0.012195121951219513,0.0,0.012195121951219513,0.0,0.04,82,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,brier,up,0.012195121951219513,0.0,0.012195121951219513,0.0,0.04,82,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,42,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,42,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,attempts_per_escape,all,2.4186046511627906,2.9523809523809526,-0.533776301218162,-1.1429166666666666,-0.11477398140107128,43,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,probe,aborted,0.21621621621621623,0.24309331957169303,-0.0268771033554768,-0.13198220846058203,0.09024001376164023,74,16.0,descriptive (not scored)
+main,Ring,Ring CL v09,inf,inf,success_rate,all,0.40229885057471265,0.40229885057471265,0.0,0.0,0.0,87,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,brier,all,0.0,0.0,0.0,0.0,0.0,87,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,success_rate,up,0.0,0.0,0.0,0.0,0.0,52,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,brier,up,0.0,0.0,0.0,0.0,0.0,52,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,attempts_per_escape,all,1.8,2.4857142857142858,-0.6857142857142857,-1.935483870967742,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,success_rate,all,0.40229885057471265,0.40229885057471265,0.0,0.0,0.0,87,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,brier,all,0.0,0.0,0.0,0.0,0.0,87,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,success_rate,up,0.0,0.0,0.0,0.0,0.0,52,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,brier,up,0.0,0.0,0.0,0.0,0.0,52,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,attempts_per_escape,all,1.8,2.4857142857142858,-0.6857142857142857,-1.935483870967742,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,probe,aborted,0.3958333333333333,0.24309331957169303,0.1527400137616403,-0.017286867958789837,0.3157302098400716,48,10.0,descriptive (not scored)
+main,Ring,pooled,inf,inf,success_rate,all,0.3696682464454976,0.36492890995260663,0.004739336492890989,0.0,0.015627045157068052,211,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,brier,all,0.004739336492890996,0.0,0.004739336492890996,0.0,0.015627045157068052,211,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,success_rate,up,0.007462686567164179,0.0,0.007462686567164179,0.0,0.025010593220338925,134,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,brier,up,0.007462686567164179,0.0,0.007462686567164179,0.0,0.025010593220338925,134,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,77,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,77,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,attempts_per_escape,all,2.141025641025641,2.74025974025974,-0.5992340992340992,-1.2145170107402403,-0.1604905851229379,78,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,success_rate,all,0.3696682464454976,0.36492890995260663,0.004739336492890989,0.0,0.015627045157068052,211,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,brier,all,0.004739336492890996,0.0,0.004739336492890996,0.0,0.015627045157068052,211,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,success_rate,up,0.007462686567164179,0.0,0.007462686567164179,0.0,0.025010593220338925,134,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,brier,up,0.007462686567164179,0.0,0.007462686567164179,0.0,0.025010593220338925,134,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,77,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,77,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,attempts_per_escape,all,2.141025641025641,2.74025974025974,-0.5992340992340992,-1.2145170107402403,-0.1604905851229379,78,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,probe,aborted,0.28688524590163933,0.2430933195716931,0.04379192632994622,-0.059446469527327475,0.14652858334808214,122,26.0,descriptive (not scored)
+hold05,CT,CT EL,inf,inf,success_rate,all,0.1595744680851064,0.3229408047187711,-0.16336633663366473,-0.22717873349835127,-0.07725603606593989,94,16.0,
+hold05,CT,CT EL,inf,inf,brier,all,0.1600708733186363,0.21858933312754122,-0.05851845980890494,-0.08140074727643037,-0.028641459266153184,94,16.0,
+hold05,CT,CT EL,inf,inf,success_rate,up,0.1595744680851064,0.3229408047187711,-0.16336633663366473,-0.22717873349835127,-0.07725603606593989,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,inf,inf,brier,up,0.1600708733186363,0.21858933312754122,-0.05851845980890494,-0.08140074727643037,-0.028641459266153184,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,inf,inf,attempts_per_escape,all,3.6,3.0965427266797,0.5034572733203002,-0.8210688755946145,2.171342857437428,15,16.0,
+hold05,CT,CT EL,T_hat,0.611009,success_rate,all,0.1595744680851064,0.3869550549689897,-0.2273805868838833,-0.28816915600326565,-0.1423751662185842,94,16.0,
+hold05,CT,CT EL,T_hat,0.611009,brier,all,0.18405909920138344,0.23561625130740915,-0.05155715210602571,-0.06700755974086159,-0.032604209576170315,94,16.0,
+hold05,CT,CT EL,T_hat,0.611009,success_rate,up,0.1595744680851064,0.3869550549689897,-0.2273805868838833,-0.28816915600326565,-0.1423751662185842,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,T_hat,0.611009,brier,up,0.18405909920138344,0.23561625130740915,-0.05155715210602571,-0.06700755974086159,-0.032604209576170315,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,CT EL,T_hat,0.611009,attempts_per_escape,all,3.6,2.5842794587090725,1.0157205412909276,-0.3106317244521134,2.68455832445992,15,16.0,
+hold05,CT,CT EL,T_hat,0.611009,probe,aborted,0.620253164556962,0.39763805806447994,0.22261510649248206,0.10023002649717634,0.32216592039227626,79,16.0,descriptive (not scored)
+hold05,CT,pooled,inf,inf,success_rate,all,0.1595744680851064,0.3229408047187711,-0.16336633663366473,-0.22717873349835127,-0.07725603606593989,94,16.0,
+hold05,CT,pooled,inf,inf,brier,all,0.1600708733186363,0.21858933312754122,-0.05851845980890494,-0.08140074727643037,-0.028641459266153184,94,16.0,
+hold05,CT,pooled,inf,inf,success_rate,up,0.1595744680851064,0.3229408047187711,-0.16336633663366473,-0.22717873349835127,-0.07725603606593989,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,inf,inf,brier,up,0.1600708733186363,0.21858933312754122,-0.05851845980890494,-0.08140074727643037,-0.028641459266153184,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,inf,inf,attempts_per_escape,all,3.6,3.0965427266797,0.5034572733203002,-0.8210688755946145,2.171342857437428,15,16.0,
+hold05,CT,pooled,T_hat,0.611009,success_rate,all,0.1595744680851064,0.3869550549689897,-0.2273805868838833,-0.28816915600326565,-0.1423751662185842,94,16.0,
+hold05,CT,pooled,T_hat,0.611009,brier,all,0.18405909920138344,0.23561625130740915,-0.05155715210602571,-0.06700755974086159,-0.032604209576170315,94,16.0,
+hold05,CT,pooled,T_hat,0.611009,success_rate,up,0.1595744680851064,0.3869550549689897,-0.2273805868838833,-0.28816915600326565,-0.1423751662185842,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,T_hat,0.611009,brier,up,0.18405909920138344,0.23561625130740915,-0.05155715210602571,-0.06700755974086159,-0.032604209576170315,94,16.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+hold05,CT,pooled,T_hat,0.611009,attempts_per_escape,all,3.6,2.5842794587090725,1.0157205412909276,-0.3106317244521134,2.68455832445992,15,16.0,
+hold05,CT,pooled,T_hat,0.611009,probe,aborted,0.620253164556962,0.39763805806447994,0.22261510649248206,0.10023002649717634,0.32216592039227626,79,16.0,descriptive (not scored)
+hold05,Ring,Ring EL,inf,inf,success_rate,all,0.371900826446281,0.36363636363636365,0.008264462809917328,0.0,0.026554598609355252,121,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,inf,inf,brier,all,0.008264462809917356,0.0,0.008264462809917356,0.0,0.026554598609355214,121,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,inf,inf,success_rate,up,0.012987012987012988,0.0,0.012987012987012988,0.0,0.041696428571428405,77,15.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,inf,inf,brier,up,0.012987012987012988,0.0,0.012987012987012988,0.0,0.041696428571428405,77,15.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,44,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,44,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,inf,inf,attempts_per_escape,all,2.422222222222222,2.75,-0.32777777777777795,-0.7855534709193248,-0.04255319148936176,45,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,success_rate,all,0.371900826446281,0.36363636363636365,0.008264462809917328,0.0,0.026554598609355252,121,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,brier,all,0.008264462809917356,0.0,0.008264462809917356,0.0,0.026554598609355214,121,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,success_rate,up,0.012987012987012988,0.0,0.012987012987012988,0.0,0.041696428571428405,77,15.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,brier,up,0.012987012987012988,0.0,0.012987012987012988,0.0,0.041696428571428405,77,15.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,44,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,44,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,attempts_per_escape,all,2.422222222222222,2.75,-0.32777777777777795,-0.7855534709193248,-0.04255319148936176,45,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,probe,aborted,0.2112676056338028,0.24309331957169303,-0.031825713937890215,-0.13201608379933533,0.0655486557369489,71,15.0,descriptive (not scored)
+hold05,Ring,Ring CL v09,inf,inf,success_rate,all,0.38461538461538464,0.38461538461538464,0.0,0.0,0.0,91,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,brier,all,0.0,0.0,0.0,0.0,0.0,91,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,success_rate,up,0.0,0.0,0.0,0.0,0.0,56,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,brier,up,0.0,0.0,0.0,0.0,0.0,56,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,attempts_per_escape,all,2.0285714285714285,2.6,-0.5714285714285716,-1.5496774193548388,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,success_rate,all,0.38461538461538464,0.38461538461538464,0.0,0.0,0.0,91,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,brier,all,0.0,0.0,0.0,0.0,0.0,91,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,success_rate,up,0.0,0.0,0.0,0.0,0.0,56,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,brier,up,0.0,0.0,0.0,0.0,0.0,56,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,attempts_per_escape,all,2.0285714285714285,2.6,-0.5714285714285716,-1.5496774193548388,0.0,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,probe,aborted,0.22641509433962265,0.2430933195716931,-0.016678225232070465,-0.10676039573876932,0.03993340998805532,53,10.0,descriptive (not scored)
+hold05,Ring,pooled,inf,inf,success_rate,all,0.37735849056603776,0.37264150943396224,0.004716981132075526,0.0,0.015306122448979609,212,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,brier,all,0.0047169811320754715,0.0,0.0047169811320754715,0.0,0.015306122448979591,212,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,success_rate,up,0.007518796992481203,0.0,0.007518796992481203,0.0,0.024595244546809347,133,25.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,brier,up,0.007518796992481203,0.0,0.007518796992481203,0.0,0.024595244546809347,133,25.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,79,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,79,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,attempts_per_escape,all,2.25,2.6835443037974684,-0.43354430379746844,-0.9061443147187217,-0.0975315897737293,80,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,success_rate,all,0.37735849056603776,0.37264150943396224,0.004716981132075526,0.0,0.015306122448979609,212,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,brier,all,0.0047169811320754715,0.0,0.0047169811320754715,0.0,0.015306122448979591,212,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,success_rate,up,0.007518796992481203,0.0,0.007518796992481203,0.0,0.024595244546809347,133,25.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,brier,up,0.007518796992481203,0.0,0.007518796992481203,0.0,0.024595244546809347,133,25.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,79,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,79,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,attempts_per_escape,all,2.25,2.6835443037974684,-0.43354430379746844,-0.9061443147187217,-0.0975315897737293,80,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,probe,aborted,0.21774193548387097,0.24309331957169306,-0.025351384087822088,-0.0943391259705148,0.03560078101936298,124,25.0,descriptive (not scored)
+no_ties,CT,CT EL,inf,inf,success_rate,all,0.14678899082568808,0.32237260423290176,-0.17558361340721368,-0.23755582510287854,-0.09156035795887432,109,16.0,
+no_ties,CT,CT EL,inf,inf,brier,all,0.15558557399931158,0.2183811804743019,-0.06279560647499033,-0.08457724823948848,-0.03351176005153577,109,16.0,
+no_ties,CT,CT EL,inf,inf,success_rate,up,0.14678899082568808,0.32237260423290176,-0.17558361340721368,-0.23755582510287854,-0.09156035795887432,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,inf,inf,brier,up,0.15558557399931158,0.2183811804743019,-0.06279560647499033,-0.08457724823948848,-0.03351176005153577,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,inf,inf,attempts_per_escape,all,3.75,3.1020005635390118,0.6479994364609882,-0.6824248947339477,2.3356566351694803,16,16.0,
+no_ties,CT,CT EL,T_hat,0.611009,success_rate,all,0.14678899082568808,0.38594867784214926,-0.23915968701646118,-0.30137321357554153,-0.1548046946275755,109,16.0,
+no_ties,CT,CT EL,T_hat,0.611009,brier,all,0.18145400596564468,0.23533447717812275,-0.053880471212478076,-0.06754539039361349,-0.037309223381832,109,16.0,
+no_ties,CT,CT EL,T_hat,0.611009,success_rate,up,0.14678899082568808,0.38594867784214926,-0.23915968701646118,-0.30137321357554153,-0.1548046946275755,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,T_hat,0.611009,brier,up,0.18145400596564468,0.23533447717812275,-0.053880471212478076,-0.06754539039361349,-0.037309223381832,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,CT EL,T_hat,0.611009,attempts_per_escape,all,3.75,2.5910180741932587,1.1589819258067413,-0.1875602409321577,2.8405245668021357,16,16.0,
+no_ties,CT,CT EL,T_hat,0.611009,probe,aborted,0.6451612903225806,0.40107206638043974,0.2440892239421409,0.12289593709038814,0.3464648940834301,93,16.0,descriptive (not scored)
+no_ties,CT,pooled,inf,inf,success_rate,all,0.14678899082568808,0.32237260423290176,-0.17558361340721368,-0.23755582510287854,-0.09156035795887432,109,16.0,
+no_ties,CT,pooled,inf,inf,brier,all,0.15558557399931158,0.2183811804743019,-0.06279560647499033,-0.08457724823948848,-0.03351176005153577,109,16.0,
+no_ties,CT,pooled,inf,inf,success_rate,up,0.14678899082568808,0.32237260423290176,-0.17558361340721368,-0.23755582510287854,-0.09156035795887432,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,inf,inf,brier,up,0.15558557399931158,0.2183811804743019,-0.06279560647499033,-0.08457724823948848,-0.03351176005153577,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,inf,inf,attempts_per_escape,all,3.75,3.1020005635390118,0.6479994364609882,-0.6824248947339477,2.3356566351694803,16,16.0,
+no_ties,CT,pooled,T_hat,0.611009,success_rate,all,0.14678899082568808,0.38594867784214926,-0.23915968701646118,-0.30137321357554153,-0.1548046946275755,109,16.0,
+no_ties,CT,pooled,T_hat,0.611009,brier,all,0.18145400596564468,0.23533447717812275,-0.053880471212478076,-0.06754539039361349,-0.037309223381832,109,16.0,
+no_ties,CT,pooled,T_hat,0.611009,success_rate,up,0.14678899082568808,0.38594867784214926,-0.23915968701646118,-0.30137321357554153,-0.1548046946275755,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,T_hat,0.611009,brier,up,0.18145400596564468,0.23533447717812275,-0.053880471212478076,-0.06754539039361349,-0.037309223381832,109,16.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
+no_ties,CT,pooled,T_hat,0.611009,attempts_per_escape,all,3.75,2.5910180741932587,1.1589819258067413,-0.1875602409321577,2.8405245668021357,16,16.0,
+no_ties,CT,pooled,T_hat,0.611009,probe,aborted,0.6451612903225806,0.40107206638043974,0.2440892239421409,0.12289593709038814,0.3464648940834301,93,16.0,descriptive (not scored)
+no_ties,Ring,Ring EL,inf,inf,success_rate,all,0.3620689655172414,0.35344827586206895,0.008620689655172431,0.0,0.028037383177570097,116,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,inf,inf,brier,all,0.008620689655172414,0.0,0.008620689655172414,0.0,0.028037383177570093,116,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,inf,inf,success_rate,up,0.013333333333333334,0.0,0.013333333333333334,0.0,0.043478260869565216,75,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,inf,inf,brier,up,0.013333333333333334,0.0,0.013333333333333334,0.0,0.043478260869565216,75,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,41,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,41,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,inf,inf,attempts_per_escape,all,2.4186046511627906,2.8292682926829267,-0.4106636415201361,-1.058029586257707,0.044511605415860814,43,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,success_rate,all,0.3620689655172414,0.35344827586206895,0.008620689655172431,0.0,0.028037383177570097,116,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,brier,all,0.008620689655172414,0.0,0.008620689655172414,0.0,0.028037383177570093,116,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,success_rate,up,0.013333333333333334,0.0,0.013333333333333334,0.0,0.043478260869565216,75,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,brier,up,0.013333333333333334,0.0,0.013333333333333334,0.0,0.043478260869565216,75,16.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,41,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,41,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,attempts_per_escape,all,2.4186046511627906,2.8292682926829267,-0.4106636415201361,-1.058029586257707,0.044511605415860814,43,17.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,probe,aborted,0.21621621621621623,0.24309331957169303,-0.0268771033554768,-0.13198220846058203,0.09024001376164023,74,16.0,descriptive (not scored)
+no_ties,Ring,Ring CL v09,inf,inf,success_rate,all,0.4146341463414634,0.4146341463414634,0.0,0.0,0.0,82,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,brier,all,0.0,0.0,0.0,0.0,0.0,82,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,success_rate,up,0.0,0.0,0.0,0.0,0.0,48,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,brier,up,0.0,0.0,0.0,0.0,0.0,48,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,34,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,34,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,attempts_per_escape,all,1.8,2.411764705882353,-0.6117647058823528,-1.7911745689655176,0.05547850482061013,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,success_rate,all,0.4146341463414634,0.4146341463414634,0.0,0.0,0.0,82,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,brier,all,0.0,0.0,0.0,0.0,0.0,82,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,success_rate,up,0.0,0.0,0.0,0.0,0.0,48,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,brier,up,0.0,0.0,0.0,0.0,0.0,48,10.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,34,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,34,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,attempts_per_escape,all,1.8,2.411764705882353,-0.6117647058823528,-1.7911745689655176,0.05547850482061013,35,13.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,probe,aborted,0.3958333333333333,0.24309331957169303,0.1527400137616403,-0.017286867958789837,0.3157302098400716,48,10.0,descriptive (not scored)
+no_ties,Ring,pooled,inf,inf,success_rate,all,0.3838383838383838,0.3787878787878788,0.0050505050505050275,0.0,0.016668994413407804,198,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,brier,all,0.005050505050505051,0.0,0.005050505050505051,0.0,0.016668994413407807,198,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,success_rate,up,0.008130081300813009,0.0,0.008130081300813009,0.0,0.027777777777777776,123,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,brier,up,0.008130081300813009,0.0,0.008130081300813009,0.0,0.027777777777777776,123,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,success_rate,down,1.0,1.0,0.0,0.0,0.0,75,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,brier,down,0.0,0.0,0.0,0.0,0.0,75,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,attempts_per_escape,all,2.141025641025641,2.64,-0.49897435897435916,-1.108301131785217,-0.06684185853997308,78,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,success_rate,all,0.3838383838383838,0.3787878787878788,0.0050505050505050275,0.0,0.016668994413407804,198,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,brier,all,0.005050505050505051,0.0,0.005050505050505051,0.0,0.016668994413407807,198,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,success_rate,up,0.008130081300813009,0.0,0.008130081300813009,0.0,0.027777777777777776,123,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,brier,up,0.008130081300813009,0.0,0.008130081300813009,0.0,0.027777777777777776,123,26.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,success_rate,down,1.0,1.0,0.0,0.0,0.0,75,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,brier,down,0.0,0.0,0.0,0.0,0.0,75,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,attempts_per_escape,all,2.141025641025641,2.64,-0.49897435897435916,-1.108301131785217,-0.06684185853997308,78,30.0,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,probe,aborted,0.28688524590163933,0.2430933195716931,0.04379192632994622,-0.059446469527327475,0.14652858334808214,122,26.0,descriptive (not scored)

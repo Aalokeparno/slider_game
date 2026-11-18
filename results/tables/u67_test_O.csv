@@ -1,0 +1,31 @@
+variant,topology,cell,T,T_value,stat,part,obs,exp,diff,diff_lo,diff_hi,n,n_files,structural
+main,CT,CT EL,inf,inf,climb_equals_B,all,0.375,0.08251874999999999,0.29248125,0.04527655701754386,0.600388956043956,16,11,
+main,CT,CT EL,T_hat,0.611009,climb_equals_B,all,0.375,0.50519375,-0.13019375,-0.37221401702786366,0.0931459375000001,16,11,
+main,CT,pooled,inf,inf,climb_equals_B,all,0.375,0.08251874999999999,0.29248125,0.04527655701754386,0.600388956043956,16,11,
+main,CT,pooled,T_hat,0.611009,climb_equals_B,all,0.375,0.50519375,-0.13019375,-0.37221401702786366,0.0931459375000001,16,11,
+main,Ring,Ring EL,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,42,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,42,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,35,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,35,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,77,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,77,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,CT,CT EL,inf,inf,climb_equals_B,all,0.4,0.07918666666666667,0.32081333333333334,0.09436451923076923,0.6297913636363637,15,11,
+hold05,CT,CT EL,T_hat,0.611009,climb_equals_B,all,0.4,0.4850266666666666,-0.08502666666666658,-0.31686109375,0.13981159090909098,15,11,
+hold05,CT,pooled,inf,inf,climb_equals_B,all,0.4,0.07918666666666667,0.32081333333333334,0.09436451923076923,0.6297913636363637,15,11,
+hold05,CT,pooled,T_hat,0.611009,climb_equals_B,all,0.4,0.4850266666666666,-0.08502666666666658,-0.31686109375,0.13981159090909098,15,11,
+hold05,Ring,Ring EL,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,44,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,44,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,35,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,35,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,79,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,79,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,CT,CT EL,inf,inf,climb_equals_B,all,0.375,0.08251874999999999,0.29248125,0.04527655701754386,0.600388956043956,16,11,
+no_ties,CT,CT EL,T_hat,0.611009,climb_equals_B,all,0.375,0.50519375,-0.13019375,-0.37221401702786366,0.0931459375000001,16,11,
+no_ties,CT,pooled,inf,inf,climb_equals_B,all,0.375,0.08251874999999999,0.29248125,0.04527655701754386,0.600388956043956,16,11,
+no_ties,CT,pooled,T_hat,0.611009,climb_equals_B,all,0.375,0.50519375,-0.13019375,-0.37221401702786366,0.0931459375000001,16,11,
+no_ties,Ring,Ring EL,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,41,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,41,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,75,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,climb_equals_B,all,1.0,1.0,0.0,0.0,0.0,75,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"

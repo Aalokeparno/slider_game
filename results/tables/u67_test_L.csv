@@ -1,0 +1,71 @@
+variant,topology,cell,T,T_value,stat,part,obs,exp,diff,diff_lo,diff_hi,n,n_files,structural
+main,CT,CT EL,inf,inf,leader leaf up/no_progress,all,0.0625,0.32291666666666674,-0.26041666666666674,-0.32291666666666685,-0.13541666666666674,16,11,
+main,CT,CT EL,inf,inf,leader leaf up/progress,all,0.25,0.34375,-0.09375,-0.34375,0.11079545454545453,16,11,
+main,CT,CT EL,inf,inf,leader middle up/no_progress,all,0.0625,0.16145833333333337,-0.09895833333333337,-0.1614583333333334,0.05282738095238093,16,11,
+main,CT,CT EL,inf,inf,leader middle up/progress,all,0.625,0.171875,0.453125,0.18526785714285718,0.7512019230769231,16,11,
+main,CT,CT EL,T_hat,0.611009,leader leaf up/no_progress,all,0.0625,0.17903348787091547,-0.11653348787091547,-0.1790334878709155,0.008466512129084558,16,11,
+main,CT,CT EL,T_hat,0.611009,leader leaf up/progress,all,0.25,0.2428268213616382,0.00717317863836181,-0.24282682136163822,0.2117186331838163,16,11,
+main,CT,CT EL,T_hat,0.611009,leader middle up/no_progress,all,0.0625,0.02117880472422284,0.041321195275777156,-0.021178804724222844,0.19310690956149143,16,11,
+main,CT,CT EL,T_hat,0.611009,leader middle up/progress,all,0.625,0.5569608860432236,0.06803911395677642,-0.19981802890036643,0.36611603703369944,16,11,
+main,CT,pooled,inf,inf,leader leaf up/no_progress,all,0.0625,0.32291666666666674,-0.26041666666666674,-0.32291666666666685,-0.13541666666666674,16,11,
+main,CT,pooled,inf,inf,leader leaf up/progress,all,0.25,0.34375,-0.09375,-0.34375,0.11079545454545453,16,11,
+main,CT,pooled,inf,inf,leader middle up/no_progress,all,0.0625,0.16145833333333337,-0.09895833333333337,-0.1614583333333334,0.05282738095238093,16,11,
+main,CT,pooled,inf,inf,leader middle up/progress,all,0.625,0.171875,0.453125,0.18526785714285718,0.7512019230769231,16,11,
+main,CT,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.0625,0.17903348787091547,-0.11653348787091547,-0.1790334878709155,0.008466512129084558,16,11,
+main,CT,pooled,T_hat,0.611009,leader leaf up/progress,all,0.25,0.2428268213616382,0.00717317863836181,-0.24282682136163822,0.2117186331838163,16,11,
+main,CT,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.0625,0.02117880472422284,0.041321195275777156,-0.021178804724222844,0.19310690956149143,16,11,
+main,CT,pooled,T_hat,0.611009,leader middle up/progress,all,0.625,0.5569608860432236,0.06803911395677642,-0.19981802890036643,0.36611603703369944,16,11,
+main,Ring,Ring EL,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,41,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring EL,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,41,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,Ring CL v09,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,75,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+main,Ring,pooled,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,75,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,CT,CT EL,inf,inf,leader apex flat/no_progress,all,0.03333333333333333,0.0,0.03333333333333333,0.0,0.11544117647058794,15,11,
+hold05,CT,CT EL,inf,inf,leader leaf up/no_progress,all,0.0,0.3229166666666668,-0.3229166666666668,-0.32291666666666685,-0.3229166666666667,15,11,
+hold05,CT,CT EL,inf,inf,leader leaf up/progress,all,0.36666666666666664,0.34375,0.02291666666666664,-0.21875,0.2276785714285714,15,11,
+hold05,CT,CT EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333337,-0.16145833333333337,-0.1614583333333334,-0.16145833333333331,15,11,
+hold05,CT,CT EL,inf,inf,leader middle up/progress,all,0.6,0.171875,0.428125,0.20296052631578948,0.6742788461538461,15,11,
+hold05,CT,CT EL,T_hat,0.611009,leader apex flat/no_progress,all,0.03333333333333333,0.0,0.03333333333333333,0.0,0.11544117647058794,15,11,
+hold05,CT,CT EL,T_hat,0.611009,leader leaf up/no_progress,all,0.0,0.17903348787091547,-0.17903348787091547,-0.1790334878709155,-0.17903348787091541,15,11,
+hold05,CT,CT EL,T_hat,0.611009,leader leaf up/progress,all,0.36666666666666664,0.2428268213616382,0.12383984530502845,-0.11782682136163822,0.32860175006693315,15,11,
+hold05,CT,CT EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.02117880472422284,-0.02117880472422284,-0.021178804724222844,-0.02117880472422283,15,11,
+hold05,CT,CT EL,T_hat,0.611009,leader middle up/progress,all,0.6,0.5569608860432236,0.0430391139567764,-0.1821253597274342,0.28919296011062257,15,11,
+hold05,CT,pooled,inf,inf,leader apex flat/no_progress,all,0.03333333333333333,0.0,0.03333333333333333,0.0,0.11544117647058794,15,11,
+hold05,CT,pooled,inf,inf,leader leaf up/no_progress,all,0.0,0.3229166666666668,-0.3229166666666668,-0.32291666666666685,-0.3229166666666667,15,11,
+hold05,CT,pooled,inf,inf,leader leaf up/progress,all,0.36666666666666664,0.34375,0.02291666666666664,-0.21875,0.2276785714285714,15,11,
+hold05,CT,pooled,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333337,-0.16145833333333337,-0.1614583333333334,-0.16145833333333331,15,11,
+hold05,CT,pooled,inf,inf,leader middle up/progress,all,0.6,0.171875,0.428125,0.20296052631578948,0.6742788461538461,15,11,
+hold05,CT,pooled,T_hat,0.611009,leader apex flat/no_progress,all,0.03333333333333333,0.0,0.03333333333333333,0.0,0.11544117647058794,15,11,
+hold05,CT,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.0,0.17903348787091547,-0.17903348787091547,-0.1790334878709155,-0.17903348787091541,15,11,
+hold05,CT,pooled,T_hat,0.611009,leader leaf up/progress,all,0.36666666666666664,0.2428268213616382,0.12383984530502845,-0.11782682136163822,0.32860175006693315,15,11,
+hold05,CT,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.02117880472422284,-0.02117880472422284,-0.021178804724222844,-0.02117880472422283,15,11,
+hold05,CT,pooled,T_hat,0.611009,leader middle up/progress,all,0.6,0.5569608860432236,0.0430391139567764,-0.1821253597274342,0.28919296011062257,15,11,
+hold05,Ring,Ring EL,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,43,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring EL,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,43,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,Ring CL v09,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,77,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+hold05,Ring,pooled,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,77,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,CT,CT EL,inf,inf,leader leaf up/no_progress,all,0.0625,0.32291666666666674,-0.26041666666666674,-0.32291666666666685,-0.13541666666666674,16,11,
+no_ties,CT,CT EL,inf,inf,leader leaf up/progress,all,0.25,0.34375,-0.09375,-0.34375,0.11079545454545453,16,11,
+no_ties,CT,CT EL,inf,inf,leader middle up/no_progress,all,0.0625,0.16145833333333337,-0.09895833333333337,-0.1614583333333334,0.05282738095238093,16,11,
+no_ties,CT,CT EL,inf,inf,leader middle up/progress,all,0.625,0.171875,0.453125,0.18526785714285718,0.7512019230769231,16,11,
+no_ties,CT,CT EL,T_hat,0.611009,leader leaf up/no_progress,all,0.0625,0.17903348787091547,-0.11653348787091547,-0.1790334878709155,0.008466512129084558,16,11,
+no_ties,CT,CT EL,T_hat,0.611009,leader leaf up/progress,all,0.25,0.2428268213616382,0.00717317863836181,-0.24282682136163822,0.2117186331838163,16,11,
+no_ties,CT,CT EL,T_hat,0.611009,leader middle up/no_progress,all,0.0625,0.02117880472422284,0.041321195275777156,-0.021178804724222844,0.19310690956149143,16,11,
+no_ties,CT,CT EL,T_hat,0.611009,leader middle up/progress,all,0.625,0.5569608860432236,0.06803911395677642,-0.19981802890036643,0.36611603703369944,16,11,
+no_ties,CT,pooled,inf,inf,leader leaf up/no_progress,all,0.0625,0.32291666666666674,-0.26041666666666674,-0.32291666666666685,-0.13541666666666674,16,11,
+no_ties,CT,pooled,inf,inf,leader leaf up/progress,all,0.25,0.34375,-0.09375,-0.34375,0.11079545454545453,16,11,
+no_ties,CT,pooled,inf,inf,leader middle up/no_progress,all,0.0625,0.16145833333333337,-0.09895833333333337,-0.1614583333333334,0.05282738095238093,16,11,
+no_ties,CT,pooled,inf,inf,leader middle up/progress,all,0.625,0.171875,0.453125,0.18526785714285718,0.7512019230769231,16,11,
+no_ties,CT,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.0625,0.17903348787091547,-0.11653348787091547,-0.1790334878709155,0.008466512129084558,16,11,
+no_ties,CT,pooled,T_hat,0.611009,leader leaf up/progress,all,0.25,0.2428268213616382,0.00717317863836181,-0.24282682136163822,0.2117186331838163,16,11,
+no_ties,CT,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.0625,0.02117880472422284,0.041321195275777156,-0.021178804724222844,0.19310690956149143,16,11,
+no_ties,CT,pooled,T_hat,0.611009,leader middle up/progress,all,0.625,0.5569608860432236,0.06803911395677642,-0.19981802890036643,0.36611603703369944,16,11,
+no_ties,Ring,Ring EL,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,41,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring EL,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,41,17,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,Ring CL v09,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,34,13,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,inf,inf,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,75,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+no_ties,Ring,pooled,T_hat,0.611009,leader ring down/progress,all,1.0,1.0,0.0,0.0,0.0,75,30,"every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
