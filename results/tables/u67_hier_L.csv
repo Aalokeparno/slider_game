@@ -1,109 +1,109 @@
 variant,topology,cell,T,T_value,stat,part,obs,exp,diff,diff_lo,diff_hi,n,n_files,structural
-main,Hierarchy,Hierarchy EL,inf,inf,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/no_progress,all,0.075,0.3229166666666668,-0.24791666666666679,-0.3229166666666668,-0.11837121212121224,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/progress,all,0.3,0.34375,-0.04375000000000001,-0.21048913043478254,0.15625,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333334,-0.16145833333333334,-0.16145833333333343,-0.16145833333333334,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,inf,inf,leader middle up/progress,all,0.6,0.171875,0.428125,0.23988970588235295,0.6175986842105263,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/no_progress,all,0.075,0.3009847856754762,-0.2259847856754762,-0.3009847856754762,-0.0964393311300216,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/progress,all,0.3,0.4138078905479804,-0.1138078905479804,-0.280547020982763,0.08619210945201955,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.01005729833609484,-0.01005729833609484,-0.010057298336094842,-0.010057298336094839,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/progress,all,0.6,0.2751500254404487,0.3248499745595513,0.13661468044190433,0.5143236587700777,20,14,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/no_progress,all,0.029411764705882353,0.3229166666666668,-0.29350490196078444,-0.3229166666666668,-0.2439692982456141,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/progress,all,0.47058823529411764,0.34374999999999994,0.1268382352941177,-0.043897058823529414,0.34375000000000006,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/no_progress,all,0.08823529411764706,0.1614583333333334,-0.07322303921568633,-0.1614583333333334,0.07187499999999994,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/progress,all,0.4117647058823529,0.171875,0.23988970588235292,0.042410714285714274,0.428125,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/no_progress,all,0.029411764705882353,0.30098478567547615,-0.2715730209695938,-0.3009847856754762,-0.22203741725442352,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/progress,all,0.47058823529411764,0.4138078905479804,0.056780344746137246,-0.11395494937150992,0.27369210945201955,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/no_progress,all,0.08823529411764706,0.010057298336094839,0.07817799578155223,-0.01005729833609484,0.2232760349972385,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/progress,all,0.4117647058823529,0.2751500254404487,0.13661468044190422,-0.060864311154734424,0.32484997455955134,17,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,leader apex flat/no_progress,all,0.02222222222222222,0.0,0.02222222222222222,0.0,0.06666666666666667,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/no_progress,all,0.06666666666666667,0.3229166666666668,-0.25625000000000014,-0.3229166666666669,-0.12291666666666679,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/progress,all,0.15555555555555556,0.34374999999999994,-0.1881944444444444,-0.34374999999999994,-0.01041666666666663,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,leader middle up/no_progress,all,0.26666666666666666,0.1614583333333334,0.10520833333333326,-0.10263480392156867,0.38399621212121204,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,leader middle up/progress,all,0.4888888888888889,0.17187499999999997,0.31701388888888893,0.05889423076923081,0.5318831699346402,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader apex flat/no_progress,all,0.02222222222222222,0.0,0.02222222222222222,0.0,0.06666666666666667,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/no_progress,all,0.06666666666666667,0.30098478567547615,-0.2343181190088095,-0.3009847856754762,-0.10098478567547614,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/progress,all,0.15555555555555556,0.4138078905479804,-0.25825233499242484,-0.4138078905479804,-0.08047455721464708,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/no_progress,all,0.26666666666666666,0.010057298336094839,0.2566093683305718,0.048766231075669866,0.5353972471184506,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/progress,all,0.4888888888888889,0.2751500254404487,0.21373886344844018,-0.044380794671217916,0.4286081444941916,15,11,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.039999999999999994,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,leader leaf up/no_progress,all,0.057692307692307696,0.32291666666666674,-0.26522435897435903,-0.3133012820512821,-0.20291666666666663,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,leader leaf up/progress,all,0.3141025641025641,0.34375,-0.029647435897435903,-0.13164335664335666,0.08178191489361702,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,leader middle up/no_progress,all,0.10576923076923077,0.16145833333333337,-0.0556891025641026,-0.12757415254237298,0.03462009803921565,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,leader middle up/progress,all,0.5064102564102564,0.171875,0.3345352564102564,0.21819592198581567,0.44994103773584887,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.039999999999999994,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.057692307692307696,0.30098478567547615,-0.24329247798316844,-0.2913694010600917,-0.18098478567547627,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,leader leaf up/progress,all,0.3141025641025641,0.4138078905479803,-0.09970532644541619,-0.201701247191337,0.011724024345636689,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.10576923076923077,0.010057298336094839,0.09571193243313593,0.023826882454865615,0.18602113303645418,52,36,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,leader middle up/progress,all,0.5064102564102564,0.27515002544044864,0.23126023096980775,0.11492089654536708,0.3466660122954003,52,36,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/no_progress,all,0.125,0.3229166666666668,-0.1979166666666668,-0.32291666666666674,-0.058210784313725616,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/progress,all,0.3,0.34375,-0.04375000000000001,-0.20738636363636365,0.12993421052631576,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333334,-0.16145833333333334,-0.16145833333333343,-0.16145833333333334,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,leader middle up/progress,all,0.55,0.171875,0.37812500000000004,0.14362843249427917,0.6175986842105263,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/no_progress,all,0.125,0.3009847856754762,-0.1759847856754762,-0.30098478567547615,-0.03627890332253497,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/progress,all,0.3,0.4138078905479804,-0.1138078905479804,-0.2774442541843441,0.05987631997833526,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.01005729833609484,-0.01005729833609484,-0.010057298336094842,-0.010057298336094839,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/progress,all,0.55,0.2751500254404487,0.27484997455955135,0.040353407053830476,0.5143236587700777,20,14,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/no_progress,all,0.08333333333333333,0.32291666666666674,-0.23958333333333343,-0.3229166666666668,-0.12291666666666679,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/progress,all,0.4444444444444444,0.34374999999999994,0.10069444444444448,-0.06374999999999992,0.32291666666666663,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/no_progress,all,0.08333333333333333,0.16145833333333337,-0.07812500000000004,-0.1614583333333334,0.06076388888888884,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/progress,all,0.3888888888888889,0.171875,0.2170138888888889,-0.02901785714285715,0.4283423913043466,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/no_progress,all,0.08333333333333333,0.30098478567547615,-0.21765145234214284,-0.3009847856754762,-0.10098478567547614,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/progress,all,0.4444444444444444,0.4138078905479804,0.030636553896464025,-0.13380789054798042,0.2528587761186862,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/no_progress,all,0.08333333333333333,0.010057298336094839,0.07327603499723849,-0.010057298336094839,0.21216492388612737,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/progress,all,0.3888888888888889,0.27515002544044864,0.11373886344844025,-0.13229288258330585,0.32506736586389795,18,11,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,leader apex flat/no_progress,all,0.023809523809523808,0.0,0.023809523809523808,0.0,0.07142857142857142,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/no_progress,all,0.14285714285714285,0.3229166666666668,-0.18005952380952395,-0.32291666666666685,0.010416666666666574,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/progress,all,0.20238095238095238,0.34374999999999994,-0.14136904761904756,-0.29832070707070707,0.04086538461538464,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,leader middle up/no_progress,all,0.21428571428571427,0.1614583333333334,0.052827380952380876,-0.16145833333333334,0.33854166666666663,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,leader middle up/progress,all,0.41666666666666663,0.17187499999999997,0.24479166666666666,-0.005208333333333343,0.4843903186274509,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader apex flat/no_progress,all,0.023809523809523808,0.0,0.023809523809523808,0.0,0.07142857142857142,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/no_progress,all,0.14285714285714285,0.3009847856754761,-0.15812764281833325,-0.30098478567547615,0.03234854765785722,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/progress,all,0.20238095238095238,0.4138078905479804,-0.211426938167028,-0.3683785976186875,-0.029192505932595814,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/no_progress,all,0.21428571428571427,0.01005729833609484,0.20422841594961944,-0.010057298336094839,0.48994270166390513,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/progress,all,0.41666666666666663,0.2751500254404487,0.14151664122621793,-0.10848335877378204,0.38111529318700227,14,10,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.040880503144654086,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,leader leaf up/no_progress,all,0.11538461538461539,0.32291666666666685,-0.20753205128205146,-0.275746855345912,-0.12291666666666673,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,leader leaf up/progress,all,0.3237179487179487,0.34375,-0.020032051282051322,-0.1225622294372294,0.08887411347517737,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,leader middle up/no_progress,all,0.08653846153846154,0.16145833333333337,-0.07491987179487183,-0.1422275641025641,0.012454710144927522,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,leader middle up/progress,all,0.4583333333333333,0.171875,0.2864583333333333,0.1547882653061225,0.4224870844564239,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.040880503144654086,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.11538461538461539,0.30098478567547615,-0.18560017029086076,-0.2538149743547216,-0.10098478567547631,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,leader leaf up/progress,all,0.3237179487179487,0.4138078905479803,-0.0900899418300316,-0.19262011998520975,0.01881622292719698,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.08653846153846154,0.010057298336094839,0.0764811632023667,0.009173470894674393,0.16385574514216603,52,35,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,leader middle up/progress,all,0.4583333333333333,0.2751500254404486,0.18318330789288473,0.051513239865673854,0.3192120590159754,52,35,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/no_progress,all,0.05263157894736842,0.3229166666666668,-0.2702850877192984,-0.32291666666666685,-0.1464460784313726,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/progress,all,0.3157894736842105,0.34375,-0.02796052631578949,-0.20089285714285715,0.15625,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333337,-0.16145833333333337,-0.1614583333333334,-0.16145833333333334,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,leader middle up/progress,all,0.631578947368421,0.17187499999999997,0.459703947368421,0.265625,0.6516544117647058,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/no_progress,all,0.05263157894736842,0.3009847856754762,-0.2483532067281078,-0.3009847856754762,-0.12451419744018202,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/progress,all,0.3157894736842105,0.4138078905479804,-0.09801841686376989,-0.27095074769083755,0.0861921094520196,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.010057298336094842,-0.010057298336094842,-0.010057298336094842,-0.010057298336094839,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/progress,all,0.631578947368421,0.2751500254404487,0.3564289219279723,0.1623499745595513,0.5483793863242572,19,14,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/no_progress,all,0.0,0.32291666666666674,-0.32291666666666674,-0.32291666666666685,-0.3229166666666667,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/progress,all,0.5,0.34374999999999994,0.15625000000000006,-0.031249999999999944,0.37053571428571436,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/no_progress,all,0.0625,0.16145833333333337,-0.09895833333333337,-0.1614583333333334,0.052827380952380876,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/progress,all,0.4375,0.171875,0.265625,0.0424107142857143,0.453125,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/no_progress,all,0.0,0.30098478567547615,-0.30098478567547615,-0.3009847856754762,-0.3009847856754761,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/progress,all,0.5,0.4138078905479804,0.0861921094520196,-0.10130789054798045,0.30047782373773385,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/no_progress,all,0.0625,0.010057298336094839,0.05244270166390516,-0.01005729833609484,0.20422841594961944,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/progress,all,0.4375,0.2751500254404487,0.1623499745595513,-0.060864311154734424,0.34984997455955136,16,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/no_progress,all,0.07142857142857142,0.3229166666666668,-0.25148809523809534,-0.3229166666666669,-0.12265350877193132,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/progress,all,0.14285714285714285,0.34374999999999994,-0.2008928571428571,-0.34374999999999994,-0.01041666666666663,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,leader middle up/no_progress,all,0.2857142857142857,0.1614583333333334,0.1242559523809523,-0.09479166666666673,0.421875,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,leader middle up/progress,all,0.5,0.17187499999999997,0.328125,0.05889423076923081,0.5618749999999977,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/no_progress,all,0.07142857142857142,0.3009847856754762,-0.22955621424690478,-0.3009847856754762,-0.10072162778074069,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/progress,all,0.14285714285714285,0.4138078905479804,-0.27095074769083755,-0.41380789054798045,-0.08047455721464714,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/no_progress,all,0.2857142857142857,0.010057298336094839,0.2756569873781909,0.05660936833057183,0.5732760349972386,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/progress,all,0.5,0.2751500254404487,0.2248499745595513,-0.044380794671217916,0.45859997455954904,14,11,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,leader leaf up/no_progress,all,0.04081632653061224,0.32291666666666674,-0.2821003401360545,-0.32291666666666674,-0.21875000000000006,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,leader leaf up/progress,all,0.32653061224489793,0.34374999999999994,-0.01721938775510201,-0.12635869565217392,0.09629651162790678,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,leader middle up/no_progress,all,0.10204081632653061,0.16145833333333334,-0.05941751700680273,-0.1410501700680272,0.03420449701619778,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,leader middle up/progress,all,0.5306122448979592,0.171875,0.3587372448979592,0.23628826530612246,0.48118622448979587,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.04081632653061224,0.30098478567547615,-0.2601684591448639,-0.3009847856754763,-0.19681811900880963,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,leader leaf up/progress,all,0.32653061224489793,0.41380789054798023,-0.0872772783030823,-0.1964165862001542,0.026238621079926493,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.10204081632653061,0.01005729833609484,0.09198351799043578,0.010350864929211279,0.18560553201343624,49,36,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,leader middle up/progress,all,0.5306122448979592,0.27515002544044864,0.2554622194575106,0.13301323986567382,0.3779111990493473,49,36,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy EL,inf,inf,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,
+main,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/no_progress,all,0.075,0.3229166666666668,-0.24791666666666679,-0.3229166666666668,-0.11837121212121224,20,14,
+main,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/progress,all,0.3,0.34375,-0.04375000000000001,-0.21048913043478254,0.15625,20,14,
+main,Hierarchy,Hierarchy EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333334,-0.16145833333333334,-0.16145833333333343,-0.16145833333333334,20,14,
+main,Hierarchy,Hierarchy EL,inf,inf,leader middle up/progress,all,0.6,0.171875,0.428125,0.23988970588235295,0.6175986842105263,20,14,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/no_progress,all,0.075,0.3009847856754762,-0.2259847856754762,-0.3009847856754762,-0.0964393311300216,20,14,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/progress,all,0.3,0.4138078905479804,-0.1138078905479804,-0.280547020982763,0.08619210945201955,20,14,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.01005729833609484,-0.01005729833609484,-0.010057298336094842,-0.010057298336094839,20,14,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/progress,all,0.6,0.2751500254404487,0.3248499745595513,0.13661468044190433,0.5143236587700777,20,14,
+main,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/no_progress,all,0.029411764705882353,0.3229166666666668,-0.29350490196078444,-0.3229166666666668,-0.2439692982456141,17,11,
+main,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/progress,all,0.47058823529411764,0.34374999999999994,0.1268382352941177,-0.043897058823529414,0.34375000000000006,17,11,
+main,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/no_progress,all,0.08823529411764706,0.1614583333333334,-0.07322303921568633,-0.1614583333333334,0.07187499999999994,17,11,
+main,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/progress,all,0.4117647058823529,0.171875,0.23988970588235292,0.042410714285714274,0.428125,17,11,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/no_progress,all,0.029411764705882353,0.30098478567547615,-0.2715730209695938,-0.3009847856754762,-0.22203741725442352,17,11,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/progress,all,0.47058823529411764,0.4138078905479804,0.056780344746137246,-0.11395494937150992,0.27369210945201955,17,11,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/no_progress,all,0.08823529411764706,0.010057298336094839,0.07817799578155223,-0.01005729833609484,0.2232760349972385,17,11,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/progress,all,0.4117647058823529,0.2751500254404487,0.13661468044190422,-0.060864311154734424,0.32484997455955134,17,11,
+main,Hierarchy,Hierarchy CC,inf,inf,leader apex flat/no_progress,all,0.02222222222222222,0.0,0.02222222222222222,0.0,0.06666666666666667,15,11,
+main,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/no_progress,all,0.06666666666666667,0.3229166666666668,-0.25625000000000014,-0.3229166666666669,-0.12291666666666679,15,11,
+main,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/progress,all,0.15555555555555556,0.34374999999999994,-0.1881944444444444,-0.34374999999999994,-0.01041666666666663,15,11,
+main,Hierarchy,Hierarchy CC,inf,inf,leader middle up/no_progress,all,0.26666666666666666,0.1614583333333334,0.10520833333333326,-0.10263480392156867,0.38399621212121204,15,11,
+main,Hierarchy,Hierarchy CC,inf,inf,leader middle up/progress,all,0.4888888888888889,0.17187499999999997,0.31701388888888893,0.05889423076923081,0.5318831699346402,15,11,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader apex flat/no_progress,all,0.02222222222222222,0.0,0.02222222222222222,0.0,0.06666666666666667,15,11,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/no_progress,all,0.06666666666666667,0.30098478567547615,-0.2343181190088095,-0.3009847856754762,-0.10098478567547614,15,11,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/progress,all,0.15555555555555556,0.4138078905479804,-0.25825233499242484,-0.4138078905479804,-0.08047455721464708,15,11,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/no_progress,all,0.26666666666666666,0.010057298336094839,0.2566093683305718,0.048766231075669866,0.5353972471184506,15,11,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/progress,all,0.4888888888888889,0.2751500254404487,0.21373886344844018,-0.044380794671217916,0.4286081444941916,15,11,
+main,Hierarchy,pooled,inf,inf,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.039999999999999994,52,36,
+main,Hierarchy,pooled,inf,inf,leader leaf up/no_progress,all,0.057692307692307696,0.32291666666666674,-0.26522435897435903,-0.3133012820512821,-0.20291666666666663,52,36,
+main,Hierarchy,pooled,inf,inf,leader leaf up/progress,all,0.3141025641025641,0.34375,-0.029647435897435903,-0.13164335664335666,0.08178191489361702,52,36,
+main,Hierarchy,pooled,inf,inf,leader middle up/no_progress,all,0.10576923076923077,0.16145833333333337,-0.0556891025641026,-0.12757415254237298,0.03462009803921565,52,36,
+main,Hierarchy,pooled,inf,inf,leader middle up/progress,all,0.5064102564102564,0.171875,0.3345352564102564,0.21819592198581567,0.44994103773584887,52,36,
+main,Hierarchy,pooled,T_hat,0.611009,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.039999999999999994,52,36,
+main,Hierarchy,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.057692307692307696,0.30098478567547615,-0.24329247798316844,-0.2913694010600917,-0.18098478567547627,52,36,
+main,Hierarchy,pooled,T_hat,0.611009,leader leaf up/progress,all,0.3141025641025641,0.4138078905479803,-0.09970532644541619,-0.201701247191337,0.011724024345636689,52,36,
+main,Hierarchy,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.10576923076923077,0.010057298336094839,0.09571193243313593,0.023826882454865615,0.18602113303645418,52,36,
+main,Hierarchy,pooled,T_hat,0.611009,leader middle up/progress,all,0.5064102564102564,0.27515002544044864,0.23126023096980775,0.11492089654536708,0.3466660122954003,52,36,
+hold05,Hierarchy,Hierarchy EL,inf,inf,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,
+hold05,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/no_progress,all,0.125,0.3229166666666668,-0.1979166666666668,-0.32291666666666674,-0.058210784313725616,20,14,
+hold05,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/progress,all,0.3,0.34375,-0.04375000000000001,-0.20738636363636365,0.12993421052631576,20,14,
+hold05,Hierarchy,Hierarchy EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333334,-0.16145833333333334,-0.16145833333333343,-0.16145833333333334,20,14,
+hold05,Hierarchy,Hierarchy EL,inf,inf,leader middle up/progress,all,0.55,0.171875,0.37812500000000004,0.14362843249427917,0.6175986842105263,20,14,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader apex flat/no_progress,all,0.025,0.0,0.025,0.0,0.07894736842105263,20,14,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/no_progress,all,0.125,0.3009847856754762,-0.1759847856754762,-0.30098478567547615,-0.03627890332253497,20,14,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/progress,all,0.3,0.4138078905479804,-0.1138078905479804,-0.2774442541843441,0.05987631997833526,20,14,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.01005729833609484,-0.01005729833609484,-0.010057298336094842,-0.010057298336094839,20,14,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/progress,all,0.55,0.2751500254404487,0.27484997455955135,0.040353407053830476,0.5143236587700777,20,14,
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/no_progress,all,0.08333333333333333,0.32291666666666674,-0.23958333333333343,-0.3229166666666668,-0.12291666666666679,18,11,
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/progress,all,0.4444444444444444,0.34374999999999994,0.10069444444444448,-0.06374999999999992,0.32291666666666663,18,11,
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/no_progress,all,0.08333333333333333,0.16145833333333337,-0.07812500000000004,-0.1614583333333334,0.06076388888888884,18,11,
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/progress,all,0.3888888888888889,0.171875,0.2170138888888889,-0.02901785714285715,0.4283423913043466,18,11,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/no_progress,all,0.08333333333333333,0.30098478567547615,-0.21765145234214284,-0.3009847856754762,-0.10098478567547614,18,11,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/progress,all,0.4444444444444444,0.4138078905479804,0.030636553896464025,-0.13380789054798042,0.2528587761186862,18,11,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/no_progress,all,0.08333333333333333,0.010057298336094839,0.07327603499723849,-0.010057298336094839,0.21216492388612737,18,11,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/progress,all,0.3888888888888889,0.27515002544044864,0.11373886344844025,-0.13229288258330585,0.32506736586389795,18,11,
+hold05,Hierarchy,Hierarchy CC,inf,inf,leader apex flat/no_progress,all,0.023809523809523808,0.0,0.023809523809523808,0.0,0.07142857142857142,14,10,
+hold05,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/no_progress,all,0.14285714285714285,0.3229166666666668,-0.18005952380952395,-0.32291666666666685,0.010416666666666574,14,10,
+hold05,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/progress,all,0.20238095238095238,0.34374999999999994,-0.14136904761904756,-0.29832070707070707,0.04086538461538464,14,10,
+hold05,Hierarchy,Hierarchy CC,inf,inf,leader middle up/no_progress,all,0.21428571428571427,0.1614583333333334,0.052827380952380876,-0.16145833333333334,0.33854166666666663,14,10,
+hold05,Hierarchy,Hierarchy CC,inf,inf,leader middle up/progress,all,0.41666666666666663,0.17187499999999997,0.24479166666666666,-0.005208333333333343,0.4843903186274509,14,10,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader apex flat/no_progress,all,0.023809523809523808,0.0,0.023809523809523808,0.0,0.07142857142857142,14,10,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/no_progress,all,0.14285714285714285,0.3009847856754761,-0.15812764281833325,-0.30098478567547615,0.03234854765785722,14,10,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/progress,all,0.20238095238095238,0.4138078905479804,-0.211426938167028,-0.3683785976186875,-0.029192505932595814,14,10,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/no_progress,all,0.21428571428571427,0.01005729833609484,0.20422841594961944,-0.010057298336094839,0.48994270166390513,14,10,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/progress,all,0.41666666666666663,0.2751500254404487,0.14151664122621793,-0.10848335877378204,0.38111529318700227,14,10,
+hold05,Hierarchy,pooled,inf,inf,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.040880503144654086,52,35,
+hold05,Hierarchy,pooled,inf,inf,leader leaf up/no_progress,all,0.11538461538461539,0.32291666666666685,-0.20753205128205146,-0.275746855345912,-0.12291666666666673,52,35,
+hold05,Hierarchy,pooled,inf,inf,leader leaf up/progress,all,0.3237179487179487,0.34375,-0.020032051282051322,-0.1225622294372294,0.08887411347517737,52,35,
+hold05,Hierarchy,pooled,inf,inf,leader middle up/no_progress,all,0.08653846153846154,0.16145833333333337,-0.07491987179487183,-0.1422275641025641,0.012454710144927522,52,35,
+hold05,Hierarchy,pooled,inf,inf,leader middle up/progress,all,0.4583333333333333,0.171875,0.2864583333333333,0.1547882653061225,0.4224870844564239,52,35,
+hold05,Hierarchy,pooled,T_hat,0.611009,leader apex flat/no_progress,all,0.016025641025641024,0.0,0.016025641025641024,0.0,0.040880503144654086,52,35,
+hold05,Hierarchy,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.11538461538461539,0.30098478567547615,-0.18560017029086076,-0.2538149743547216,-0.10098478567547631,52,35,
+hold05,Hierarchy,pooled,T_hat,0.611009,leader leaf up/progress,all,0.3237179487179487,0.4138078905479803,-0.0900899418300316,-0.19262011998520975,0.01881622292719698,52,35,
+hold05,Hierarchy,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.08653846153846154,0.010057298336094839,0.0764811632023667,0.009173470894674393,0.16385574514216603,52,35,
+hold05,Hierarchy,pooled,T_hat,0.611009,leader middle up/progress,all,0.4583333333333333,0.2751500254404486,0.18318330789288473,0.051513239865673854,0.3192120590159754,52,35,
+no_ties,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/no_progress,all,0.05263157894736842,0.3229166666666668,-0.2702850877192984,-0.32291666666666685,-0.1464460784313726,19,14,
+no_ties,Hierarchy,Hierarchy EL,inf,inf,leader leaf up/progress,all,0.3157894736842105,0.34375,-0.02796052631578949,-0.20089285714285715,0.15625,19,14,
+no_ties,Hierarchy,Hierarchy EL,inf,inf,leader middle up/no_progress,all,0.0,0.16145833333333337,-0.16145833333333337,-0.1614583333333334,-0.16145833333333334,19,14,
+no_ties,Hierarchy,Hierarchy EL,inf,inf,leader middle up/progress,all,0.631578947368421,0.17187499999999997,0.459703947368421,0.265625,0.6516544117647058,19,14,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/no_progress,all,0.05263157894736842,0.3009847856754762,-0.2483532067281078,-0.3009847856754762,-0.12451419744018202,19,14,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader leaf up/progress,all,0.3157894736842105,0.4138078905479804,-0.09801841686376989,-0.27095074769083755,0.0861921094520196,19,14,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/no_progress,all,0.0,0.010057298336094842,-0.010057298336094842,-0.010057298336094842,-0.010057298336094839,19,14,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,leader middle up/progress,all,0.631578947368421,0.2751500254404487,0.3564289219279723,0.1623499745595513,0.5483793863242572,19,14,
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/no_progress,all,0.0,0.32291666666666674,-0.32291666666666674,-0.32291666666666685,-0.3229166666666667,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader leaf up/progress,all,0.5,0.34374999999999994,0.15625000000000006,-0.031249999999999944,0.37053571428571436,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/no_progress,all,0.0625,0.16145833333333337,-0.09895833333333337,-0.1614583333333334,0.052827380952380876,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,leader middle up/progress,all,0.4375,0.171875,0.265625,0.0424107142857143,0.453125,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/no_progress,all,0.0,0.30098478567547615,-0.30098478567547615,-0.3009847856754762,-0.3009847856754761,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader leaf up/progress,all,0.5,0.4138078905479804,0.0861921094520196,-0.10130789054798045,0.30047782373773385,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/no_progress,all,0.0625,0.010057298336094839,0.05244270166390516,-0.01005729833609484,0.20422841594961944,16,11,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,leader middle up/progress,all,0.4375,0.2751500254404487,0.1623499745595513,-0.060864311154734424,0.34984997455955136,16,11,
+no_ties,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/no_progress,all,0.07142857142857142,0.3229166666666668,-0.25148809523809534,-0.3229166666666669,-0.12265350877193132,14,11,
+no_ties,Hierarchy,Hierarchy CC,inf,inf,leader leaf up/progress,all,0.14285714285714285,0.34374999999999994,-0.2008928571428571,-0.34374999999999994,-0.01041666666666663,14,11,
+no_ties,Hierarchy,Hierarchy CC,inf,inf,leader middle up/no_progress,all,0.2857142857142857,0.1614583333333334,0.1242559523809523,-0.09479166666666673,0.421875,14,11,
+no_ties,Hierarchy,Hierarchy CC,inf,inf,leader middle up/progress,all,0.5,0.17187499999999997,0.328125,0.05889423076923081,0.5618749999999977,14,11,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/no_progress,all,0.07142857142857142,0.3009847856754762,-0.22955621424690478,-0.3009847856754762,-0.10072162778074069,14,11,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader leaf up/progress,all,0.14285714285714285,0.4138078905479804,-0.27095074769083755,-0.41380789054798045,-0.08047455721464714,14,11,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/no_progress,all,0.2857142857142857,0.010057298336094839,0.2756569873781909,0.05660936833057183,0.5732760349972386,14,11,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,leader middle up/progress,all,0.5,0.2751500254404487,0.2248499745595513,-0.044380794671217916,0.45859997455954904,14,11,
+no_ties,Hierarchy,pooled,inf,inf,leader leaf up/no_progress,all,0.04081632653061224,0.32291666666666674,-0.2821003401360545,-0.32291666666666674,-0.21875000000000006,49,36,
+no_ties,Hierarchy,pooled,inf,inf,leader leaf up/progress,all,0.32653061224489793,0.34374999999999994,-0.01721938775510201,-0.12635869565217392,0.09629651162790678,49,36,
+no_ties,Hierarchy,pooled,inf,inf,leader middle up/no_progress,all,0.10204081632653061,0.16145833333333334,-0.05941751700680273,-0.1410501700680272,0.03420449701619778,49,36,
+no_ties,Hierarchy,pooled,inf,inf,leader middle up/progress,all,0.5306122448979592,0.171875,0.3587372448979592,0.23628826530612246,0.48118622448979587,49,36,
+no_ties,Hierarchy,pooled,T_hat,0.611009,leader leaf up/no_progress,all,0.04081632653061224,0.30098478567547615,-0.2601684591448639,-0.3009847856754763,-0.19681811900880963,49,36,
+no_ties,Hierarchy,pooled,T_hat,0.611009,leader leaf up/progress,all,0.32653061224489793,0.41380789054798023,-0.0872772783030823,-0.1964165862001542,0.026238621079926493,49,36,
+no_ties,Hierarchy,pooled,T_hat,0.611009,leader middle up/no_progress,all,0.10204081632653061,0.01005729833609484,0.09198351799043578,0.010350864929211279,0.18560553201343624,49,36,
+no_ties,Hierarchy,pooled,T_hat,0.611009,leader middle up/progress,all,0.5306122448979592,0.27515002544044864,0.2554622194575106,0.13301323986567382,0.3779111990493473,49,36,

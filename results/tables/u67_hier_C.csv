@@ -1,169 +1,181 @@
 variant,topology,cell,T,T_value,stat,part,obs,exp,diff,diff_lo,diff_hi,n,n_files,structural
-main,Hierarchy,Hierarchy EL,inf,inf,success_rate,all,0.2564102564102564,0.3226707286113241,-0.06626047220106773,-0.14872853956469292,0.07084691471749512,78,15.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,inf,inf,brier,all,0.1935431166879066,0.21849039435550607,-0.024947277667599466,-0.054523509281621314,0.02355731513531961,78,15.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy EL,inf,inf,success_rate,all,0.2564102564102564,0.3226707286113241,-0.06626047220106773,-0.14872853956469292,0.07084691471749512,78,15.0,
+main,Hierarchy,Hierarchy EL,inf,inf,brier,all,0.1935431166879066,0.21849039435550607,-0.024947277667599466,-0.054523509281621314,0.02355731513531961,78,15.0,
 main,Hierarchy,Hierarchy EL,inf,inf,success_rate,up,0.2564102564102564,0.3226707286113241,-0.06626047220106773,-0.14872853956469292,0.07084691471749512,78,15.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy EL,inf,inf,brier,up,0.1935431166879066,0.21849039435550607,-0.024947277667599466,-0.054523509281621314,0.02355731513531961,78,15.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy EL,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy EL,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,inf,inf,attempts_per_escape,all,2.8,3.0991345397324803,-0.2991345397324805,-1.15520246567027,0.5548575771380219,20,15.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,all,0.2564102564102564,0.4753720663008288,-0.2189618098905724,-0.29708676092224934,-0.08835425148835245,78,15.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,all,0.2385105719036561,0.24100063854061934,-0.002490066636963245,-0.02289991106636397,0.020216799123273087,78,15.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy EL,inf,inf,attempts_per_escape,all,2.8,3.0991345397324803,-0.2991345397324805,-1.15520246567027,0.5548575771380219,20,15.0,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,all,0.2564102564102564,0.4753720663008288,-0.2189618098905724,-0.29708676092224934,-0.08835425148835245,78,15.0,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,all,0.2385105719036561,0.24100063854061934,-0.002490066636963245,-0.02289991106636397,0.020216799123273087,78,15.0,
 main,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,up,0.2564102564102564,0.4753720663008288,-0.2189618098905724,-0.29708676092224934,-0.08835425148835245,78,15.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,up,0.2385105719036561,0.24100063854061934,-0.002490066636963245,-0.02289991106636397,0.020216799123273087,78,15.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy EL,T_hat,0.611009,attempts_per_escape,all,2.8,2.103615401261655,0.6963845987383448,-0.16670275958703354,1.5227381316940534,20,15.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,all,0.2982456140350877,0.3227375369115872,-0.024491922876499483,-0.1144998379788487,0.17704675929777722,57,11.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,brier,all,0.20659309286843228,0.21845467506625643,-0.011861582197824155,-0.04468151980676916,0.0624819077714402,57,11.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,attempts_per_escape,all,2.8,2.103615401261655,0.6963845987383448,-0.16670275958703354,1.5227381316940534,20,15.0,
+main,Hierarchy,Hierarchy EL,T_hat,0.611009,probe,aborted,0.6842105263157895,0.30698916762558537,0.3772213586902041,0.2251080860864315,0.5288790516904472,57,11.0,descriptive (not scored)
+main,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,all,0.2982456140350877,0.3227375369115872,-0.024491922876499483,-0.1144998379788487,0.17704675929777722,57,11.0,
+main,Hierarchy,Hierarchy CL v09,inf,inf,brier,all,0.20659309286843228,0.21845467506625643,-0.011861582197824155,-0.04468151980676916,0.0624819077714402,57,11.0,
 main,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,up,0.2982456140350877,0.3227375369115872,-0.024491922876499483,-0.1144998379788487,0.17704675929777722,57,11.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CL v09,inf,inf,brier,up,0.20659309286843228,0.21845467506625643,-0.011861582197824155,-0.04468151980676916,0.0624819077714402,57,11.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CL v09,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,inf,inf,attempts_per_escape,all,3.235294117647059,3.098493003229266,0.13680111441779275,-1.2815925176100396,1.6203161467439713,17,11.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,all,0.2982456140350877,0.4715412887713046,-0.17329567473621688,-0.2593312588737975,0.02355257179198221,57,11.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,all,0.2394780285011934,0.24019510813273576,-0.0007170796315423555,-0.019315212424142494,0.0277367888209594,57,11.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy CL v09,inf,inf,attempts_per_escape,all,3.235294117647059,3.098493003229266,0.13680111441779275,-1.2815925176100396,1.6203161467439713,17,11.0,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,all,0.2982456140350877,0.4715412887713046,-0.17329567473621688,-0.2593312588737975,0.02355257179198221,57,11.0,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,all,0.2394780285011934,0.24019510813273576,-0.0007170796315423555,-0.019315212424142494,0.0277367888209594,57,11.0,
 main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,up,0.2982456140350877,0.4715412887713046,-0.17329567473621688,-0.2593312588737975,0.02355257179198221,57,11.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,up,0.2394780285011934,0.24019510813273576,-0.0007170796315423555,-0.019315212424142494,0.0277367888209594,57,11.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,attempts_per_escape,all,3.235294117647059,2.1207050661580467,1.1145890514890122,-0.2357214604622407,2.600667680581983,17,11.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,success_rate,all,0.1724137931034483,0.3188801638784583,-0.14646637077501,-0.2302478747180062,0.05182729392125112,87,12.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,brier,all,0.16270322832897882,0.2170623344341951,-0.05435910610521627,-0.08449161795603675,0.017391201649476454,87,12.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,attempts_per_escape,all,3.235294117647059,2.1207050661580467,1.1145890514890122,-0.2357214604622407,2.600667680581983,17,11.0,
+main,Hierarchy,Hierarchy CL v09,T_hat,0.611009,probe,aborted,0.65,0.31119880005146083,0.3388011999485392,0.0979994213021425,0.5062571427971942,40,8.0,descriptive (not scored)
+main,Hierarchy,Hierarchy CC,inf,inf,success_rate,all,0.1724137931034483,0.3188801638784583,-0.14646637077501,-0.2302478747180062,0.05182729392125112,87,12.0,
+main,Hierarchy,Hierarchy CC,inf,inf,brier,all,0.16270322832897882,0.2170623344341951,-0.05435910610521627,-0.08449161795603675,0.017391201649476454,87,12.0,
 main,Hierarchy,Hierarchy CC,inf,inf,success_rate,up,0.1724137931034483,0.3188801638784583,-0.14646637077501,-0.2302478747180062,0.05182729392125112,87,12.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CC,inf,inf,brier,up,0.16270322832897882,0.2170623344341951,-0.05435910610521627,-0.08449161795603675,0.017391201649476454,87,12.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CC,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CC,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,inf,inf,attempts_per_escape,all,3.066666666666667,3.1359743040685077,-0.06930763740184087,-0.9086642884817666,0.715852115047656,15,12.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,all,0.1724137931034483,0.42743482882010064,-0.25502103571665236,-0.3071179346684671,-0.11197180960560844,87,12.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,all,0.1948448682033968,0.234281358789097,-0.0394364905857002,-0.07116841976041471,0.018083600979842674,87,12.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy CC,inf,inf,attempts_per_escape,all,3.066666666666667,3.1359743040685077,-0.06930763740184087,-0.9086642884817666,0.715852115047656,15,12.0,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,all,0.1724137931034483,0.42743482882010064,-0.25502103571665236,-0.3071179346684671,-0.11197180960560844,87,12.0,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,all,0.1948448682033968,0.234281358789097,-0.0394364905857002,-0.07116841976041471,0.018083600979842674,87,12.0,
 main,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,up,0.1724137931034483,0.42743482882010064,-0.25502103571665236,-0.3071179346684671,-0.11197180960560844,87,12.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,up,0.1948448682033968,0.234281358789097,-0.0394364905857002,-0.07116841976041471,0.018083600979842674,87,12.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,Hierarchy CC,T_hat,0.611009,attempts_per_escape,all,3.066666666666667,2.3395379425687404,0.7271287240979265,-0.18772529690096088,1.6157938982269182,15,12.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,success_rate,all,0.23423423423423423,0.32120239050932275,-0.08696815627508853,-0.15999756501679263,0.01009995285242666,222,38.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,brier,all,0.18480788405305634,0.21792157808234713,-0.03311369402929079,-0.059195983461846166,0.0014658724152912955,222,38.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,attempts_per_escape,all,3.066666666666667,2.3395379425687404,0.7271287240979265,-0.18772529690096088,1.6157938982269182,15,12.0,
+main,Hierarchy,Hierarchy CC,T_hat,0.611009,probe,aborted,0.6,0.32873802786861755,0.2712619721313824,0.0737634878974863,0.39323614749347924,70,10.0,descriptive (not scored)
+main,Hierarchy,pooled,inf,inf,success_rate,all,0.23423423423423423,0.32120239050932275,-0.08696815627508853,-0.15999756501679263,0.01009995285242666,222,38.0,
+main,Hierarchy,pooled,inf,inf,brier,all,0.18480788405305634,0.21792157808234713,-0.03311369402929079,-0.059195983461846166,0.0014658724152912955,222,38.0,
 main,Hierarchy,pooled,inf,inf,success_rate,up,0.23423423423423423,0.32120239050932275,-0.08696815627508853,-0.15999756501679263,0.01009995285242666,222,38.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,pooled,inf,inf,brier,up,0.18480788405305634,0.21792157808234713,-0.03311369402929079,-0.059195983461846166,0.0014658724152912955,222,38.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,pooled,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,pooled,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,inf,inf,attempts_per_escape,all,3.019230769230769,3.1133018605942646,-0.09407109136349545,-0.6806034511543703,0.5562851436445055,52,38.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,success_rate,all,0.23423423423423423,0.455602273598098,-0.2213680393638638,-0.26910052645821936,-0.1469179871287913,222,38.0,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,brier,all,0.22164673768805732,0.2381605819116472,-0.016513844223589896,-0.041308346988193,0.010211580267350508,222,38.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,pooled,inf,inf,attempts_per_escape,all,3.019230769230769,3.1133018605942646,-0.09407109136349545,-0.6806034511543703,0.5562851436445055,52,38.0,
+main,Hierarchy,pooled,T_hat,0.611009,success_rate,all,0.23423423423423423,0.455602273598098,-0.2213680393638638,-0.26910052645821936,-0.1469179871287913,222,38.0,
+main,Hierarchy,pooled,T_hat,0.611009,brier,all,0.22164673768805732,0.2381605819116472,-0.016513844223589896,-0.041308346988193,0.010211580267350508,222,38.0,
 main,Hierarchy,pooled,T_hat,0.611009,success_rate,up,0.23423423423423423,0.455602273598098,-0.2213680393638638,-0.26910052645821936,-0.1469179871287913,222,38.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,pooled,T_hat,0.611009,brier,up,0.22164673768805732,0.2381605819116472,-0.016513844223589896,-0.041308346988193,0.010211580267350508,222,38.0,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,pooled,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 main,Hierarchy,pooled,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-main,Hierarchy,pooled,T_hat,0.611009,attempts_per_escape,all,3.019230769230769,2.1948968605941013,0.8243339086366679,0.22571552360041944,1.5003398367256506,52,38.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,success_rate,all,0.2702702702702703,0.323655338506825,-0.0533850682365547,-0.12942490677639332,0.07366879451102862,74,15.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,brier,all,0.19979095849108605,0.21859277177383293,-0.018801813282746882,-0.04692302347047951,0.02671378623010745,74,15.0,every exit from A is uphill (split by exit height is degenerate)
+main,Hierarchy,pooled,T_hat,0.611009,attempts_per_escape,all,3.019230769230769,2.1948968605941013,0.8243339086366679,0.22571552360041944,1.5003398367256506,52,38.0,
+main,Hierarchy,pooled,T_hat,0.611009,probe,aborted,0.6407185628742516,0.31711375154203614,0.3236048113322154,0.22896169227180435,0.41486738342088575,167,29.0,descriptive (not scored)
+hold05,Hierarchy,Hierarchy EL,inf,inf,success_rate,all,0.2702702702702703,0.323655338506825,-0.0533850682365547,-0.12942490677639332,0.07366879451102862,74,15.0,
+hold05,Hierarchy,Hierarchy EL,inf,inf,brier,all,0.19979095849108605,0.21859277177383293,-0.018801813282746882,-0.04692302347047951,0.02671378623010745,74,15.0,
 hold05,Hierarchy,Hierarchy EL,inf,inf,success_rate,up,0.273972602739726,0.3218499932185013,-0.04787739047877526,-0.12717673769804308,0.07872472087634112,73,15.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy EL,inf,inf,brier,up,0.19968630526418993,0.21818972891457106,-0.01850342365038113,-0.04695101033398431,0.0270943920808758,73,15.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy EL,inf,inf,success_rate,down,0.0,0.45544554455445674,-0.45544554455445674,-0.45544554455445674,-0.45544554455445674,1,1.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy EL,inf,inf,brier,down,0.20743064405450565,0.2480149004999511,-0.040584256445445444,-0.040584256445445444,-0.040584256445445444,1,1.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,inf,inf,attempts_per_escape,all,2.8,3.089706490285229,-0.2897064902852291,-1.116126143488526,0.40110903029546807,20,15.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,all,0.2702702702702703,0.4662777847940422,-0.1960075145237719,-0.26913339378263507,-0.0635200762692223,74,15.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,all,0.23917638874574346,0.2382281939979372,0.0009481947478062469,-0.027957420308497915,0.040169654138116295,74,15.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,Hierarchy EL,inf,inf,attempts_per_escape,all,2.8,3.089706490285229,-0.2897064902852291,-1.116126143488526,0.40110903029546807,20,15.0,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,all,0.2702702702702703,0.4662777847940422,-0.1960075145237719,-0.26913339378263507,-0.0635200762692223,74,15.0,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,all,0.23917638874574346,0.2382281939979372,0.0009481947478062469,-0.027957420308497915,0.040169654138116295,74,15.0,
 hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,up,0.273972602739726,0.46136299507888856,-0.18739039233916255,-0.2640651374798547,-0.0577741769441759,73,15.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,up,0.23312784928473876,0.23951436563350934,-0.006386516348770577,-0.028368045429211057,0.02443165854644588,73,15.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,down,0.0,0.8250574340002532,-0.8250574340002532,-0.8250574340002532,-0.8250574340002532,1,1.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,down,0.6807197693990822,0.14433766460117103,0.5363821047979112,0.5363821047979112,0.5363821047979112,1,1.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,attempts_per_escape,all,2.8,2.1446443142079055,0.6553556857920944,-0.21667993290456847,1.3598562200710864,20,15.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,all,0.32727272727272727,0.32529252925292657,0.001980198019800705,-0.09358570096140184,0.19152438746178627,55,11.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,brier,all,0.21930292039104904,0.2190409139923898,0.0002620063986592258,-0.033549833144900225,0.0689713636778486,55,11.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,attempts_per_escape,all,2.8,2.1446443142079055,0.6553556857920944,-0.21667993290456847,1.3598562200710864,20,15.0,
+hold05,Hierarchy,Hierarchy EL,T_hat,0.611009,probe,aborted,0.6981132075471698,0.31237736363877844,0.38573584390839133,0.24839787877603178,0.5179761715273076,53,12.0,descriptive (not scored)
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,all,0.32727272727272727,0.32529252925292657,0.001980198019800705,-0.09358570096140184,0.19152438746178627,55,11.0,
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,brier,all,0.21930292039104904,0.2190409139923898,0.0002620063986592258,-0.033549833144900225,0.0689713636778486,55,11.0,
 hold05,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,up,0.3333333333333333,0.3228822882288242,0.010451045104509116,-0.08319743030435556,0.19261926192619133,54,11.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CL v09,inf,inf,brier,up,0.21952277736024423,0.21850435868669424,0.0010184186735499867,-0.03346373869191849,0.06960365113597534,54,11.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,down,0.0,0.4554455445544568,-0.4554455445544568,-0.4554455445544568,-0.4554455445544568,1,1.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CL v09,inf,inf,brier,down,0.20743064405450568,0.24801490049995112,-0.040584256445445444,-0.040584256445445444,-0.040584256445445444,1,1.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,inf,inf,attempts_per_escape,all,2.9444444444444446,3.0741560597675583,-0.1297116153231137,-1.277085748531665,1.1546806434864278,18,11.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,all,0.32727272727272727,0.4777340106628272,-0.15046128339009995,-0.24984932493488796,0.03852344198363884,55,11.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,all,0.25579794003489775,0.23755885000259921,0.01823909003229854,-0.011797009415442738,0.0599220897086852,55,11.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,Hierarchy CL v09,inf,inf,attempts_per_escape,all,2.9444444444444446,3.0741560597675583,-0.1297116153231137,-1.277085748531665,1.1546806434864278,18,11.0,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,all,0.32727272727272727,0.4777340106628272,-0.15046128339009995,-0.24984932493488796,0.03852344198363884,55,11.0,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,all,0.25579794003489775,0.23755885000259921,0.01823909003229854,-0.011797009415442738,0.0599220897086852,55,11.0,
 hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,up,0.3333333333333333,0.47130209541583784,-0.13796876208250453,-0.2326091253480328,0.04495615018949365,54,11.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,up,0.2479290172688943,0.2392851682507738,0.008643849018120486,-0.0145633054103547,0.045499785278757414,54,11.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,down,0.0,0.8250574340002532,-0.8250574340002532,-0.8250574340002532,-0.8250574340002532,1,1.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,down,0.6807197693990822,0.14433766460117103,0.5363821047979112,0.5363821047979112,0.5363821047979112,1,1.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,attempts_per_escape,all,2.9444444444444446,2.0932150060083856,0.851229438436059,-0.28220585549142396,2.139668703835165,18,11.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,success_rate,all,0.1686746987951807,0.32136466658714213,-0.15268996779196142,-0.23686901477033104,0.06245262119000723,83,12.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,brier,all,0.16018509879140175,0.21772257149370003,-0.05753747270229828,-0.08661227622719601,0.01780690837738623,83,12.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,attempts_per_escape,all,2.9444444444444446,2.0932150060083856,0.851229438436059,-0.28220585549142396,2.139668703835165,18,11.0,
+hold05,Hierarchy,Hierarchy CL v09,T_hat,0.611009,probe,aborted,0.7222222222222222,0.31497212251181717,0.40725009971040504,0.24984428039610865,0.535950867436862,36,8.0,descriptive (not scored)
+hold05,Hierarchy,Hierarchy CC,inf,inf,success_rate,all,0.1686746987951807,0.32136466658714213,-0.15268996779196142,-0.23686901477033104,0.06245262119000723,83,12.0,
+hold05,Hierarchy,Hierarchy CC,inf,inf,brier,all,0.16018509879140175,0.21772257149370003,-0.05753747270229828,-0.08661227622719601,0.01780690837738623,83,12.0,
 hold05,Hierarchy,Hierarchy CC,inf,inf,success_rate,up,0.15853658536585366,0.3197295339290042,-0.16119294856315056,-0.24143387553041173,0.050360678925033965,82,12.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CC,inf,inf,brier,up,0.1585222395700092,0.21735315284728235,-0.05883091327727316,-0.0878189441606425,0.01694044351394052,82,12.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CC,inf,inf,success_rate,down,1.0,0.45544554455445685,0.5445544554455432,0.5445544554455432,0.5445544554455432,1,1.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CC,inf,inf,brier,down,0.29653955494559203,0.24801490049995112,0.04852465444564091,0.04852465444564091,0.04852465444564091,1,1.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,inf,inf,attempts_per_escape,all,2.7857142857142856,3.1117297698589312,-0.32601548414464565,-1.246196630670951,0.5437712368822653,14,12.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,all,0.1686746987951807,0.4286143478039368,-0.2599396490087561,-0.31724907462723456,-0.09533809699274909,83,12.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,all,0.19554838147879616,0.23308117391404998,-0.037532792435253814,-0.06859647002140244,0.026764533351871317,83,12.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,Hierarchy CC,inf,inf,attempts_per_escape,all,2.7857142857142856,3.1117297698589312,-0.32601548414464565,-1.246196630670951,0.5437712368822653,14,12.0,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,all,0.1686746987951807,0.4286143478039368,-0.2599396490087561,-0.31724907462723456,-0.09533809699274909,83,12.0,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,all,0.19554838147879616,0.23308117391404998,-0.037532792435253814,-0.06859647002140244,0.026764533351871317,83,12.0,
 hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,up,0.15853658536585366,0.42377967602105493,-0.26524309065520124,-0.31998824135274023,-0.10240177327938155,82,12.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,up,0.197559887333433,0.23416341183249972,-0.03660352449906673,-0.06834546590512011,0.03155410128518501,82,12.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,down,1.0,0.8250574340002531,0.1749425659997469,0.1749425659997469,0.1749425659997469,1,1.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,down,0.030604901398575798,0.1443376646011711,-0.11373276320259529,-0.11373276320259529,-0.11373276320259529,1,1.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,attempts_per_escape,all,2.7857142857142856,2.3330996853549917,0.4526146003592939,-0.5428639447630784,1.4565692466679963,14,12.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,success_rate,all,0.24528301886792453,0.32318326172240003,-0.0779002428544755,-0.1553424866892211,0.023875239774465172,212,38.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,brier,all,0.1893469563657283,0.21836834346614237,-0.029021387100414076,-0.057108020232447515,0.00759510798435553,212,38.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,attempts_per_escape,all,2.7857142857142856,2.3330996853549917,0.4526146003592939,-0.5428639447630784,1.4565692466679963,14,12.0,
+hold05,Hierarchy,Hierarchy CC,T_hat,0.611009,probe,aborted,0.6212121212121212,0.3295134396443765,0.2916986815677447,0.07536727336237468,0.4520436075567259,66,10.0,descriptive (not scored)
+hold05,Hierarchy,pooled,inf,inf,success_rate,all,0.24528301886792453,0.32318326172240003,-0.0779002428544755,-0.1553424866892211,0.023875239774465172,212,38.0,
+hold05,Hierarchy,pooled,inf,inf,brier,all,0.1893469563657283,0.21836834346614237,-0.029021387100414076,-0.057108020232447515,0.00759510798435553,212,38.0,
 hold05,Hierarchy,pooled,inf,inf,success_rate,up,0.24401913875598086,0.32128476005495427,-0.07726562129897341,-0.15623648463244655,0.02493383904716858,209,38.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,pooled,inf,inf,brier,up,0.1886610234759799,0.21794279480058532,-0.02928177132460541,-0.05759050464427564,0.007801190295143142,209,38.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,pooled,inf,inf,success_rate,down,0.3333333333333333,0.4554455445544568,-0.12211221122112348,-0.4554455445544568,0.544554455445543,3,3.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,pooled,inf,inf,brier,down,0.23713361435153443,0.24801490049995112,-0.010881286148416686,-0.04058425644544547,0.04852465444564091,3,3.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,inf,inf,attempts_per_escape,all,2.8461538461538463,3.0942196531791772,-0.248065807025331,-0.7835946092066514,0.3180997482197467,52,38.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,success_rate,all,0.24528301886792453,0.4545043279667046,-0.20922130909878006,-0.2619394911912611,-0.1286346053027564,212,38.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,brier,all,0.2264078072256815,0.23603943651347387,-0.009631629287792376,-0.036983589863346725,0.02387741114817514,212,38.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,pooled,inf,inf,attempts_per_escape,all,2.8461538461538463,3.0942196531791772,-0.248065807025331,-0.7835946092066514,0.3180997482197467,52,38.0,
+hold05,Hierarchy,pooled,T_hat,0.611009,success_rate,all,0.24528301886792453,0.4545043279667046,-0.20922130909878006,-0.2619394911912611,-0.1286346053027564,212,38.0,
+hold05,Hierarchy,pooled,T_hat,0.611009,brier,all,0.2264078072256815,0.23603943651347387,-0.009631629287792376,-0.036983589863346725,0.02387741114817514,212,38.0,
 hold05,Hierarchy,pooled,T_hat,0.611009,success_rate,up,0.24401913875598086,0.4491853838609598,-0.20516624510497894,-0.2591292344757709,-0.12383750602173325,209,38.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,pooled,T_hat,0.611009,brier,up,0.2229971803428121,0.23735572989020545,-0.014358549547393351,-0.040106324445394505,0.014642989002397466,209,38.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,pooled,T_hat,0.611009,success_rate,down,0.3333333333333333,0.8250574340002532,-0.4917241006669199,-0.8250574340002532,0.1749425659997469,3,3.0,every exit from A is uphill (split by exit height is degenerate)
 hold05,Hierarchy,pooled,T_hat,0.611009,brier,down,0.46401481339891343,0.14433766460117106,0.31967714879774234,-0.11373276320259529,0.5363821047979112,3,3.0,every exit from A is uphill (split by exit height is degenerate)
-hold05,Hierarchy,pooled,T_hat,0.611009,attempts_per_escape,all,2.8461538461538463,2.2001990706527588,0.6459547755010875,0.08298789676878673,1.2527119163941725,52,38.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,success_rate,all,0.25,0.32282438770192956,-0.07282438770192956,-0.15370131779797647,0.058279702970295465,76,15.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,brier,all,0.1914324705008283,0.21854668530949029,-0.027114214808661996,-0.055481770100066705,0.01966748389831847,76,15.0,every exit from A is uphill (split by exit height is degenerate)
+hold05,Hierarchy,pooled,T_hat,0.611009,attempts_per_escape,all,2.8461538461538463,2.2001990706527588,0.6459547755010875,0.08298789676878673,1.2527119163941725,52,38.0,
+hold05,Hierarchy,pooled,T_hat,0.611009,probe,aborted,0.6709677419354839,0.3202766690310292,0.3506910729044547,0.26470803961081985,0.44263057097606057,155,30.0,descriptive (not scored)
+no_ties,Hierarchy,Hierarchy EL,inf,inf,success_rate,all,0.25,0.32282438770192956,-0.07282438770192956,-0.15370131779797647,0.058279702970295465,76,15.0,
+no_ties,Hierarchy,Hierarchy EL,inf,inf,brier,all,0.1914324705008283,0.21854668530949029,-0.027114214808661996,-0.055481770100066705,0.01966748389831847,76,15.0,
 no_ties,Hierarchy,Hierarchy EL,inf,inf,success_rate,up,0.25,0.32282438770192956,-0.07282438770192956,-0.15370131779797647,0.058279702970295465,76,15.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy EL,inf,inf,brier,up,0.1914324705008283,0.21854668530949029,-0.027114214808661996,-0.055481770100066705,0.01966748389831847,76,15.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy EL,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy EL,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,inf,inf,attempts_per_escape,all,2.8,3.097659402744134,-0.2976594027441344,-1.1538841545923806,0.5598460599434751,20,15.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,all,0.25,0.4784408666166197,-0.22844086661661972,-0.30581543967841485,-0.09831141422302754,76,15.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,all,0.2390890204015628,0.2413731803970196,-0.002284159995456808,-0.021755733655845117,0.018716428354537202,76,15.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,Hierarchy EL,inf,inf,attempts_per_escape,all,2.8,3.097659402744134,-0.2976594027441344,-1.1538841545923806,0.5598460599434751,20,15.0,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,all,0.25,0.4784408666166197,-0.22844086661661972,-0.30581543967841485,-0.09831141422302754,76,15.0,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,all,0.2390890204015628,0.2413731803970196,-0.002284159995456808,-0.021755733655845117,0.018716428354537202,76,15.0,
 no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,up,0.25,0.4784408666166197,-0.22844086661661972,-0.30581543967841485,-0.09831141422302754,76,15.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,up,0.2390890204015628,0.2413731803970196,-0.002284159995456808,-0.021755733655845117,0.018716428354537202,76,15.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,attempts_per_escape,all,2.8,2.09012245770659,0.7098775422934098,-0.16335115197979513,1.529351716804734,20,15.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,all,0.2857142857142857,0.32178217821782307,-0.03606789250353737,-0.13757190419746332,0.17704675929777722,56,11.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,brier,all,0.20333440699091135,0.21816488579551072,-0.014830478804599367,-0.05117570747329553,0.0624819077714402,56,11.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,attempts_per_escape,all,2.8,2.09012245770659,0.7098775422934098,-0.16335115197979513,1.529351716804734,20,15.0,
+no_ties,Hierarchy,Hierarchy EL,T_hat,0.611009,probe,aborted,0.6842105263157895,0.30698916762558537,0.3772213586902041,0.2251080860864315,0.5288790516904472,57,11.0,descriptive (not scored)
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,all,0.2857142857142857,0.32178217821782307,-0.03606789250353737,-0.13757190419746332,0.17704675929777722,56,11.0,
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,brier,all,0.20333440699091135,0.21816488579551072,-0.014830478804599367,-0.05117570747329553,0.0624819077714402,56,11.0,
 no_ties,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,up,0.2857142857142857,0.32178217821782307,-0.03606789250353737,-0.13757190419746332,0.17704675929777722,56,11.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CL v09,inf,inf,brier,up,0.20333440699091135,0.21816488579551072,-0.014830478804599367,-0.05117570747329553,0.0624819077714402,56,11.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CL v09,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CL v09,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,inf,inf,attempts_per_escape,all,3.235294117647059,3.1076923076922953,0.12760180995476356,-1.2815925176100396,1.6128170894526153,17,11.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,all,0.2857142857142857,0.4687305066330475,-0.1830162209187618,-0.2774021656403964,0.02355257179198221,56,11.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,all,0.24129581923624852,0.24031692856103115,0.0009788906752173643,-0.016649393945380314,0.0277367888209594,56,11.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,Hierarchy CL v09,inf,inf,attempts_per_escape,all,3.235294117647059,3.1076923076922953,0.12760180995476356,-1.2815925176100396,1.6128170894526153,17,11.0,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,all,0.2857142857142857,0.4687305066330475,-0.1830162209187618,-0.2774021656403964,0.02355257179198221,56,11.0,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,all,0.24129581923624852,0.24031692856103115,0.0009788906752173643,-0.016649393945380314,0.0277367888209594,56,11.0,
 no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,up,0.2857142857142857,0.4687305066330475,-0.1830162209187618,-0.2774021656403964,0.02355257179198221,56,11.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,up,0.24129581923624852,0.24031692856103115,0.0009788906752173643,-0.016649393945380314,0.0277367888209594,56,11.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,attempts_per_escape,all,3.235294117647059,2.1334220535017674,1.1018720641452915,-0.2357214604622407,2.5800455416892447,17,11.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,success_rate,all,0.16666666666666666,0.31848184818481995,-0.1518151815181533,-0.23125056945878789,0.040446597851273136,84,12.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,brier,all,0.16163914835613738,0.2169558540012423,-0.05531670564510491,-0.08450617975517476,0.013932501740739421,84,12.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,attempts_per_escape,all,3.235294117647059,2.1334220535017674,1.1018720641452915,-0.2357214604622407,2.5800455416892447,17,11.0,
+no_ties,Hierarchy,Hierarchy CL v09,T_hat,0.611009,probe,aborted,0.65,0.31119880005146083,0.3388011999485392,0.0979994213021425,0.5062571427971942,40,8.0,descriptive (not scored)
+no_ties,Hierarchy,Hierarchy CC,inf,inf,success_rate,all,0.16666666666666666,0.31848184818481995,-0.1518151815181533,-0.23125056945878789,0.040446597851273136,84,12.0,
+no_ties,Hierarchy,Hierarchy CC,inf,inf,brier,all,0.16163914835613738,0.2169558540012423,-0.05531670564510491,-0.08450617975517476,0.013932501740739421,84,12.0,
 no_ties,Hierarchy,Hierarchy CC,inf,inf,success_rate,up,0.16666666666666666,0.31848184818481995,-0.1518151815181533,-0.23125056945878789,0.040446597851273136,84,12.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CC,inf,inf,brier,up,0.16163914835613738,0.2169558540012423,-0.05531670564510491,-0.08450617975517476,0.013932501740739421,84,12.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CC,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CC,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,inf,inf,attempts_per_escape,all,3.066666666666667,3.13989637305698,-0.07322970639031334,-0.9121042909917461,0.7163230334776539,15,12.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,all,0.16666666666666666,0.42801931614609856,-0.26135264947943193,-0.31463607856814807,-0.12243651616719435,84,12.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,all,0.19799113362531198,0.2348501089258534,-0.03685897530054141,-0.0688142903744817,0.01923002920618839,84,12.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,Hierarchy CC,inf,inf,attempts_per_escape,all,3.066666666666667,3.13989637305698,-0.07322970639031334,-0.9121042909917461,0.7163230334776539,15,12.0,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,all,0.16666666666666666,0.42801931614609856,-0.26135264947943193,-0.31463607856814807,-0.12243651616719435,84,12.0,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,all,0.19799113362531198,0.2348501089258534,-0.03685897530054141,-0.0688142903744817,0.01923002920618839,84,12.0,
 no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,up,0.16666666666666666,0.42801931614609856,-0.26135264947943193,-0.31463607856814807,-0.12243651616719435,84,12.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,up,0.19799113362531198,0.2348501089258534,-0.03685897530054141,-0.0688142903744817,0.01923002920618839,84,12.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,attempts_per_escape,all,3.066666666666667,2.336343156201538,0.7303235104651287,-0.17334017051504022,1.6238471676365398,15,12.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,success_rate,all,0.22685185185185186,0.32086541987532236,-0.0940135680234705,-0.16375177443815606,0.0012763372373808402,216,38.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,brier,all,0.18293186579384035,0.21782904363043618,-0.03489717783659582,-0.06008276931272676,-0.00045507101362610196,216,38.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,attempts_per_escape,all,3.066666666666667,2.336343156201538,0.7303235104651287,-0.17334017051504022,1.6238471676365398,15,12.0,
+no_ties,Hierarchy,Hierarchy CC,T_hat,0.611009,probe,aborted,0.6,0.32873802786861755,0.2712619721313824,0.0737634878974863,0.39323614749347924,70,10.0,descriptive (not scored)
+no_ties,Hierarchy,pooled,inf,inf,success_rate,all,0.22685185185185186,0.32086541987532236,-0.0940135680234705,-0.16375177443815606,0.0012763372373808402,216,38.0,
+no_ties,Hierarchy,pooled,inf,inf,brier,all,0.18293186579384035,0.21782904363043618,-0.03489717783659582,-0.06008276931272676,-0.00045507101362610196,216,38.0,
 no_ties,Hierarchy,pooled,inf,inf,success_rate,up,0.22685185185185186,0.32086541987532236,-0.0940135680234705,-0.16375177443815606,0.0012763372373808402,216,38.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,pooled,inf,inf,brier,up,0.18293186579384035,0.21782904363043618,-0.03489717783659582,-0.06008276931272676,-0.00045507101362610196,216,38.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,pooled,inf,inf,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,pooled,inf,inf,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,inf,inf,attempts_per_escape,all,3.019230769230769,3.116571428571414,-0.09734065934064473,-0.6825562132757368,0.5488560265788387,52,38.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,success_rate,all,0.22685185185185186,0.45631498514160207,-0.2294631332897502,-0.2780762192270122,-0.15511634720700654,216,38.0,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,brier,all,0.22367864190868006,0.2385625873118654,-0.014883945403185328,-0.03974628055019639,0.010857566769271467,216,38.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,pooled,inf,inf,attempts_per_escape,all,3.019230769230769,3.116571428571414,-0.09734065934064473,-0.6825562132757368,0.5488560265788387,52,38.0,
+no_ties,Hierarchy,pooled,T_hat,0.611009,success_rate,all,0.22685185185185186,0.45631498514160207,-0.2294631332897502,-0.2780762192270122,-0.15511634720700654,216,38.0,
+no_ties,Hierarchy,pooled,T_hat,0.611009,brier,all,0.22367864190868006,0.2385625873118654,-0.014883945403185328,-0.03974628055019639,0.010857566769271467,216,38.0,
 no_ties,Hierarchy,pooled,T_hat,0.611009,success_rate,up,0.22685185185185186,0.45631498514160207,-0.2294631332897502,-0.2780762192270122,-0.15511634720700654,216,38.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,pooled,T_hat,0.611009,brier,up,0.22367864190868006,0.2385625873118654,-0.014883945403185328,-0.03974628055019639,0.010857566769271467,216,38.0,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,pooled,T_hat,0.611009,success_rate,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
 no_ties,Hierarchy,pooled,T_hat,0.611009,brier,down,,,,,,0,,every exit from A is uphill (split by exit height is degenerate)
-no_ties,Hierarchy,pooled,T_hat,0.611009,attempts_per_escape,all,3.019230769230769,2.1914686840487683,0.8277620851820009,0.23423583631433292,1.5001988886372615,52,38.0,every exit from A is uphill (split by exit height is degenerate)
+no_ties,Hierarchy,pooled,T_hat,0.611009,attempts_per_escape,all,3.019230769230769,2.1914686840487683,0.8277620851820009,0.23423583631433292,1.5001988886372615,52,38.0,
+no_ties,Hierarchy,pooled,T_hat,0.611009,probe,aborted,0.6407185628742516,0.31711375154203614,0.3236048113322154,0.22896169227180435,0.41486738342088575,167,29.0,descriptive (not scored)

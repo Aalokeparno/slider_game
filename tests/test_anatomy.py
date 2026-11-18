@@ -70,7 +70,8 @@ def test_exits_uphill(A):
     ctx = an.context(A)
     exits = [(x, i) for x in L.STATES[ctx.inA] for i in range(L.N) if not ctx.inA[ctx.flips[x, i]]]
     assert exits and all(ctx.dcut[x, i] > 0 for x, i in exits)
-    assert "uphill" in an.structural(ctx, 1.0)["C"]
+    note, parts = an.structural(ctx, 1.0)["C"]
+    assert "uphill" in note and parts == {"up", "down"} and "L" not in an.structural(ctx, 1.0)
 
 
 @pytest.mark.parametrize("T", [np.inf, 5.0, 1.0, 0.611009, 0.2])
@@ -83,7 +84,8 @@ def test_ring_committor_after_exits(T):
             if ctx.inA[y]:
                 continue
             assert q[y] == (0.0 if ctx.dcut[x, i] > 0 else 1.0)
-    assert "degenerate" in an.structural(ctx, T)["C"]
+    notes = an.structural(ctx, T)
+    assert all("degenerate" in notes[k][0] and notes[k][1] is None for k in "CLO")
 
 
 def test_leader_null_sums_to_one():
@@ -111,6 +113,7 @@ def test_round_events_toy():
     assert [a["outcome"] for a in attempts] == ["aborted", "success"]
     assert attempts[1]["climb"] == 1 and attempts[1]["barrier"] == 1          # climbs exactly B
     assert [m["first"] for m in moves] == [True, True]
+    assert attempts[0]["next_movers"] == (3,)                               # the probe: leaf 3 flips back
     assert moves[1]["prev"] == (3,)
 
 
@@ -123,10 +126,21 @@ def no_load(monkeypatch):
     monkeypatch.setattr(sl, "load_runs", fail)
 
 
-def test_open_refuses_without_hash(no_load):
-    assert config.U67_PREREG_SHA is None
+def test_prereg_locked(no_load):
+    """The pre-registration's sha256 is U67_PREREG_SHA; the real checks pass (no u67 entry yet), and --open would
+    go on to the load (replaced here, so nothing is loaded)."""
+    assert hashlib.sha256(config.U67_PREREG.read_bytes()).hexdigest() == config.U67_PREREG_SHA
+    an.check_open()
+    with pytest.raises(AssertionError, match="load_runs reached"):
+        an.test_pipeline("open", cache=config.ROOT / "never_written.pkl")
+    assert not (config.ROOT / "never_written.pkl").exists() and not config.U67_TEST_CACHE.exists()
+
+
+def test_open_refuses_without_hash(tmp_path, no_load):
+    pre = tmp_path / "pre.md"
+    pre.write_text("draft\n")
     with pytest.raises(SystemExit):
-        an.test_pipeline("open")
+        an.check_open(pre, "", tmp_path / "log.csv")
 
 
 def test_open_refuses_wrong_hash_or_log_entry(tmp_path, no_load):
@@ -155,9 +169,17 @@ def test_predictions_and_scoring():
               "expect": "no_deviation"},
              {"id": "P3", "measure": "K", "topology": "CT", "T": "inf", "stat": "share up/progress",
               "expect": "deviation"}]
+    preds += [{"id": "P4", "measure": "K", "topology": "Ring", "T": "T_hat", "stat": "share up/progress",
+               "expect": ">0"},
+              {"id": "P5", "measure": "K", "topology": "Ring", "T": "T_hat", "stat": "share up/progress",
+               "expect": "~0"}]
     s = an.score(preds, tables)
-    assert list(s["result"]) == ["pass", "fail", "no row"]
-    assert an.predictions(config.U67_PREREG) == []                    # the draft's YAML block is empty
+    assert list(s["result"]) == ["pass", "fail", "no row", "pass", "fail"]
+    assert s["ci_width"].iloc[0] == pytest.approx(0.2)
+    tables["K"]["structural"] = "every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+    assert an.score(preds[:1], tables)["result"].iloc[0] == "not scored (structural)"
+    ids = [p["id"] for p in an.predictions(config.U67_PREREG)]
+    assert ids == ["P1-Ring", "P1-CT", "P2-Ring", "P2-CT", "P3-Ring", "P4-Ring", "P4-CT", "P5-CT", "P6-CT", "P7-CT"]
 
 
 def test_dry_run(monkeypatch):
@@ -179,6 +201,12 @@ def test_dry_run(monkeypatch):
         t = out[k]
         assert len(t) > 0 and set(t["T"]) == {"inf", "T_hat"} and set(t["variant"]) == set(an.VARIANTS)
         assert set(t["topology"]) == {"Ring", "CT"}
-    assert len(out["scores"]) == 0
+    sc = out["scores"]
+    assert len(sc) == 10 and set(sc["result"]) <= {"pass", "fail"}            # every prediction finds its row
+    k = out["K"]
+    assert {"ll_diff", "flat_progress_share"} <= set(k["stat"])
+    assert set(k.loc[k["stat"] == "ll_diff", "T"]) == {"T_hat"}
+    probe = out["C"][out["C"]["stat"] == "probe"]
+    assert len(probe) and set(probe["structural"]) == {"descriptive (not scored)"}
     for path in config.U67_DRYRUN.values():
         assert path.exists()

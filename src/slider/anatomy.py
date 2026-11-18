@@ -236,7 +236,8 @@ def round_events(run, hold=0.0):
             climb = (max(ctx.cut[states[l]] for l in range(j, stop + 1)) - ctx.cut[states[j]]
                      if outcome == "success" else np.nan)
             attempts.append({"x": states[j], "y": states[j + 1], "movers": g["movers"], "m": g["m"],
-                             "outcome": outcome, "climb": climb, "barrier": ctx.barrier[states[j]]})
+                             "outcome": outcome, "climb": climb, "barrier": ctx.barrier[states[j]],
+                             "next_movers": groups[j + 1]["movers"] if j + 1 < len(groups) else None})
     episode = {"escaped": escaped, "spells": spell, "attempts": len(attempts)}
     return moves, attempts, episode, info
 
@@ -285,13 +286,21 @@ def ctx_of(row):
 
 def move_values(moves, T):
     """Per move (group): weight 1 and, per class, obs = share of its movers in the class and exp = P(class | x);
-    loglik obs / exp; same-mover obs / exp (NaN without a previous group)."""
+    loglik obs / exp; same-mover obs / exp (NaN without a previous group); ll_diff obs = mean over movers of
+    log P_T - log P_inf (exp 0); flat progress: w_flat = share of movers that are flat, obs_fp = share that are
+    flat and progress, exp_fp = w_flat x (# flat progress nodes / # flat nodes at x)."""
     rows = []
     for _, r in moves.iterrows():
         ctx = ctx_of(r)
         P = ctx.kernel(T)[r["x"]]
+        P_inf = ctx.kernel(np.inf)[r["x"]]
         cls = ctx.cls[r["x"]]
-        v = {"file": r["file"], "w": 1.0}
+        flat, prog = ctx.dcut[r["x"]] == 0, cls % 2 == 1
+        v = {"file": r["file"], "w": 1.0, "zero": 0.0}
+        v["obs_lld"] = np.mean([np.log(P[j]) - np.log(P_inf[j]) for j in r["movers"]])
+        v["w_flat"] = np.mean([flat[j] for j in r["movers"]])
+        v["obs_fp"] = np.mean([flat[j] and prog[j] for j in r["movers"]])
+        v["exp_fp"] = v["w_flat"] * ((flat & prog).sum() / flat.sum() if flat.sum() else 0.0)
         for c in range(6):
             v[f"obs_{c}"] = np.mean([cls[j] == c for j in r["movers"]])
             v[f"exp_{c}"] = P[cls == c].sum()
@@ -331,6 +340,14 @@ def attempt_values(attempts, T):
             v["over_obs"] = float(r["climb"] == r["barrier"])
             v["over_exp"] = (float(np.mean(np.maximum(mx, ctx.cut[r["x"]]) - ctx.cut[r["x"]] == r["barrier"]))
                              if len(mx) else 0.0)
+        # probe (descriptive): an aborted single-mover exit whose next group is the same mover flipping back
+        v["probe_ok"] = float(r["outcome"] == "aborted" and r["m"] == 1 and r["next_movers"] is not None)
+        if v["probe_ok"]:
+            i = r["movers"][0]
+            v["probe_obs"] = float(tuple(r["next_movers"]) == (i,))
+            v["probe_exp"] = float(ctx.kernel(T)[r["y"]][i])
+        else:
+            v["probe_obs"] = v["probe_exp"] = 0.0
         rows.append(v)
     return pd.DataFrame(rows)
 
@@ -372,6 +389,12 @@ def measure_rows(moves, attempts, episodes, T, base):
                              **boot(mv, [f"obs_{c}", f"exp_{c}", "w"], ratio(f"obs_{c}", f"exp_{c}", "w"))})
         out["K"].append({**base, "stat": "loglik", "part": "all", "n": n,
                          **boot(mv, ["obs_ll", "exp_ll", "w"], ratio("obs_ll", "exp_ll", "w"))})
+        if not np.isinf(T):
+            out["K"].append({**base, "stat": "ll_diff", "part": "all", "n": n,
+                             **boot(mv, ["obs_lld", "zero", "w"], ratio("obs_lld", "zero", "w"))})
+        if mv["w_flat"].sum() > 0:
+            out["K"].append({**base, "stat": "flat_progress_share", "part": "all", "n": int((mv["w_flat"] > 0).sum()),
+                             **boot(mv, ["obs_fp", "exp_fp", "w_flat"], ratio("obs_fp", "exp_fp", "w_flat"))})
         f, l = mv["first"], 1 - mv["first"]
         for c in range(6):
             e = mv[["file"]].copy()
@@ -412,6 +435,10 @@ def measure_rows(moves, attempts, episodes, T, base):
                     return s["att"] / s["esc"], s["nd"] / s["qs"]
             out["C"].append({**base, "stat": "attempts_per_escape", "part": "all", "n": len(esc_ep),
                              **boot(e, ["att", "esc", "qs", "nd"], ape)})
+        pr = at[at["probe_ok"] == 1]
+        if len(pr) and not np.isinf(T):
+            out["C"].append({**base, "stat": "probe", "part": "aborted", "n": len(pr),
+                             **boot(pr, ["probe_obs", "probe_exp", "probe_ok"], ratio("probe_obs", "probe_exp", "probe_ok"))})
     esc = at[at["outcome"] == "success"] if len(at) else at
     if len(esc):
         lead = esc[esc["lead_ok"] == 1]
@@ -433,16 +460,24 @@ def measure_rows(moves, attempts, episodes, T, base):
 
 
 def structural(ctx, T):
-    """Notes on measures that are structural (reported, not tested) for this graph."""
+    """Structural notes for this graph (reported, not tested): {measure: (note, parts)}, parts = the parts the
+    note applies to (None = every row of the measure)."""
     exits = [(x, i) for x in L.STATES[ctx.inA] for i in range(L.N) if not ctx.inA[ctx.flips[x, i]]]
     q = ctx.q(T)
     notes = {}
     if all(ctx.dcut[x, i] > 0 for x, i in exits):
-        notes["C"] = notes["L"] = "every exit from A is uphill (split by exit height is degenerate)"
-    if all(q[ctx.flips[x, i]] in (0.0, 1.0) or abs(q[ctx.flips[x, i]] - round(q[ctx.flips[x, i]])) < 1e-12
-           for x, i in exits):
-        notes["C"] = notes["L"] = "every exit from A has q = 0 (uphill) or q = 1 (downhill): C and L degenerate"
+        notes["C"] = ("every exit from A is uphill (split by exit height is degenerate)", {"up", "down"})
+    if all(abs(q[ctx.flips[x, i]] - round(q[ctx.flips[x, i]])) < 1e-12 for x, i in exits):
+        note = "every exit from A has q = 0 (uphill) or q = 1 (downhill): C, L and O degenerate"
+        notes["C"] = notes["L"] = notes["O"] = (note, None)
     return notes
+
+
+def row_note(notes, measure, row):
+    if measure == "C" and row["stat"] == "probe":
+        return "descriptive (not scored)"
+    note, parts = notes.get(measure, ("", None))
+    return note if note and (parts is None or row["part"] in parts) else ""
 
 
 def analyse(rounds, T_values, variants=VARIANTS):
@@ -477,12 +512,11 @@ def analyse(rounds, T_values, variants=VARIANTS):
                 for Tl, T in T_values.items():
                     notes = {}
                     for a in As:
-                        for k, n in structural(_CONTEXTS[a], T).items():
-                            notes[k] = n
+                        notes.update(structural(_CONTEXTS[a], T))
                     base = {"variant": vname, "topology": top, "cell": cell, "T": Tl, "T_value": T}
                     rows = measure_rows(mv, at, ep, T, base)
                     for k in "KMCLO":
-                        tables[k] += [{**r, "structural": notes.get(k, "")} for r in rows[k]]
+                        tables[k] += [{**r, "structural": row_note(notes, k, r)} for r in rows[k]]
     cols = ["variant", "topology", "cell", "T", "T_value", "stat", "part", "obs", "exp", "diff", "diff_lo", "diff_hi",
             "n", "n_files", "structural"]
     out = {k: pd.DataFrame(v).reindex(columns=cols) for k, v in tables.items()}
@@ -564,7 +598,9 @@ def hierarchy_run(T_hat=None):
 
 REASON = "Units 6+7: the one pre-registered Ring/CT run (docs/u67_preregistration.md)"
 SCORE_COLUMNS = ["id", "measure", "variant", "topology", "cell", "T", "stat", "part", "expect", "obs", "exp", "diff",
-                 "diff_lo", "diff_hi", "deviation", "result", "note"]
+                 "diff_lo", "diff_hi", "ci_width", "deviation", "result", "note"]
+EXPECT = {">0": "positive", "<0": "negative", "~0": "no_deviation", "positive": "positive",
+          "negative": "negative", "no_deviation": "no_deviation", "deviation": "deviation"}
 
 
 def prereg_sha(path):
@@ -605,7 +641,8 @@ def predictions(prereg):
 
 def score(preds, tables):
     """One row per prediction: the matching measure row (exactly one) and pass / fail.
-    expect: deviation (CI of obs - exp excludes 0), no_deviation, positive (lo > 0), negative (hi < 0)."""
+    expect: ">0" / positive (CI of obs - exp has lo > 0), "<0" / negative (hi < 0), "~0" / no_deviation (the CI
+    includes 0; ci_width reported), deviation (the CI excludes 0). A row with a structural note is not scored."""
     rows = []
     for p in preds:
         t = tables[p["measure"]]
@@ -619,10 +656,12 @@ def score(preds, tables):
         h = hit.iloc[0]
         dev = bool(h["diff_lo"] > 0 or h["diff_hi"] < 0)
         ok = {"deviation": dev, "no_deviation": not dev, "positive": h["diff_lo"] > 0,
-              "negative": h["diff_hi"] < 0}[p["expect"]]
+              "negative": h["diff_hi"] < 0}[EXPECT[str(p["expect"])]]
+        note = h["structural"] if isinstance(h["structural"], str) else ""
+        result = "not scored (structural)" if note and not note.startswith("descriptive") else ("pass" if ok else "fail")
         rows.append({**row, "obs": h["obs"], "exp": h["exp"], "diff": h["diff"], "diff_lo": h["diff_lo"],
-                     "diff_hi": h["diff_hi"], "deviation": dev, "result": "pass" if ok else "fail",
-                     "note": h["structural"]})
+                     "diff_hi": h["diff_hi"], "ci_width": h["diff_hi"] - h["diff_lo"], "deviation": dev,
+                     "result": result, "note": note})
     return pd.DataFrame(rows, columns=SCORE_COLUMNS)
 
 
