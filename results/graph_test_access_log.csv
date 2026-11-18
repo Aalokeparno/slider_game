@@ -1,0 +1,2 @@
+timestamp,caller,reason,n_graphs
+2026-11-17T21:39:00,scripts/u5_test.py --open,Unit 5: the one pre-registered S-test scoring (docs/u5_preregistration.md),157
