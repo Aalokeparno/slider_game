@@ -1,0 +1,13 @@
+variant,topology,cell,rounds,rounds_with_corner,groups,tied_share,episodes,escaped,spells,moves_from_A,moves_from_A_after_episode,attempts,attempts_success,attempts_aborted,attempts_censored,files
+main,Hierarchy,Hierarchy EL,51,51,836,0.03349282296650718,23,20,81,174,6,79,20,58,1,17
+main,Hierarchy,Hierarchy CL v09,39,39,528,0.03977272727272727,18,17,57,111,0,57,17,40,0,13
+main,Hierarchy,Hierarchy CC,40,40,573,0.031413612565445025,17,15,88,142,2,88,15,72,1,16
+main,Hierarchy,pooled,130,130,1937,0.03458957150232318,58,52,226,427,8,224,52,170,2,46
+hold05,Hierarchy,Hierarchy EL,51,51,742,0.029649595687331536,23,20,77,166,7,75,20,54,1,17
+hold05,Hierarchy,Hierarchy CL v09,39,39,463,0.0367170626349892,19,18,55,111,0,55,18,37,0,13
+hold05,Hierarchy,Hierarchy CC,40,40,558,0.021505376344086023,17,14,85,138,2,85,14,69,2,16
+hold05,Hierarchy,pooled,130,130,1763,0.028927963698241632,59,52,217,415,9,215,52,160,3,46
+no_ties,Hierarchy,Hierarchy EL,51,51,836,0.03349282296650718,23,20,81,172,6,77,19,57,1,17
+no_ties,Hierarchy,Hierarchy CL v09,39,39,528,0.03977272727272727,18,17,57,110,0,56,16,40,0,13
+no_ties,Hierarchy,Hierarchy CC,40,40,573,0.031413612565445025,17,15,88,139,2,85,14,70,1,16
+no_ties,Hierarchy,pooled,130,130,1937,0.03458957150232318,58,52,226,421,8,218,49,167,2,46

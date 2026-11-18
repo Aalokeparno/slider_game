@@ -207,6 +207,19 @@ def committor(A, T, plateau_states):
     return out
 
 
+def committor_vector(A, T, avoid):
+    """q(s) = P(reach a consensus state before the set avoid | start s), all 128 states; 1 at consensus, 0 on
+    avoid. Same for the lazy chain and its jump chain. T = np.inf gives the uniform chain."""
+    P = transition_matrix(A, T)
+    in_avoid = np.isin(L.STATES, list(avoid))
+    outside = L.STATES[~in_avoid & ~np.isin(L.STATES, ABSORBING)]
+    q = np.zeros(len(L.STATES))
+    q[ABSORBING] = 1.0
+    q[outside] = np.linalg.solve(np.eye(len(outside)) - P[np.ix_(outside, outside)],
+                                 P[np.ix_(outside, ABSORBING)].sum(axis=1))
+    return q
+
+
 def graph_outcomes(atlas_id, split, graphs, u1, T_grid, allow_test=False, reason=None):
     """trap_time rows (atlas_id, T, Yc, Yb, entries, duration, P_hit, Ya) of one atlas graph; traps from
     u1 = u1_traps.csv. Raises for a graph that is not graph-train unless allow_test=True with a reason."""

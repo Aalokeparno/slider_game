@@ -118,6 +118,16 @@ U5_H_ADD = "38eb4a482595a286aa3cf538f95aff729517a9d2"       # commit of the adde
 U5_DRYRUN_ADDENDUM = TABLES / "u5_dryrun_addendum.csv"
 U5_TEST_ADDENDUM = TABLES / "u5_test_addendum.csv"          # written once by scripts/u5_test.py --open
 
+# Path 2, Units 6 + 7: human escape anatomy (anatomy.py, scripts/u67_test.py); Ring / CT held out
+U67_THAT = 0.611009                                         # T_hat (kernel MLE, Hierarchy training cells; u67_hier_that.csv), frozen Nov 17
+U67_HIER_THAT = TABLES / "u67_hier_that.csv"
+U67_HIER = {k: TABLES / f"u67_hier_{k}.csv" for k in ["K", "M", "C", "L", "O", "counts"]}
+U67_PREREG = ROOT / "docs" / "u67_preregistration.md"
+U67_PREREG_SHA = None                                       # sha256 of the locked pre-registration (not set yet)
+U67_TEST_CACHE = RESULTS / "test_cache" / "u67_runs.pkl"   # git-ignored (results/test_cache/)
+U67_TEST = {k: TABLES / f"u67_test_{k}.csv" for k in ["K", "M", "C", "L", "O", "counts", "selection", "scores"]}
+U67_DRYRUN = {k: TABLES / f"u67_dryrun_{k}.csv" for k in ["K", "M", "C", "L", "O", "counts", "selection", "scores"]}
+
 # Path 3 (strategy simulator)
 PATH3 = RESULTS / "path3"
 

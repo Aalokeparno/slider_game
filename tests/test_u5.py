@@ -197,8 +197,14 @@ def test_open_refuses_existing_log_entry(repo):
         u5.open_test(**repo)
 
 
-def test_no_open_outputs_yet():
-    assert not config.U5_TEST_RANKING.exists() and not config.U5_TEST_CACHE.exists()
-    assert not config.U5_TEST_ADDENDUM.exists()
-    log = config.GRAPH_TEST_ACCESS_LOG
-    assert not log.exists() or not pd.read_csv(log)["caller"].astype(str).str.contains("u5_test").any()
+def test_opened_once():
+    """S-test was opened once (Nov 17, 21:39, scripts/u5_test.py --open): exactly one u5 entry, 157 graphs, and
+    the --open outputs exist (a second --open is refused by check_log)."""
+    log = pd.read_csv(config.GRAPH_TEST_ACCESS_LOG)
+    u5_rows = log[log["caller"].astype(str).str.contains("u5_test")]
+    assert len(u5_rows) == 1 and u5_rows["n_graphs"].iloc[0] == 157
+    for path in [config.U5_TEST_RANKING, config.U5_TEST_LAW, config.U5_TEST_PREDICTIONS, config.U5_TEST_ADDENDUM,
+                 config.U5_TEST_CACHE / "outcomes.csv"]:
+        assert path.exists()
+    with pytest.raises(SystemExit):
+        u5.check_log(config.GRAPH_TEST_ACCESS_LOG)
