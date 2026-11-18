@@ -63,14 +63,34 @@ def test_dry_run_outputs(monkeypatch):
     for path in [config.U5_DRYRUN_RANKING, config.U5_DRYRUN_LAW, config.U5_DRYRUN_PREDICTIONS,
                  config.U5_DRYRUN_ADDENDUM]:
         assert path.exists()
-    # addendum: A1 and A2 per outcome (log entries, log duration) x T, A3 per T
-    assert len(add) == 2 * 2 * 3 + 3
-    assert add.groupby("hypothesis").size().to_dict() == {"A1": 6, "A2": 6, "A3": 3}
-    assert set(add["result"]) <= {"pass", "fail"} and add[["diff_lo", "diff_hi"]].notna().all().all()
+    # addendum: A1 and A2 per outcome (log entries, log duration) x T; A3 and A3_secondary per T
+    assert len(add) == 2 * 2 * 3 + 2 * 3
+    assert add.groupby("hypothesis").size().to_dict() == {"A1": 6, "A2": 6, "A3": 3, "A3_secondary": 3}
+    assert add[["diff_lo", "diff_hi"]].notna().all().all()
+    conf, desc = add[add["role"] == "confirmatory"], add[add["role"] == "descriptive"]
+    assert set(conf["result"]) <= {"pass", "fail"} and set(conf["hypothesis"]) == {"A1", "A2", "A3"}
+    assert set(desc["hypothesis"]) == {"A3_secondary"} and set(desc["result"]) == {"descriptive"}
     factors = pd.read_csv(config.U5_TRAIN_FACTORS)
     two = factors[factors["model"] == "two_var"].set_index("T")
     a3 = add[add["hypothesis"] == "A3"].set_index("T")
     assert all(a3.loc[T, "train_top"] == f"{two.loc[T, 'x_E']} + {two.loc[T, 'x_D']}" for T in u5.T_U5)
+
+
+def test_a3_named_comparator():
+    """A3's comparator is the S-train best single for log Yb by R2_cv, named before opening."""
+    named = {0.2: "modularity", 0.5: "modularity", 1.0: "lamP"}
+    assert u5.named_comparators(pd.read_csv(config.U5_TRAIN_FACTORS)) == named
+    add = pd.read_csv(config.U5_DRYRUN_ADDENDUM)
+    a3 = add[add["hypothesis"] == "A3"].set_index("T")["comparator"].to_dict()
+    assert a3 == named
+
+
+def test_addendum_relocked():
+    """The real addendum is unchanged since the new H_add and differs from the first (superseded) addendum."""
+    u5.check_unchanged(config.U5_ADDENDUM, config.U5_H_ADD)
+    assert config.U5_H_ADD != u5.H_ADD_V1
+    with pytest.raises(SystemExit):
+        u5.check_unchanged(config.U5_ADDENDUM, u5.H_ADD_V1)
 
 
 def test_compute_outcomes_guard():
@@ -143,6 +163,17 @@ def test_open_refuses_changed_expectation(repo):
 def test_open_refuses_changed_addendum(repo):
     repo["addendum"].write_text("edited\n")
     with pytest.raises(SystemExit):
+        u5.open_test(**repo)
+
+
+def test_open_refuses_old_addendum_hash(repo):
+    old = repo["h_add"]
+    repo["addendum"].write_text("addendum, revised\n")
+    git(repo["root"], "commit", "-qam", "re-lock")
+    with pytest.raises(SystemExit):                      # the revised addendum differs from the old lock
+        u5.open_test(**{**repo, "h_add": old})
+    repo["h_add"] = git(repo["root"], "rev-parse", "HEAD")
+    with pytest.raises(AssertionError, match="compute_outcomes reached"):      # the new lock passes the checks
         u5.open_test(**repo)
 
 

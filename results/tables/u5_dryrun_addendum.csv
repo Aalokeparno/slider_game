@@ -1,16 +1,19 @@
-hypothesis,outcome,T,train_top,R2_train_top,test_top,R2_test_top,diff_lo,diff_hi,result,detail
-A1,log_entries,0.2,lamP,0.4203590383693384,lamP,0.4203590383693384,0.0,0.0,pass,not beaten
-A2,log_entries,0.2,lamP,0.4203590383693384,lamP,0.4203590383693384,0.0,0.0,pass,"train global, test global"
-A1,log_entries,0.5,lamP,0.431979505196057,n_edges,0.4342466076399485,-0.15724515610445228,0.16643490580631093,pass,not beaten
-A2,log_entries,0.5,lamP,0.431979505196057,n_edges,0.4342466076399485,-0.15724515610445228,0.16643490580631093,fail,"train global, test baseline"
-A1,log_entries,1.0,n_traps,0.49540575256137664,n_traps,0.49540575256137664,0.0,0.0,pass,not beaten
-A2,log_entries,1.0,n_traps,0.49540575256137664,n_traps,0.49540575256137664,0.0,0.0,pass,"train landscape, test landscape"
-A1,log_dur,0.2,B_max,0.7793863533419305,B_max,0.7793863533419305,0.0,0.0,pass,not beaten
-A2,log_dur,0.2,B_max,0.7793863533419305,B_max,0.7793863533419305,0.0,0.0,pass,"train landscape, test landscape"
-A1,log_dur,0.5,modularity,0.6689603289896799,modularity,0.6689603289896799,0.0,0.0,pass,not beaten
-A2,log_dur,0.5,modularity,0.6689603289896799,modularity,0.6689603289896799,0.0,0.0,pass,"train global, test global"
-A1,log_dur,1.0,modularity,0.37052035625188084,modularity,0.37052035625188084,0.0,0.0,pass,not beaten
-A2,log_dur,1.0,modularity,0.37052035625188084,modularity,0.37052035625188084,0.0,0.0,pass,"train global, test global"
-A3,log_Yb,0.2,lamP + B_max,0.7994784025610023,modularity,0.6995434302495488,0.0045473763115341966,0.1985852345349579,pass,two-variable lamP + B_max vs best single modularity; CI of R2(two) - R2(best)
-A3,log_Yb,0.5,lamP + modularity,0.6338811369089703,modularity,0.5847130833900291,0.007408985773459809,0.10141272597186153,pass,two-variable lamP + modularity vs best single modularity; CI of R2(two) - R2(best)
-A3,log_Yb,1.0,n_traps + modularity,0.6973128210872894,lamP,0.43468272918900497,0.056682333133322625,0.4693652898100704,pass,two-variable n_traps + modularity vs best single lamP; CI of R2(two) - R2(best)
+hypothesis,outcome,T,train_top,R2_train_top,test_top,R2_test_top,diff_lo,diff_hi,result,detail,comparator,R2_comparator,role
+A1,log_entries,0.2,lamP,0.4203590383693384,lamP,0.4203590383693384,0.0,0.0,pass,not beaten,,,confirmatory
+A2,log_entries,0.2,lamP,0.4203590383693384,lamP,0.4203590383693384,0.0,0.0,pass,"train global, test global",,,confirmatory
+A1,log_entries,0.5,lamP,0.431979505196057,n_edges,0.4342466076399485,-0.15724515610445228,0.16643490580631093,pass,not beaten,,,confirmatory
+A2,log_entries,0.5,lamP,0.431979505196057,n_edges,0.4342466076399485,-0.15724515610445228,0.16643490580631093,fail,"train global, test baseline",,,confirmatory
+A1,log_entries,1.0,n_traps,0.49540575256137664,n_traps,0.49540575256137664,0.0,0.0,pass,not beaten,,,confirmatory
+A2,log_entries,1.0,n_traps,0.49540575256137664,n_traps,0.49540575256137664,0.0,0.0,pass,"train landscape, test landscape",,,confirmatory
+A1,log_dur,0.2,B_max,0.7793863533419305,B_max,0.7793863533419305,0.0,0.0,pass,not beaten,,,confirmatory
+A2,log_dur,0.2,B_max,0.7793863533419305,B_max,0.7793863533419305,0.0,0.0,pass,"train landscape, test landscape",,,confirmatory
+A1,log_dur,0.5,modularity,0.6689603289896799,modularity,0.6689603289896799,0.0,0.0,pass,not beaten,,,confirmatory
+A2,log_dur,0.5,modularity,0.6689603289896799,modularity,0.6689603289896799,0.0,0.0,pass,"train global, test global",,,confirmatory
+A1,log_dur,1.0,modularity,0.37052035625188084,modularity,0.37052035625188084,0.0,0.0,pass,not beaten,,,confirmatory
+A2,log_dur,1.0,modularity,0.37052035625188084,modularity,0.37052035625188084,0.0,0.0,pass,"train global, test global",,,confirmatory
+A3,log_Yb,0.2,lamP + B_max,0.7994784025610023,modularity,0.6995434302495488,0.0045473763115341966,0.1985852345349579,pass,two-variable lamP + B_max vs modularity (named S-train best); CI of R2(two) - R2(modularity); beats: True,modularity,0.6995434302495488,confirmatory
+A3_secondary,log_Yb,0.2,lamP + B_max,0.7994784025610023,modularity,0.6995434302495488,0.0045473763115341966,0.1985852345349579,descriptive,"two-variable lamP + B_max vs modularity (S-test #1, descriptive); CI of R2(two) - R2(modularity); beats: True",modularity,0.6995434302495488,descriptive
+A3,log_Yb,0.5,lamP + modularity,0.6338811369089703,modularity,0.5847130833900291,0.007408985773459809,0.10141272597186153,pass,two-variable lamP + modularity vs modularity (named S-train best); CI of R2(two) - R2(modularity); beats: True,modularity,0.5847130833900291,confirmatory
+A3_secondary,log_Yb,0.5,lamP + modularity,0.6338811369089703,modularity,0.5847130833900291,0.007408985773459809,0.10141272597186153,descriptive,"two-variable lamP + modularity vs modularity (S-test #1, descriptive); CI of R2(two) - R2(modularity); beats: True",modularity,0.5847130833900291,descriptive
+A3,log_Yb,1.0,n_traps + modularity,0.6973128210872894,lamP,0.43468272918900497,0.056682333133322625,0.4693652898100704,pass,two-variable n_traps + modularity vs lamP (named S-train best); CI of R2(two) - R2(lamP); beats: True,lamP,0.43468272918900497,confirmatory
+A3_secondary,log_Yb,1.0,n_traps + modularity,0.6973128210872894,lamP,0.43468272918900497,0.056682333133322625,0.4693652898100704,descriptive,"two-variable n_traps + modularity vs lamP (S-test #1, descriptive); CI of R2(two) - R2(lamP); beats: True",lamP,0.43468272918900497,descriptive
