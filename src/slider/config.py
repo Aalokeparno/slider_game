@@ -111,6 +111,11 @@ U5_TEST_LAW = TABLES / "u5_test_law.csv"
 U5_TEST_PREDICTIONS = TABLES / "u5_test_predictions.csv"
 U5_TEST_CACHE = RESULTS / "u5_test_cache"                   # S-test outcomes (git-ignored)
 GRAPH_TEST_ACCESS_LOG = RESULTS / "graph_test_access_log.csv"   # every computation on graph-test graphs
+U5_TRAIN_FACTORS = TABLES / "u5_train_factors.csv"         # addendum: log entries / log duration ranking (S-train)
+U5_ADDENDUM = ROOT / "docs" / "u5_addendum.md"
+U5_H_ADD = None                                             # commit of the addendum (set after it)
+U5_DRYRUN_ADDENDUM = TABLES / "u5_dryrun_addendum.csv"
+U5_TEST_ADDENDUM = TABLES / "u5_test_addendum.csv"          # written once by scripts/u5_test.py --open
 
 # Path 3 (strategy simulator)
 PATH3 = RESULTS / "path3"

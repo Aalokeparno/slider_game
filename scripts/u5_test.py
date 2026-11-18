@@ -7,6 +7,9 @@
                 results/graph_test_access_log.csv has no u5 entry. Computes S-test outcomes via markov.py
                 (allow_test with a reason), logs the access, caches outcomes in results/u5_test_cache/, and writes
                 results/tables/u5_test_ranking.csv, u5_test_law.csv, u5_test_predictions.csv.
+                Addendum (docs/u5_addendum.md, U5_H_ADD): --open also requires the addendum and
+                u5_train_factors.csv unchanged since U5_H_ADD, and then writes u5_test_addendum.csv (A1-A3);
+                --dry-run writes u5_dryrun_addendum.csv.
 """
 import argparse
 import time
@@ -21,8 +24,9 @@ def main():
     g.add_argument("--open", action="store_true", help="the one-time S-test scoring")
     a = ap.parse_args()
     start = time.time()
-    rank, law, preds = u5.open_test() if a.open else u5.dry_run()
+    rank, law, preds, add = u5.open_test() if a.open else u5.dry_run()
     print(preds.to_string(index=False))
+    print(add[["hypothesis", "outcome", "T", "train_top", "test_top", "result"]].to_string(index=False))
     print(f"{'OPEN' if a.open else 'dry run'}: {len(rank)} ranking rows, {len(law)} law rows, "
           f"{time.time() - start:.1f} s")
 
